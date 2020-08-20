@@ -111,7 +111,7 @@ export default class Register_second extends Component {
               ></TextInput>
             </View>
             <View style={styles.inputinfo}>
-              <Text style={styles.question}>성별 : </Text>
+              <Text style={styles.question}>신장 : </Text>
               <TextInput
                 style={styles.inputbox}
                 placeholder="178cm"

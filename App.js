@@ -15,6 +15,7 @@ import Signup from "./app/screens/Signup";
 import Register_first from "./app/screens/Register_first";
 import Register_second from "./app/screens/Register_second";
 import Register_third from "./app/screens/Register_third";
+import Register_fourth from "./app/screens/Register_fourth";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -35,6 +36,7 @@ function App() {
         <Stack.Screen name="Register_first" component={Register_first} />
         <Stack.Screen name="Register_second" component={Register_second} />
         <Stack.Screen name="Register_third" component={Register_third} />
+        <Stack.Screen name="Register_fourth" component={Register_fourth} />
       </Stack.Navigator>
     </NavigationContainer>
   );
