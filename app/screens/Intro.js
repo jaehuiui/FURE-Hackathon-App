@@ -17,7 +17,7 @@ const { width, height } = Dimensions.get("window");
 export default class Intro extends Component {
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, padding: 10 }}>
+      <SafeAreaView style={{ flex: 1, padding: 10, backgroundColor: "white" }}>
         <Swiper showsButtons={false} autoplay={false}>
           <View style={{ width, height }}>
             <View style={styles.top_layer_1}>
