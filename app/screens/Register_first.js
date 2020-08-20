@@ -42,7 +42,7 @@ export default class Register_first extends Component {
         name: this.state.name,
       })
       .then(() => {
-        this.props.navigation.navigate("Mainpage");
+        this.props.navigation.navigate("Register_second");
       })
       .catch((error) => {
         console.log(error);
@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
   //layer 1
   container: {
     flex: 1,
+    backgroundColor: "white",
     justifyContent: "center",
   },
 
@@ -164,5 +165,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
     color: "#0f4c75",
+    fontWeight: "bold",
   },
 });
