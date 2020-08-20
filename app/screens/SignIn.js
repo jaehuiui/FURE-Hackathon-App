@@ -46,7 +46,7 @@ export default class SignIn extends Component {
           error: "",
           loading: false,
         });
-        this.props.navigation.navigate("Mainpage");
+        this.props.navigation.navigate("Register_first");
       })
       .catch((e) => {
         this.setState({

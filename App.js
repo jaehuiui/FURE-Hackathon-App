@@ -12,6 +12,7 @@ import Intro from "./app/screens/Intro";
 import SignIn from "./app/screens/SignIn";
 import Mainpage from "./app/screens/Mainpage";
 import Signup from "./app/screens/Signup";
+import Register_first from "./app/screens/Register_first";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -29,6 +30,7 @@ function App() {
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="Mainpage" component={Mainpage} />
         <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="Register_first" component={Register_first} />
       </Stack.Navigator>
     </NavigationContainer>
   );
