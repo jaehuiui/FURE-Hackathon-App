@@ -19,10 +19,11 @@ export default class Register_second extends Component {
     this.state = {
       name: "",
       uid: "",
-      goal: "",
-      visible: false,
+      numperweek: null,
+      timepernum: null,
     };
-    this.handleChange_goal = this.handleChange_goal.bind(this);
+    this.handleChange_npw = this.handleChange_npw.bind(this);
+    this.handleChange_tpn = this.handleChange_tpn.bind(this);
   }
 
   async componentDidMount() {
@@ -47,15 +48,14 @@ export default class Register_second extends Component {
       }
     );
   }
-  handleChange_goal(newText) {
+  handleChange_tpn(newText) {
     this.setState({
-      goal: newText,
+      timepernum: newText,
     });
   }
-
-  handleChangevisible() {
+  handleChange_npw(newText) {
     this.setState({
-      visible: true,
+      numperweek: newText,
     });
   }
 
@@ -65,10 +65,11 @@ export default class Register_second extends Component {
       .collection("users")
       .doc(this.state.uid)
       .update({
-        goal: this.state.goal,
+        timepernum: this.state.timepernum,
+        numperweek: this.state.numperweek,
       })
       .then(() => {
-        this.handleChangevisible();
+        this.props.navigation.navigate("Register_final");
       })
       .catch((error) => {
         console.log(error);
@@ -76,51 +77,8 @@ export default class Register_second extends Component {
   }
 
   render() {
-    if (!this.state.visible) {
-      return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <LinearGradient
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 0.25 }}
-            colors={["#bbe1fa", "white"]}
-            style={styles.container}
-          >
-            <View style={styles.toplayer}>
-              <Text style={styles.title}>
-                {this.state.name} 님의 목표 체중은 얼마인가요?{"\n"}
-                변화를 보여드릴게요.
-              </Text>
-            </View>
-            <View style={styles.middlelayer}>
-              <View style={styles.inputinfo}>
-                <Text style={styles.question}>몸무게 : </Text>
-                <TextInput
-                  style={styles.inputbox}
-                  placeholder=""
-                  onChangeText={this.handleChange_goal}
-                ></TextInput>
-              </View>
-              <Text
-                style={styles.selecttext}
-                onPress={() => {
-                  this.OnInsertPress();
-                }}
-              >
-                {" "}
-                입력{" "}
-              </Text>
-            </View>
-            <View style={styles.bottomlayer}>
-              <Image
-                source={require("../images/logo.png")}
-                style={styles.logo}
-              ></Image>
-            </View>
-          </LinearGradient>
-        </TouchableWithoutFeedback>
-      );
-    } else {
-      return (
+    return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <LinearGradient
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 0.25 }}
@@ -129,26 +87,47 @@ export default class Register_second extends Component {
         >
           <View style={styles.toplayer}>
             <Text style={styles.title}>
-              {this.state.name} 님의 목표 체중은 얼마인가요?{"\n"}
-              변화를 보여드릴게요.
+              {this.state.name} 님{"\n"}
+              운동에 얼마나 시간을 내실 수 있나요?
             </Text>
           </View>
           <View style={styles.middlelayer}>
-            <View style={styles.modelbox}></View>
-          </View>
-          <View style={styles.bottomlayer}>
+            <View style={styles.inputinfo}>
+              <TextInput
+                style={styles.inputbox}
+                placeholder=""
+                onChangeText={this.handleChange_npw}
+              ></TextInput>
+              <Text style={styles.question}> : 회 / 일주일 </Text>
+            </View>
+            <View style={styles.inputinfo}>
+              <TextInput
+                style={styles.inputbox}
+                placeholder=""
+                onChangeText={this.handleChange_tpn}
+              ></TextInput>
+              <Text style={styles.question}> : 시간 / 회당 </Text>
+            </View>
+
             <Text
               style={styles.selecttext}
               onPress={() => {
-                this.props.navigation.navigate("Register_fourth");
+                this.OnInsertPress();
               }}
             >
-              내 얼굴 합성하기
+              {" "}
+              입력{" "}
             </Text>
           </View>
+          <View style={styles.bottomlayer}>
+            <Image
+              source={require("../images/logo.png")}
+              style={styles.logo}
+            ></Image>
+          </View>
         </LinearGradient>
-      );
-    }
+      </TouchableWithoutFeedback>
+    );
   }
 }
 
@@ -166,10 +145,8 @@ const styles = StyleSheet.create({
     flex: 4,
     justifyContent: "center",
   },
-
   bottomlayer: {
     flex: 2,
-    flexDirection: "column",
     justifyContent: "center",
   },
 
@@ -210,14 +187,5 @@ const styles = StyleSheet.create({
     transform: [{ scale: 0.3 }],
     resizeMode: "center",
     aspectRatio: 1,
-  },
-  modelbox: {
-    width: "80%",
-    height: "90%",
-    borderWidth: 2,
-    borderRadius: 25,
-    borderColor: "gray",
-    backgroundColor: "white",
-    alignSelf: "center",
   },
 });

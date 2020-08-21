@@ -11,6 +11,7 @@ import {
 import firebase from "firebase";
 import "firebase/firestore";
 import { RFValue } from "react-native-responsive-fontsize";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default class Register_second extends Component {
   constructor(props) {
@@ -94,7 +95,12 @@ export default class Register_second extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.container}>
+        <LinearGradient
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 0.25 }}
+          colors={["#bbe1fa", "white"]}
+          style={styles.container}
+        >
           <View style={styles.toplayer}>
             <Text style={styles.title}>
               {this.state.name} 님, 반갑습니다.{"\n"}
@@ -150,7 +156,7 @@ export default class Register_second extends Component {
               style={styles.logo}
             ></Image>
           </View>
-        </View>
+        </LinearGradient>
       </TouchableWithoutFeedback>
     );
   }

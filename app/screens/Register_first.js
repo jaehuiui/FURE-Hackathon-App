@@ -12,6 +12,7 @@ import {
 import firebase from "firebase";
 import "firebase/firestore";
 import { RFValue } from "react-native-responsive-fontsize";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default class Register_first extends Component {
   constructor(props) {
@@ -52,7 +53,12 @@ export default class Register_first extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.container}>
+        <LinearGradient
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 0.25 }}
+          colors={["#bbe1fa", "white"]}
+          style={styles.container}
+        >
           <View style={styles.toplayer}>
             <Image
               source={require("../images/logo.png")}
@@ -63,7 +69,8 @@ export default class Register_first extends Component {
             <View style={styles.textbox}>
               <Text style={styles.middletext}>
                 {" "}
-                안녕하세요!{"\n"}당신의 러닝을 도와드릴 FU;RE입니다.
+                안녕하세요!{"\n"}당신의 러닝 다이어트를{"\n"}도와드릴
+                FU;RE입니다.
               </Text>
             </View>
           </View>
@@ -88,7 +95,7 @@ export default class Register_first extends Component {
               입력{" "}
             </Text>
           </View>
-        </View>
+        </LinearGradient>
       </TouchableWithoutFeedback>
     );
   }
@@ -130,7 +137,8 @@ const styles = StyleSheet.create({
     top: RFValue(50, 812),
   },
   textbox: {
-    backgroundColor: "#e1f2fb",
+    borderColor: "#e1f2fb",
+    borderWidth: 3,
     borderRadius: 20,
     height: RFValue(100, 812),
     justifyContent: "center",
