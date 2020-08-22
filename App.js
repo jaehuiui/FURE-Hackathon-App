@@ -15,6 +15,7 @@ import Mainpage from "./app/screens/Mainpage";
 import Today from "./app/screens/Today";
 import Future from "./app/screens/Future";
 import Signup from "./app/screens/Signup";
+import Start from "./app/screens/Start";
 import Register_first from "./app/screens/Register_first";
 import Register_second from "./app/screens/Register_second";
 import Register_third from "./app/screens/Register_third";
@@ -32,7 +33,7 @@ function MyTab() {
     <Tab.Navigator
       initialRouteName="Mainpage"
       tabBarOptions={{
-        activeTintColor: "#e91e63",
+        activeTintColor: "#0f4c75",
       }}
     >
       <Tab.Screen
@@ -46,7 +47,7 @@ function MyTab() {
         name="Today"
         component={Today}
         options={{
-          tabBarLabel: "Today",
+          tabBarLabel: "Start",
         }}
       />
       <Tab.Screen
@@ -71,6 +72,7 @@ function App() {
         <Stack.Screen name="Intro" component={Intro} />
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="Start" component={Start} />
         <Stack.Screen name="Register_first" component={Register_first} />
         <Stack.Screen name="Register_second" component={Register_second} />
         <Stack.Screen name="Register_third" component={Register_third} />

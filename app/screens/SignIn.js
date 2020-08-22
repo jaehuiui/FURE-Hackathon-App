@@ -26,6 +26,7 @@ export default class SignIn extends Component {
       password: "password",
       error: "",
       loading: false,
+      already: false,
     };
     this.handleChangeemail = this.handleChangeemail.bind(this);
     this.handleChangepassword = this.handleChangepassword.bind(this);
@@ -46,7 +47,6 @@ export default class SignIn extends Component {
           error: "",
           loading: false,
         });
-        this.props.navigation.navigate("Register_first");
       })
       .catch((e) => {
         this.setState({
@@ -58,6 +58,39 @@ export default class SignIn extends Component {
         } else {
           alert(e.message);
         }
+      });
+    const data = firebase.firestore();
+    const user = firebase.auth().currentUser;
+    data
+      .collection("users")
+      .doc(user.uid)
+      .get()
+      .then((snapshot) => {
+        if (snapshot.empty) {
+          console.log("No matching documents.");
+          this.props.navigation.navigate("Register_first");
+        } else {
+          this.props.navigation.navigate("Mainpage");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  OnInsertPress() {
+    const data = firebase.firestore();
+    data
+      .collection("users")
+      .doc(this.state.uid)
+      .set({
+        name: this.state.name,
+      })
+      .then(() => {
+        this.props.navigation.navigate("Register_second");
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 
