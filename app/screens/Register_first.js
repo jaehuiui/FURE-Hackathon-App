@@ -45,7 +45,7 @@ export default class Register_first extends Component {
         name: this.state.name,
       })
       .then(() => {
-        this.props.navigation.navigate("Register_second");
+        this.props.navigation.navigate("Register_new1");
       })
       .catch((error) => {
         console.log(error);
@@ -71,17 +71,17 @@ export default class Register_first extends Component {
             <View style={styles.textbox}>
               <Text style={styles.middletext}>
                 {" "}
-                안녕하세요!{"\n"}당신의 러닝 다이어트를{"\n"}도와드릴
-                FU;RE입니다.
+                안녕하세요!{"\n"}당신의 AI 러닝 코치{"\n"}
+                FU:RE입니다.
               </Text>
             </View>
           </View>
           <View style={styles.middlelayer2}>
             <View style={styles.input}>
-              <Text style={styles.namequestion}> 당신의 이름은?</Text>
+              <Text style={styles.namequestion}> 당신의 닉네임은?</Text>
               <TextInput
                 style={styles.nameinput}
-                placeholder="구민형"
+                placeholder=""
                 onChangeText={this.handleChangename}
               ></TextInput>
             </View>

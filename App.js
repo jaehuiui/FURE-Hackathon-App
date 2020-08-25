@@ -22,6 +22,7 @@ import Register_third from "./app/screens/Register_third";
 import Register_fourth from "./app/screens/Register_fourth";
 import Register_fifth from "./app/screens/Register_fifth";
 import Register_final from "./app/screens/Register_final";
+import Register_new1 from "./app/screens/Register_new1";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -74,6 +75,7 @@ function App() {
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Start" component={Start} />
         <Stack.Screen name="Register_first" component={Register_first} />
+        <Stack.Screen name="Register_new1" component={Register_new1} />
         <Stack.Screen name="Register_second" component={Register_second} />
         <Stack.Screen name="Register_third" component={Register_third} />
         <Stack.Screen name="Register_fourth" component={Register_fourth} />
