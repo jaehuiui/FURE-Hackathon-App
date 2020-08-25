@@ -34,6 +34,8 @@ export default class Register_second extends Component {
           firebase
             .firestore()
             .collection("users")
+            .doc("App")
+            .collection("info")
             .doc(user.uid)
             .onSnapshot((doc) => {
               var name_test = doc.data().name;

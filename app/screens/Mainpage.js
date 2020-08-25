@@ -20,6 +20,7 @@ export default class Mainpage extends Component {
       "focus",
       async () => {
         var user = firebase.auth().currentUser;
+
         if (user != null) {
           firebase
             .firestore()

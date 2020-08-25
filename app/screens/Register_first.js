@@ -38,6 +38,8 @@ export default class Register_first extends Component {
     const data = firebase.firestore();
     data
       .collection("users")
+      .doc("App")
+      .collection("info")
       .doc(this.state.uid)
       .set({
         name: this.state.name,
