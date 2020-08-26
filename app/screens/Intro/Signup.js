@@ -83,7 +83,7 @@ export default class CreateScreen extends React.Component {
       <View style={styles.container}>
         <View style={styles.Theme}>
           <Image
-            source={require("../images/logo.png")}
+            source={require("../../images/logo.png")}
             style={styles.logo}
           ></Image>
         </View>

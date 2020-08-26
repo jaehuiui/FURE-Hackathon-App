@@ -78,7 +78,7 @@ export default class Mainpage extends Component {
         <Text
           style={styles.selecttext}
           onPress={() => {
-            this.props.navigation.navigate("Register_first");
+            this.props.navigation.navigate("Register_1");
           }}
         >
           {" "}

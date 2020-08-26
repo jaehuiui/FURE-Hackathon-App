@@ -7,22 +7,20 @@ import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { Icon } from "react-native-elements";
 import * as Analytics from "expo-firebase-analytics";
 
-import Intro from "./app/screens/Intro";
-import SignIn from "./app/screens/SignIn";
-import Mainpage from "./app/screens/Mainpage";
-import Today from "./app/screens/Today";
-import Future from "./app/screens/Future";
-import Signup from "./app/screens/Signup";
-import Start from "./app/screens/Start";
-import Register_first from "./app/screens/Register_first";
-import Register_second from "./app/screens/Register_second";
-import Register_third from "./app/screens/Register_third";
-import Register_fourth from "./app/screens/Register_fourth";
-import Register_fifth from "./app/screens/Register_fifth";
-import Register_final from "./app/screens/Register_final";
-import Register_new1 from "./app/screens/Register_new1";
+import Intro from "./app/screens/Intro/Intro";
+import SignIn from "./app/screens/Intro/SignIn";
+
+import Signup from "./app/screens/Intro/Signup";
+
+import Home from "./app/screens/Main/Home";
+import Today from "./app/screens/Main/Today";
+import Future from "./app/screens/Main/Future";
+import Running from "./app/screens/Main/Running";
+import Setting from "./app/screens/Main/Setting";
 
 import Register_1 from "./app/screens/Register/Register_1";
 import Register_2 from "./app/screens/Register/Register_2";
@@ -44,20 +42,38 @@ function MyTab() {
       initialRouteName="Mainpage"
       tabBarOptions={{
         activeTintColor: "#0f4c75",
+        inactiveTintColor: "gray",
+        showIcon: true,
       }}
     >
       <Tab.Screen
-        name="Mainpage"
-        component={Mainpage}
+        name="Home"
+        component={Home}
         options={{
           tabBarLabel: "Home",
+          tabBarIcon: ({ color }) => (
+            <Icon
+              name="home"
+              size={25}
+              color={color}
+              type="material-community"
+            />
+          ),
         }}
       />
       <Tab.Screen
         name="Today"
         component={Today}
         options={{
-          tabBarLabel: "Start",
+          tabBarLabel: "Today",
+          tabBarIcon: ({ color }) => (
+            <Icon
+              name="calendar-check"
+              size={25}
+              color={color}
+              type="material-community"
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -65,6 +81,29 @@ function MyTab() {
         component={Future}
         options={{
           tabBarLabel: "Future",
+          tabBarIcon: ({ color }) => (
+            <Icon
+              name="progress-clock"
+              size={25}
+              color={color}
+              type="material-community"
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Setting"
+        component={Setting}
+        options={{
+          tabBarLabel: "Setting",
+          tabBarIcon: ({ color }) => (
+            <Icon
+              name="account-key"
+              size={25}
+              color={color}
+              type="material-community"
+            />
+          ),
         }}
       />
     </Tab.Navigator>
@@ -82,15 +121,7 @@ function App() {
         <Stack.Screen name="Intro" component={Intro} />
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="Start" component={Start} />
-        <Stack.Screen name="Register_first" component={Register_first} />
-        <Stack.Screen name="Register_new1" component={Register_new1} />
-        <Stack.Screen name="Register_second" component={Register_second} />
-        <Stack.Screen name="Register_third" component={Register_third} />
-        <Stack.Screen name="Register_fourth" component={Register_fourth} />
-        <Stack.Screen name="Register_fifth" component={Register_fifth} />
-        <Stack.Screen name="Register_final" component={Register_final} />
-        <Stack.Screen name="Mainpage" component={MyTab} />
+
         <Stack.Screen name="Register_1" component={Register_1} />
         <Stack.Screen name="Register_2" component={Register_2} />
         <Stack.Screen name="Register_3" component={Register_3} />
@@ -99,6 +130,9 @@ function App() {
         <Stack.Screen name="Register_6" component={Register_6} />
         <Stack.Screen name="Register_7" component={Register_7} />
         <Stack.Screen name="Register_8" component={Register_8} />
+
+        <Stack.Screen name="Mainpage" component={MyTab} />
+        <Stack.Screen name="Running" component={Running} />
       </Stack.Navigator>
     </NavigationContainer>
   );

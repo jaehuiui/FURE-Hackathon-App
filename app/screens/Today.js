@@ -2,13 +2,32 @@ import React, { Component } from "react";
 import { Text, StyleSheet, View } from "react-native";
 
 export default class Today extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+    };
+  }
   render() {
     return (
-      <View>
-        <Text> textInComponent </Text>
+      <View style={styles.container}>
+        <View style={styles.header}></View>
+        <View style={styles.top}></View>
+        <View style={styles.middle}></View>
+        <View style={styles.bottom}></View>
+        <View style={styles.footer}></View>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  top: {},
+  middle: {},
+  bottom: {},
+  footer: {},
+});

@@ -87,11 +87,12 @@ export default class SignIn extends Component {
         });
       }
     });
-    if (this.state.user) {
+    this.props.navigation.navigate("Mainpage");
+    /*if (this.state.user) {
       this.props.navigation.navigate("Mainpage");
     } else {
-      this.props.navigation.navigate("Register_first");
-    }
+      this.props.navigation.navigate("Register_1");
+    }*/
   }
 
   handleChangeemail(newText) {
@@ -115,7 +116,7 @@ export default class SignIn extends Component {
       <View style={styles.background}>
         <View style={styles.Theme}>
           <Image
-            source={require("../images/logo.png")}
+            source={require("../../images/logo.png")}
             style={styles.logo}
           ></Image>
         </View>

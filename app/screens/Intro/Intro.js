@@ -22,7 +22,7 @@ export default class Intro extends Component {
           <View style={{ width, height }}>
             <View style={styles.top_layer_1}>
               <Image
-                source={require("../images/logo.png")}
+                source={require("../../images/logo.png")}
                 style={styles.logo}
               ></Image>
             </View>
@@ -53,7 +53,7 @@ export default class Intro extends Component {
               <Text
                 style={styles.skip}
                 onPress={() => {
-                  this.props.navigation.navigate("SignIn");
+                  this.props.navigation.navigate("Mainpage");
                 }}
               >
                 Skip
