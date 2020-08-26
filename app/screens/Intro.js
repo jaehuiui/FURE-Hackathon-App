@@ -35,7 +35,7 @@ export default class Intro extends Component {
               <Text
                 style={styles.skip}
                 onPress={() => {
-                  this.props.navigation.navigate("SignIn");
+                  this.props.navigation.navigate("Register_1");
                 }}
               >
                 Skip

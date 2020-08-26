@@ -24,6 +24,15 @@ import Register_fifth from "./app/screens/Register_fifth";
 import Register_final from "./app/screens/Register_final";
 import Register_new1 from "./app/screens/Register_new1";
 
+import Register_1 from "./app/screens/Register/Register_1";
+import Register_2 from "./app/screens/Register/Register_2";
+import Register_3 from "./app/screens/Register/Register_3";
+import Register_4 from "./app/screens/Register/Register_4";
+import Register_5 from "./app/screens/Register/Register_5";
+import Register_6 from "./app/screens/Register/Register_6";
+import Register_7 from "./app/screens/Register/Register_7";
+import Register_8 from "./app/screens/Register/Register_8";
+
 firebase.initializeApp(firebaseConfig);
 
 const Stack = createStackNavigator();
@@ -82,6 +91,14 @@ function App() {
         <Stack.Screen name="Register_fifth" component={Register_fifth} />
         <Stack.Screen name="Register_final" component={Register_final} />
         <Stack.Screen name="Mainpage" component={MyTab} />
+        <Stack.Screen name="Register_1" component={Register_1} />
+        <Stack.Screen name="Register_2" component={Register_2} />
+        <Stack.Screen name="Register_3" component={Register_3} />
+        <Stack.Screen name="Register_4" component={Register_4} />
+        <Stack.Screen name="Register_5" component={Register_5} />
+        <Stack.Screen name="Register_6" component={Register_6} />
+        <Stack.Screen name="Register_7" component={Register_7} />
+        <Stack.Screen name="Register_8" component={Register_8} />
       </Stack.Navigator>
     </NavigationContainer>
   );
