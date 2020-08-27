@@ -46,6 +46,7 @@ export default class Register_1 extends Component {
       .then(() => {
         this.props.navigation.navigate("Register_2", {
           username: this.state.name,
+          uid: this.state.uid,
         });
       })
       .catch((error) => {

@@ -18,6 +18,7 @@ export default class Register_1 extends Component {
     super(props);
     this.state = {
       name: this.props.route.params.username,
+      uid: this.props.route.params.userid,
       ability: "",
       checked: "",
     };

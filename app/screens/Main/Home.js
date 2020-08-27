@@ -6,6 +6,8 @@ import {
   View,
   TouchableOpacity,
   Image,
+  Dimensions,
+  assign,
 } from "react-native";
 import firebase from "firebase";
 import "firebase/firestore";
@@ -14,6 +16,17 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Icon } from "react-native-elements";
 import { CommonActions } from "@react-navigation/native";
 import Loading from "./Loading";
+import { LineChart } from "react-native-chart-kit";
+import {
+  VictoryAxis,
+  VictoryLabel,
+  VictoryLine,
+  VictoryChart,
+  VictoryTheme,
+  VictoryArea,
+  VictoryZoomContainer,
+  createContainer,
+} from "victory-native";
 
 export default class Today extends Component {
   constructor(props) {
@@ -22,6 +35,17 @@ export default class Today extends Component {
       name: "",
       current: false,
       isLoading: true,
+      weight: 80,
+      goal: 77,
+      gap1: 0,
+      gap2: 0,
+      kcal: 0,
+      domain_top: 81,
+      current_weight: 78,
+      axis1: "",
+      axis2: "",
+      axis3: "",
+      axis4: "",
     };
   }
 
@@ -86,6 +110,22 @@ export default class Today extends Component {
                     console.log(doc.data().name);
                     this.setState({
                       name: doc.data().name,
+                      weight: Number(doc.data().weight),
+                      //goal: Number(doc.data().goal),
+                      kcal: (Number(doc.data().height) - 100) * 27,
+                      gap1:
+                        (Number(doc.data().goal) - Number(doc.data().weight)) *
+                          0.33 +
+                        Number(doc.data().weight),
+                      gap2:
+                        (Number(doc.data().goal) - Number(doc.data().weight)) *
+                          0.66 +
+                        Number(doc.data().weight),
+                      //domain_top: Number(doc.data().weight) + 1,
+                      axis1: "2주 후",
+                      axis2: "4주 후",
+                      axis3: "6주 후",
+                      axis4: "8주 후",
                     });
                     setTimeout(
                       function () {
@@ -115,6 +155,7 @@ export default class Today extends Component {
   }
 
   render() {
+    const VictoryZoomVoronoiContainer = createContainer("zoom", "voronoi");
     if (this.state.isLoading) {
       return <Loading />;
     } else if (this.state.current && !this.state.isLoading) {
@@ -132,13 +173,54 @@ export default class Today extends Component {
             </View>
           </View>
           <View style={styles.top}>
-            <View style={styles.graphbox}></View>
+            <View style={styles.graphbox}>
+              <VictoryChart
+                theme={VictoryTheme.grayscale}
+                width={Dimensions.get("window").width * 0.95}
+                animate={{ duration: 2000 }}
+                containerComponent={
+                  <VictoryZoomVoronoiContainer
+                    labels={({ datum }) => `${datum.y}`}
+                    minimumZoom={{ x: 3.5, y: 3.5 }}
+                  />
+                }
+              >
+                <VictoryAxis
+                  tickValues={[1, 2, 3, 4, 5]}
+                  tickFormat={["시작", "2주 후", "4주 후", "6주 후", "8주 후"]}
+                />
+                <VictoryAxis
+                  dependentAxis
+                  tickValues={[this.state.goal, this.state.domain_top]}
+                  tickFormat={(tick) => `${Math.round(tick)}kg`}
+                />
+                <VictoryLine
+                  interpolation="natural"
+                  style={{
+                    data: { stroke: "#0f4c75" },
+                    parent: { border: "1px solid #ccc" },
+                  }}
+                  data={[
+                    { x: 1, y: 80 },
+                    { x: 2, y: 79.3 },
+                    { x: 3, y: 78.8 },
+                    { x: 4, y: 77.6 },
+                    { x: 5, y: 77 },
+                  ]}
+                />
+              </VictoryChart>
+            </View>
           </View>
           <View style={styles.middle}>
             <View style={styles.thingment}></View>
           </View>
           <View style={styles.bottom}>
-            <View style={styles.eat}></View>
+            <View style={styles.eat}>
+              <Text style={styles.recommendation}>
+                {this.state.name}님의 하루 권장 섭취 칼로리는 {"\n"}{" "}
+                {this.state.kcal}Kcal입니다!
+              </Text>
+            </View>
           </View>
         </View>
       );
@@ -228,6 +310,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "gray",
+    justifyContent: "center",
   },
 
   //middle
@@ -254,6 +337,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#dff6f0",
     borderRadius: 20,
     alignSelf: "center",
+    justifyContent: "center",
+  },
+  recommendation: {
+    fontSize: RFValue(20, 812),
+    textAlign: "center",
   },
 
   // For newbie

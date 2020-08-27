@@ -23,7 +23,7 @@ export default class Today extends Component {
         <View style={styles.footer}>
           <TouchableOpacity
             onPress={() => {
-              this.props.navigation.navigate("Running");
+              this.props.navigation.navigate("Register_1");
             }}
           >
             <LinearGradient

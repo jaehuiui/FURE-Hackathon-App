@@ -19,10 +19,12 @@ export default class Register_1 extends Component {
     super(props);
     this.state = {
       name: this.props.route.params.username,
+      uid: this.props.route.params.userid,
       gender: "",
       height: null,
       weight: null,
       age: null,
+      real_gender: "",
     };
     this.handleChange_gender = this.handleChange_gender.bind(this);
     this.handleChange_height = this.handleChange_height.bind(this);
@@ -31,9 +33,15 @@ export default class Register_1 extends Component {
   }
 
   handleChange_gender(newText) {
-    this.setState({
-      gender: newText,
-    });
+    if (newText === "남자") {
+      this.setState({
+        gender: "M",
+      });
+    } else if (newText === "여자") {
+      this.setState({
+        gender: "W",
+      });
+    }
   }
   handleChange_height(newText) {
     this.setState({
@@ -54,6 +62,7 @@ export default class Register_1 extends Component {
   getbodyData() {
     const user = firebase.auth().currentUser;
     const data = firebase.firestore();
+
     data
       .collection("users")
       .doc("App")
@@ -68,6 +77,8 @@ export default class Register_1 extends Component {
       .then(() => {
         this.props.navigation.navigate("Register_6", {
           username: this.state.name,
+          uid: this.state.uid,
+          weight_pre: this.state.weight,
         });
       })
       .catch((error) => {
@@ -104,11 +115,12 @@ export default class Register_1 extends Component {
             <View style={styles.inputinfo}>
               <Text style={styles.question}>성별 : </Text>
               <Input
-                placeholder=""
+                placeholder="남자/여자"
                 containerStyle={styles.inputbox}
                 inputStyle={styles.inputtext}
                 onChangeText={this.handleChange_gender}
               />
+              <Text style={styles.question}>{"     "} </Text>
             </View>
             <View style={styles.inputinfo}>
               <Text style={styles.question}>신장 : </Text>
@@ -119,6 +131,7 @@ export default class Register_1 extends Component {
                 onChangeText={this.handleChange_height}
                 keyboardType="numeric"
               />
+              <Text style={styles.question}>cm</Text>
             </View>
             <View style={styles.inputinfo}>
               <Text style={styles.question}>체중 : </Text>
@@ -129,6 +142,7 @@ export default class Register_1 extends Component {
                 onChangeText={this.handleChange_weight}
                 keyboardType="numeric"
               />
+              <Text style={styles.question}>kg</Text>
             </View>
             <View style={styles.inputinfo}>
               <Text style={styles.question}>나이 : </Text>
@@ -139,6 +153,7 @@ export default class Register_1 extends Component {
                 onChangeText={this.handleChange_age}
                 keyboardType="numeric"
               />
+              <Text style={styles.question}>{"     "} </Text>
             </View>
           </View>
           <View style={styles.bottom}>
@@ -220,7 +235,7 @@ const styles = StyleSheet.create({
   },
   inputtext: {
     fontSize: RFValue(20, 812),
-    marginLeft: RFValue(10, 812),
+    textAlign: "center",
   },
 
   bottom: {

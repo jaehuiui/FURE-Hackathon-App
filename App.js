@@ -118,13 +118,6 @@ function MyTab() {
           ),
         }}
       />
-      <Tab.Screen
-        name="Loading"
-        component={Loading}
-        options={() => ({
-          tabBarVisible: false,
-        })}
-      />
     </Tab.Navigator>
   );
 }

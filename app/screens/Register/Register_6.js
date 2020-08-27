@@ -20,6 +20,8 @@ export default class Register_1 extends Component {
     super(props);
     this.state = {
       name: this.props.route.params.username,
+      uid: this.props.route.params.userid,
+      weight: this.props.route.params.weight_pre,
       goal: null,
       visualize: false,
     };
@@ -44,6 +46,9 @@ export default class Register_1 extends Component {
       .then(() => {
         this.props.navigation.navigate("Register_7", {
           username: this.state.name,
+          uid: this.state.uid,
+          weight_pre: this.state.weight,
+          weight_goal: this.state.goal,
         });
       })
       .catch((error) => {

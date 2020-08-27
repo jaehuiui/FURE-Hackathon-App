@@ -19,8 +19,11 @@ export default class Register_1 extends Component {
     super(props);
     this.state = {
       name: this.props.route.params.username,
-      dayperweek: null,
-      hourperday: null,
+      uid: this.props.route.params.userid,
+      weight: this.props.route.params.weight_pre,
+      goal: this.props.route.params.weight_goal,
+      dayperweek: 0,
+      hourperday: 0,
     };
     this.handleChange_dpw = this.handleChange_dpw.bind(this);
     this.handleChange_hpd = this.handleChange_hpd.bind(this);
@@ -29,11 +32,13 @@ export default class Register_1 extends Component {
     this.setState({
       dayperweek: newText,
     });
+    console.log(this.state.dayperweek);
   }
   handleChange_hpd(newText) {
     this.setState({
       hourperday: newText,
     });
+    console.log(this.state.hourperday);
   }
   selecttime() {
     const user = firebase.auth().currentUser;
@@ -44,12 +49,17 @@ export default class Register_1 extends Component {
       .collection("info")
       .doc(user.uid)
       .update({
-        dayperweek: this.state.dayperweek,
-        hourperday: this.state.hourperday,
+        days: this.state.dayperweek,
+        time: this.state.hourperday,
       })
       .then(() => {
         this.props.navigation.navigate("Register_8", {
           username: this.state.name,
+          uid: this.state.uid,
+          interval: this.state.dayperweek,
+          time: this.state.hourperday,
+          weight_pre: this.state.weight,
+          weight_goal: this.state.goal,
         });
       })
       .catch((error) => {
@@ -90,7 +100,7 @@ export default class Register_1 extends Component {
                 placeholder=""
                 containerStyle={styles.inputbox}
                 inputStyle={styles.inputtext}
-                onChangeText={this.handleChange_age}
+                onChangeText={this.handleChange_dpw}
                 keyboardType="numeric"
               />
               <Text style={styles.question}> 회 / 일주일 </Text>
@@ -101,7 +111,7 @@ export default class Register_1 extends Component {
                 placeholder=""
                 containerStyle={styles.inputbox}
                 inputStyle={styles.inputtext}
-                onChangeText={this.handleChange_age}
+                onChangeText={this.handleChange_hpd}
                 keyboardType="numeric"
               />
               <Text style={styles.question}> 시간 / 회 </Text>

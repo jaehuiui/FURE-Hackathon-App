@@ -18,6 +18,7 @@ export default class Register_1 extends Component {
     super(props);
     this.state = {
       name: this.props.route.params.username,
+      uid: this.props.route.params.userid,
       purpose: "",
       checked: "",
       count1: 0,
@@ -42,6 +43,7 @@ export default class Register_1 extends Component {
       .then(() => {
         this.props.navigation.navigate("Register_4", {
           username: this.state.name,
+          uid: this.state.uid,
         });
       })
       .catch((error) => {
