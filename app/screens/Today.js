@@ -26,8 +26,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
-  top: {},
-  middle: {},
-  bottom: {},
-  footer: {},
+  top: {
+    flex: 3.5,
+    justifyContent: "center",
+  },
+  middle: {
+    flex: 8.5,
+  },
+  bottom: {
+    flex: 3.5,
+  },
+  footer: {
+    flex: 1,
+  },
 });

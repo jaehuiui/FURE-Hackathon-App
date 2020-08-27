@@ -8,6 +8,7 @@ import "firebase/firestore";
 export default class Mainpage extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       todaycount: 0,
       todaydist: 0,

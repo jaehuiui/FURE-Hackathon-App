@@ -62,31 +62,6 @@ export default class SignIn extends Component {
         }
       });
 
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        console.log(user.uid);
-        const usersRef = firebase
-          .firestore()
-          .collection("users")
-          .doc("App")
-          .collection("info")
-          .doc(user.uid);
-        usersRef.get().then((doc) => {
-          setTimeout(() => {
-            if (!doc.exists) {
-              this.setState({
-                user: false,
-              });
-            } else {
-              this.setState({
-                user: true,
-              });
-            }
-          }, 100);
-          console.log(this.state.user);
-        });
-      }
-    });
     this.props.navigation.navigate("Mainpage");
     /*if (this.state.user) {
       this.props.navigation.navigate("Mainpage");

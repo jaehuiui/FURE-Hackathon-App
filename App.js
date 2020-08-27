@@ -1,8 +1,9 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { firebaseConfig } from "./app/config/firebaseConfig";
 import firebase from "firebase";
+import "firebase/firestore";
 import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -21,6 +22,7 @@ import Today from "./app/screens/Main/Today";
 import Future from "./app/screens/Main/Future";
 import Running from "./app/screens/Main/Running";
 import Setting from "./app/screens/Main/Setting";
+import Loading from "./app/screens/Main/Loading";
 
 import Register_1 from "./app/screens/Register/Register_1";
 import Register_2 from "./app/screens/Register/Register_2";
@@ -37,6 +39,15 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MyTab() {
+  const getTabBarVisible = (route) => {
+    const params = route.params;
+    if (params) {
+      if (params.tabBarVisible === false) {
+        return false;
+      }
+    }
+    return true;
+  };
   return (
     <Tab.Navigator
       initialRouteName="Mainpage"
@@ -49,7 +60,8 @@ function MyTab() {
       <Tab.Screen
         name="Home"
         component={Home}
-        options={{
+        options={({ route }) => ({
+          tabBarVisible: getTabBarVisible(route),
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
             <Icon
@@ -59,7 +71,7 @@ function MyTab() {
               type="material-community"
             />
           ),
-        }}
+        })}
       />
       <Tab.Screen
         name="Today"
@@ -106,6 +118,13 @@ function MyTab() {
           ),
         }}
       />
+      <Tab.Screen
+        name="Loading"
+        component={Loading}
+        options={() => ({
+          tabBarVisible: false,
+        })}
+      />
     </Tab.Navigator>
   );
 }
@@ -121,6 +140,7 @@ function App() {
         <Stack.Screen name="Intro" component={Intro} />
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="Loading" component={Loading} />
 
         <Stack.Screen name="Register_1" component={Register_1} />
         <Stack.Screen name="Register_2" component={Register_2} />

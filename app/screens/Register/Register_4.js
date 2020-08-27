@@ -61,7 +61,7 @@ export default class Register_1 extends Component {
               this.props.navigation.navigate("Register_3");
             }}
           />
-          <Text style={styles.stage}>2/5</Text>
+          <Text style={styles.stage}>1/4</Text>
         </View>
         <View style={styles.top}>
           <Text style={styles.title}>

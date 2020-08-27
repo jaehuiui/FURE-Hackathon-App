@@ -40,7 +40,7 @@ export default class Register_1 extends Component {
         purpose: this.state.checked,
       })
       .then(() => {
-        this.props.navigation.navigate("Register_3", {
+        this.props.navigation.navigate("Register_4", {
           username: this.state.name,
         });
       })
