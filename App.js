@@ -33,6 +33,8 @@ import Register_6 from "./app/screens/Register/Register_6";
 import Register_7 from "./app/screens/Register/Register_7";
 import Register_8 from "./app/screens/Register/Register_8";
 
+import Test from "./app/screens/temp/Test";
+
 firebase.initializeApp(firebaseConfig);
 
 const Stack = createStackNavigator();
@@ -146,6 +148,7 @@ function App() {
 
         <Stack.Screen name="Mainpage" component={MyTab} />
         <Stack.Screen name="Running" component={Running} />
+        <Stack.Screen name="Test" component={Test} />
       </Stack.Navigator>
     </NavigationContainer>
   );

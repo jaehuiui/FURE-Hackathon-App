@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, View, Image, ImageBackground } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
 import firebase from "firebase";
 import "firebase/firestore";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -8,6 +15,7 @@ import { Icon } from "react-native-elements";
 import axios from "axios";
 import Loading from "../Main/Loading";
 import { ThemeProvider } from "@react-navigation/native";
+import Swiper from "react-native-swiper";
 
 export default class Register_1 extends Component {
   constructor(props) {
@@ -27,6 +35,8 @@ export default class Register_1 extends Component {
       plan4_dist: "",
       plan6_dist: "",
       isLoading: true,
+      index: "",
+      selectplan: "",
     };
   }
   async componentDidMount() {
@@ -104,74 +114,216 @@ export default class Register_1 extends Component {
       });
   }
 
+  selectplan2() {
+    const user = firebase.auth().currentUser;
+    const data = firebase.firestore();
+    data
+      .collection("users")
+      .doc("App")
+      .collection("info")
+      .doc(user.uid)
+      .update({
+        plan2: this.state.plan2,
+        plan4: this.state.plan4,
+        plan6: this.state.plan6,
+        defaultplan: "2month",
+      })
+      .then(() => {
+        this.props.navigation.navigate("Mainpage", {
+          username: this.state.name,
+          uid: this.state.uid,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  selectplan4() {
+    const user = firebase.auth().currentUser;
+    const data = firebase.firestore();
+    data
+      .collection("users")
+      .doc("App")
+      .collection("info")
+      .doc(user.uid)
+      .update({
+        plan2: this.state.plan2,
+        plan4: this.state.plan4,
+        plan6: this.state.plan6,
+        defaultplan: "4month",
+      })
+      .then(() => {
+        this.props.navigation.navigate("Mainpage", {
+          username: this.state.name,
+          uid: this.state.uid,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  selectplan6() {
+    const user = firebase.auth().currentUser;
+    const data = firebase.firestore();
+    data
+      .collection("users")
+      .doc("App")
+      .collection("info")
+      .doc(user.uid)
+      .update({
+        plan2: this.state.plan2,
+        plan4: this.state.plan4,
+        plan6: this.state.plan6,
+        defaultplan: "6month",
+      })
+      .then(() => {
+        this.props.navigation.navigate("Mainpage", {
+          username: this.state.name,
+          uid: this.state.uid,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   render() {
     if (this.state.isLoading) {
       return <Loading />;
     } else {
       return (
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <Icon
-              name="arrow-left"
-              size={30}
-              type="material-community"
-              style={styles.backicon}
-              onPress={() => {
-                this.props.navigation.navigate("Register_7");
-              }}
-            />
-          </View>
-          <View style={styles.top}>
-            <View style={styles.textbox}>
+        <ImageBackground
+          source={require("../../images/plan.jpeg")}
+          style={styles.container_image}
+        >
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Icon
+                name="arrow-left"
+                color="white"
+                size={30}
+                type="material-community"
+                style={styles.backicon}
+                onPress={() => {
+                  this.props.navigation.navigate("Register_7");
+                }}
+              />
+            </View>
+            <View style={styles.top}>
               <Text style={styles.title}>
-                FU:RE가 제안하는{"\n"}
-                {this.state.name}님의 운동 계획입니다.
+                {this.state.name}님만을 위한 플랜이예요.
               </Text>
             </View>
+            <Swiper
+              showsButtons={true}
+              autoplay={false}
+              containerStyle={styles.middle}
+            >
+              <View style={styles.swipe}>
+                <View style={styles.list}>
+                  <Text style={styles.title}>
+                    2개월 PLAN{"\n"}
+                    {"\n"}
+                  </Text>
+                  <Text style={styles.plan}>
+                    {this.state.time} 시간 동안 {this.state.plan2_dist}km 씩
+                    {"\n"}
+                    일주일에 {this.state.interval}번씩 뛰어볼까요?
+                  </Text>
+                </View>
+                <View style={styles.bottom}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.selectplan2();
+                    }}
+                  >
+                    <LinearGradient
+                      start={{ x: 0.1, y: 0.5 }}
+                      end={{ x: 1, y: 0.5 }}
+                      colors={["#303966", "#c3cfe2"]}
+                      style={styles.next_button}
+                    >
+                      <Text style={styles.button_text}>PLAN 선택</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.footer}></View>
+              </View>
+              <View style={styles.swipe}>
+                <View style={styles.list}>
+                  <Text style={styles.title}>
+                    4개월 PLAN{"\n"}
+                    {"\n"}
+                  </Text>
+                  <Text style={styles.plan}>
+                    {this.state.time} 시간 동안 {this.state.plan4_dist}km 씩
+                    {"\n"}
+                    일주일에 {this.state.interval}번씩 뛰어볼까요?
+                  </Text>
+                </View>
+                <View style={styles.bottom}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.selectplan4();
+                    }}
+                  >
+                    <LinearGradient
+                      start={{ x: 0.1, y: 0.5 }}
+                      end={{ x: 1, y: 0.5 }}
+                      colors={["#303966", "#c3cfe2"]}
+                      style={styles.next_button}
+                    >
+                      <Text style={styles.button_text}>PLAN 선택</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.footer}></View>
+              </View>
+              <View style={styles.swipe}>
+                <View style={styles.list}>
+                  <Text style={styles.title}>
+                    6개월 PLAN{"\n"}
+                    {"\n"}
+                  </Text>
+                  <Text style={styles.plan}>
+                    {this.state.time} 시간 동안 {this.state.plan6_dist}km 씩
+                    {"\n"}
+                    일주일에 {this.state.interval}번씩 뛰어볼까요?
+                  </Text>
+                </View>
+                <View style={styles.bottom}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.selectplan6();
+                    }}
+                  >
+                    <LinearGradient
+                      start={{ x: 0.1, y: 0.5 }}
+                      end={{ x: 1, y: 0.5 }}
+                      colors={["#303966", "#c3cfe2"]}
+                      style={styles.next_button}
+                    >
+                      <Text style={styles.button_text}>PLAN 선택</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.footer}></View>
+              </View>
+            </Swiper>
           </View>
-          <View style={styles.middle}>
-            <View style={styles.planbox}>
-              <Text style={styles.plan}>
-                {this.state.gap}kg 감량을 위한 2달짜리 계획입니다.{"\n"}
-                일주일에 {this.state.interval}번씩, 하루에 {this.state.time}
-                시간만큼{"\n"}
-                {this.state.plan2_dist}km를 달려보세요!{"\n"}
-              </Text>
-              <Text style={styles.plan}>
-                {this.state.gap}kg 감량을 위한 4달짜리 계획입니다.{"\n"}
-                일주일에 {this.state.interval}번씩, 하루에 {this.state.time}
-                시간만큼{"\n"}
-                {this.state.plan4_dist}km를 달려보세요!{"\n"}
-              </Text>
-              <Text style={styles.plan}>
-                {this.state.gap}kg 감량을 위한 6달짜리 계획입니다.{"\n"}
-                일주일에 {this.state.interval}번씩, 하루에 {this.state.time}
-                시간만큼{"\n"}
-                {this.state.plan6_dist}km를 달려보세요!{"\n"}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.bottom}>
-            <Text style={styles.title}>
-              FU:RE 가 {this.state.name}님과 함께할게요!
-            </Text>
-          </View>
-          <View style={styles.footer}>
-            <Image
-              source={require("../../images/logo_new.png")}
-              style={styles.logo}
-            ></Image>
-          </View>
-        </View>
+        </ImageBackground>
       );
     }
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container_image: {
     flex: 1,
-    backgroundColor: "white",
+  },
+  container: {
+    width: "100%",
+    height: "100%",
   },
 
   // header
@@ -200,11 +352,20 @@ const styles = StyleSheet.create({
   title: {
     textAlignVertical: "center",
     textAlign: "center",
-    fontSize: RFValue(23, 812),
+    fontSize: RFValue(28, 812),
+    color: "white",
+    fontWeight: "bold",
   },
 
   middle: {
-    flex: 5.5,
+    flex: 8.5,
+    justifyContent: "center",
+  },
+  list: {
+    flex: 11,
+  },
+  swipe: {
+    flex: 1,
   },
   planbox: {
     width: "90%",
@@ -215,21 +376,42 @@ const styles = StyleSheet.create({
   },
   plan: {
     textAlign: "center",
-    fontSize: RFValue(20, 812),
+    fontSize: RFValue(25, 812),
+    color: "white",
+    lineHeight: 35,
   },
 
   bottom: {
-    flex: 1.5,
+    flex: 3,
+    justifyContent: "center",
+  },
+  button_text: {
+    fontSize: 20,
+    color: "white",
+  },
+  next_button: {
+    borderWidth: 1,
+    borderColor: "white",
+    height: 50,
+    marginTop: 15,
+    marginHorizontal: 40,
+    marginBottom: 30,
+    borderRadius: 25,
+    alignItems: "center",
+    alignContent: "center",
+    justifyContent: "center",
+    alignSelf: "stretch",
   },
 
   // footer
   footer: {
-    flex: 1,
+    flex: 2,
     justifyContent: "center",
   },
   logo: {
     alignSelf: "center",
-    height: "100%",
+    transform: [{ scale: 0.2 }],
+    resizeMode: "center",
     aspectRatio: 1,
   },
 });

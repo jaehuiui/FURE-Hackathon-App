@@ -23,7 +23,7 @@ export default class Today extends Component {
         <View style={styles.footer}>
           <TouchableOpacity
             onPress={() => {
-              this.props.navigation.navigate("Register_1");
+              this.props.navigation.navigate("Running");
             }}
           >
             <LinearGradient
@@ -32,7 +32,7 @@ export default class Today extends Component {
               colors={["#303966", "#c3cfe2"]}
               style={styles.next_button}
             >
-              <Text style={styles.button_text}>Get Started</Text>
+              <Text style={styles.button_text}>운동 시작</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
