@@ -22,6 +22,7 @@ import {
   VictoryLine,
   VictoryChart,
   VictoryTheme,
+  VictoryLegend,
   VictoryArea,
   VictoryZoomContainer,
   createContainer,
@@ -60,6 +61,16 @@ export default class Today extends Component {
       const_def: 0,
       methd_def: 0,
       default: null,
+      reset_status: false,
+      today_date: "",
+      start_date: "",
+      input_handle: false,
+      input_weight: 0,
+      gap_date: 0,
+      progress: 0,
+      hour: 0,
+      min: 0,
+      count_ex: 0,
     };
   }
 
@@ -99,8 +110,12 @@ export default class Today extends Component {
                   1500
                 );
               } else {
+                var date = new Date().getDate();
+                var month = new Date().getMonth() + 1;
+                var year = new Date().getFullYear();
                 this.setState({
                   current: true,
+                  today_date: date + "-" + month + "-" + year, //format: dd-mm-yyyy;
                 });
                 setTimeout(
                   function () {
@@ -109,7 +124,6 @@ export default class Today extends Component {
                   1500
                 );
               }
-
               if (this.state.current) {
                 firebase
                   .firestore()
@@ -119,12 +133,17 @@ export default class Today extends Component {
                   .doc(user.uid)
                   .onSnapshot((doc) => {
                     this.setState({
+                      reset_status: doc.data().reset_status,
                       name: String(doc.data().name),
                       weight: Number(doc.data().weight),
                       height: Number(doc.data().height),
                       goal: Number(doc.data().goal),
                       kcal: (Number(doc.data().height) - 100) * 27,
                       default: String(doc.data().defaultplan),
+                      start_date: doc.data().startdate,
+                      hour: Number(doc.data().runninghour),
+                      min: Number(doc.data().runningmin),
+                      count_ex: Number(doc.data().count_ex),
                     });
                   });
                 console.log("name : " + this.state.name);
@@ -155,84 +174,129 @@ export default class Today extends Component {
                       coefficient_six:
                         Number(doc.data().methd_six) * 2.99 * 0.00001,
                     });
-                    console.log("const_two : " + this.state.const_two);
-                    console.log("const_four : " + this.state.const_four);
-                    console.log("const_six : " + this.state.const_six);
-
-                    console.log("methd_two : " + this.state.methd_two);
-                    console.log("methd_four : " + this.state.methd_four);
-                    console.log("methd_six : " + this.state.methd_six);
-                    console.log(
-                      "coefficient_two : " + this.state.coefficient_two
-                    );
-                    console.log(
-                      "coefficient_four : " + this.state.coefficient_four
-                    );
-                    console.log(
-                      "coefficient_six : " + this.state.coefficient_six
-                    );
-
-                    if (this.state.default === "2month") {
-                      this.setState({
-                        axis_x: 60,
-                        axis1: "2주 후",
-                        axis2: "4주 후",
-                        axis3: "6주 후",
-                        axis4: "8주 후",
-                        coefficient_def: this.state.coefficient_two,
-                        methd_def: this.state.methd_two,
-                        const_def: this.state.const_two,
-                      });
-                    } else if (this.state.default === "4month") {
-                      this.setState({
-                        axis_x: 120,
-                        axis1: "1달 후",
-                        axis2: "2달 후",
-                        axis3: "3달 후",
-                        axis4: "4달 후",
-                        coefficient_def: this.state.coefficient_four,
-                        methd_def: this.state.methd_four,
-                        const_def: this.state.const_four,
-                      });
-                    } else if (this.state.default === "6month") {
-                      this.setState({
-                        axis_x: 180,
-                        axis1: "6주 후",
-                        axis2: "12주 후",
-                        axis3: "18주 후",
-                        axis4: "24주 후",
-                        coefficient_def: this.state.coefficient_six,
-                        methd_def: this.state.methd_six,
-                        const_def: this.state.const_six,
-                      });
-                    }
-                    console.log("axis : " + (this.state.axis_x * 2) / 4);
-                    console.log("const_def : " + this.state.const_def);
-                    console.log("methd_def : " + this.state.methd_def);
-                    console.log(
-                      "coefficient_def : " + this.state.coefficient_def
-                    );
-                    if (this.state.coefficient_def == 0) {
-                      this.props.navigation.dispatch(
-                        CommonActions.setParams({
-                          tabBarVisible: false,
-                        })
-                      );
-                    } else {
+                    if (this.state.reset_status) {
                       setTimeout(
                         function () {
                           this.setState({ isLoading: false });
                           this.props.navigation.dispatch(
                             CommonActions.setParams({
-                              tabBarVisible: true,
+                              tabBarVisible: false,
                             })
                           );
                         }.bind(this),
                         1500
                       );
+                    } else {
+                      console.log("const_two : " + this.state.const_two);
+                      console.log("const_four : " + this.state.const_four);
+                      console.log("const_six : " + this.state.const_six);
+
+                      console.log("methd_two : " + this.state.methd_two);
+                      console.log("methd_four : " + this.state.methd_four);
+                      console.log("methd_six : " + this.state.methd_six);
+                      console.log(
+                        "coefficient_two : " + this.state.coefficient_two
+                      );
+                      console.log(
+                        "coefficient_four : " + this.state.coefficient_four
+                      );
+                      console.log(
+                        "coefficient_six : " + this.state.coefficient_six
+                      );
+
+                      console.log(this.state.today_date);
+                      var timearr = this.state.start_date
+                        .split("-")
+                        .map(Number);
+                      var date_t = new Date().getDate();
+                      var month_t = new Date().getMonth() + 1;
+                      var date_s = timearr[0];
+                      var month_s = timearr[1];
+                      var gap_date = Number(date_t - date_s);
+                      var gap_month = Number(month_t - month_s);
+                      var total_gap = gap_month * 30 + gap_date;
+                      console.log("time gap : " + total_gap);
+
+                      var result = parseInt(Number(this.state.min) / 60);
+                      var real_min = Number(this.state.min) - result * 60;
+                      var real_hour = Number(this.state.hour) + result;
+
+                      this.setState({
+                        gap_date: Number(total_gap) + 1,
+                        hour: Number(real_hour),
+                        min: Number(real_min),
+                      });
+
+                      if (this.state.default === "2month") {
+                        this.setState({
+                          axis_x: 60,
+                          axis1: "2주 후",
+                          axis2: "4주 후",
+                          axis3: "6주 후",
+                          axis4: "달성",
+                          coefficient_def: this.state.coefficient_two,
+                          methd_def: this.state.methd_two,
+                          const_def: this.state.const_two,
+                        });
+                      } else if (this.state.default === "4month") {
+                        this.setState({
+                          axis_x: 120,
+                          axis1: "1달 후",
+                          axis2: "2달 후",
+                          axis3: "3달 후",
+                          axis4: "달성",
+                          coefficient_def: this.state.coefficient_four,
+                          methd_def: this.state.methd_four,
+                          const_def: this.state.const_four,
+                        });
+                      } else if (this.state.default === "6month") {
+                        this.setState({
+                          axis_x: 180,
+                          axis1: "6주 후",
+                          axis2: "12주 후",
+                          axis3: "18주 후",
+                          axis4: "달성",
+                          coefficient_def: this.state.coefficient_six,
+                          methd_def: this.state.methd_six,
+                          const_def: this.state.const_six,
+                        });
+                      }
+                      this.setState({
+                        progress:
+                          (
+                            (Number(this.state.gap_date) /
+                              Number(this.state.axis_x)) *
+                            100
+                          ).toFixed(1) + "%",
+                      });
+                      console.log("axis : " + (this.state.axis_x * 2) / 4);
+                      console.log("const_def : " + this.state.const_def);
+                      console.log("methd_def : " + this.state.methd_def);
+                      console.log(
+                        "coefficient_def : " + this.state.coefficient_def
+                      );
+                      console.log("due date : " + this.state.gap_date);
+                      if (this.state.coefficient_def == 0) {
+                        this.props.navigation.dispatch(
+                          CommonActions.setParams({
+                            tabBarVisible: false,
+                          })
+                        );
+                      } else {
+                        setTimeout(
+                          function () {
+                            this.setState({ isLoading: false });
+                            this.props.navigation.dispatch(
+                              CommonActions.setParams({
+                                tabBarVisible: true,
+                              })
+                            );
+                          }.bind(this),
+                          1500
+                        );
+                      }
                     }
                   });
-
                 //console.log(this.state.isLoading);
               } else {
                 this.setState({
@@ -253,6 +317,52 @@ export default class Today extends Component {
     const VictoryZoomVoronoiContainer = createContainer("zoom", "voronoi");
     if (this.state.isLoading) {
       return <Loading />;
+    } else if (this.state.reset_status) {
+      return (
+        <View style={styles.container}>
+          <View style={styles.header1}>
+            <Icon
+              name="arrow-left"
+              size={30}
+              type="material-community"
+              style={styles.backicon}
+              onPress={() => {
+                this.props.navigation.navigate("SignIn");
+              }}
+            />
+          </View>
+          <View style={styles.top1}>
+            <Text style={styles.title1}>
+              목표 재설정이 완료되지 않았습니다..
+            </Text>
+          </View>
+          <View style={styles.middle1}>
+            <Text style={styles.title1}>다시 진행해주세요</Text>
+          </View>
+          <View style={styles.bottom1}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("Register_2");
+              }}
+            >
+              <LinearGradient
+                start={{ x: 0.1, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+                colors={["#303966", "#c3cfe2"]}
+                style={styles.next_button}
+              >
+                <Text style={styles.button_text}>다시 시작하기</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.footer1}>
+            <Image
+              source={require("../../images/logo_new.png")}
+              style={styles.logo}
+            ></Image>
+          </View>
+        </View>
+      );
     } else if (!this.state.current && !this.state.isLoading) {
       return (
         <View style={styles.container}>
@@ -322,7 +432,7 @@ export default class Today extends Component {
           <View style={styles.bottom1}>
             <TouchableOpacity
               onPress={() => {
-                this.props.navigation.navigate("Register_1");
+                this.props.navigation.navigate("Register_2");
               }}
             >
               <LinearGradient
@@ -359,10 +469,18 @@ export default class Today extends Component {
           </View>
           <View style={styles.top}>
             <View style={styles.graphbox}>
+              <Text style={styles.graphtitle}>
+                진행률 : {this.state.progress}
+              </Text>
+
               <VictoryChart
                 theme={VictoryTheme.grayscale}
                 width={Dimensions.get("window").width * 0.95}
                 animate={{ duration: 2000 }}
+                domain={{
+                  x: [0, this.state.axis_x],
+                  y: [this.state.goal - 2, this.state.weight + 1],
+                }}
                 containerComponent={
                   <VictoryZoomVoronoiContainer
                     labels={({ datum }) =>
@@ -379,6 +497,7 @@ export default class Today extends Component {
                     this.state.axis_x * 0.5,
                     this.state.axis_x * 0.75,
                     this.state.axis_x,
+                    this.state.axis_x * 1.25,
                   ]}
                   tickFormat={[
                     "시작",
@@ -386,15 +505,22 @@ export default class Today extends Component {
                     this.state.axis2,
                     this.state.axis3,
                     this.state.axis4,
+                    "",
                   ]}
                 />
                 <VictoryAxis
                   dependentAxis
-                  tickValues={[this.state.goal, this.state.weight]}
+                  tickValues={[
+                    this.state.goal - (this.state.weight - this.state.goal) / 3,
+                    this.state.goal,
+                    (this.state.weight - this.state.goal) / 3 + this.state.goal,
+                    ((this.state.weight - this.state.goal) * 2) / 3 +
+                      this.state.goal,
+                    this.state.weight,
+                  ]}
                   tickFormat={(tick) => `${Math.round(tick)}kg`}
                 />
                 <VictoryLine
-                  interpolation="natural"
                   style={{
                     data: { stroke: "#0f4c75" },
                     parent: { border: "1px solid #ccc" },
@@ -410,11 +536,38 @@ export default class Today extends Component {
                     (this.state.height / 100)
                   }
                 />
+                <VictoryLine
+                  interpolation="cardinal"
+                  style={{
+                    data: { stroke: "#f67280" },
+                    parent: { border: "1px solid #ccc" },
+                  }}
+                  data={[
+                    { x: 0, y: this.state.weight },
+                    { x: 20, y: 79 },
+                    { x: 40, y: 77 },
+                    { x: 60, y: 76 },
+                    { x: 80, y: 75 },
+                  ]}
+                />
               </VictoryChart>
             </View>
           </View>
           <View style={styles.middle}>
-            <View style={styles.thingment}></View>
+            <View style={styles.thingment}>
+              <Text style={styles.encourage}>
+                <Text style={styles.bold}>{this.state.count_ex}</Text>
+                <Text style={styles.unit}>회</Text>
+                <Text style={styles.bold}>{this.state.hour}</Text>
+                <Text style={styles.unit}>시간</Text>
+                <Text style={styles.bold}>{this.state.min}</Text>
+                <Text style={styles.unit}>분</Text>
+              </Text>
+              <Text style={styles.unit_bottom}>
+                <Text style={styles.unit}>운동횟수</Text>
+                <Text style={styles.unit}>운동시간</Text>
+              </Text>
+            </View>
           </View>
           <View style={styles.bottom}>
             <View style={styles.eat}>
@@ -441,12 +594,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
+    marginTop: RFValue(15, 812),
     fontSize: RFValue(30, 812),
     flexDirection: "row",
     textAlign: "center",
+    marginBottom: RFValue(5, 812),
   },
   name: {
     color: "#76B4FF",
+    fontWeight: "bold",
   },
   name2: {},
   subtitle: {
@@ -464,9 +620,19 @@ const styles = StyleSheet.create({
     height: "100%",
     alignSelf: "center",
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "gray",
+    borderColor: "#465881",
     justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  graphtitle: {
+    marginTop: RFValue(10, 812),
+    fontSize: RFValue(20, 812),
+    fontWeight: "bold",
+    textAlign: "center",
   },
 
   //middle
@@ -480,6 +646,28 @@ const styles = StyleSheet.create({
     backgroundColor: "#3282b8",
     borderRadius: 20,
     alignSelf: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  encourage: {
+    fontSize: RFValue(20, 812),
+    textAlign: "center",
+    color: "white",
+    justifyContent: "space-evenly",
+    flexDirection: "column",
+  },
+  bold: {
+    fontSize: RFValue(25, 812),
+    fontWeight: "bold",
+    color: "white",
+  },
+  unit: {
+    fontSize: RFValue(15, 812),
+    color: "#e3e7f1",
   },
 
   //bottom
@@ -490,14 +678,20 @@ const styles = StyleSheet.create({
   eat: {
     width: "90%",
     height: "90%",
-    backgroundColor: "#dff6f0",
+    backgroundColor: "#324e7b",
     borderRadius: 20,
     alignSelf: "center",
     justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
   },
   recommendation: {
     fontSize: RFValue(20, 812),
     textAlign: "center",
+    color: "white",
   },
 
   // For newbie

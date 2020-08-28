@@ -11,8 +11,32 @@ export default class Today extends Component {
     super(props);
     this.state = {
       name: "",
+      date: "",
     };
   }
+
+  onPressReset() {
+    const user = firebase.auth().currentUser;
+    const data = firebase.firestore();
+    data
+      .collection("users")
+      .doc("App")
+      .collection("info")
+      .doc(user.uid)
+      .update({
+        reset_status: true,
+      })
+      .then(() => {
+        this.props.navigation.navigate("Register_2", {
+          username: this.state.name,
+          uid: this.state.uid,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -23,7 +47,7 @@ export default class Today extends Component {
         <View style={styles.footer}>
           <TouchableOpacity
             onPress={() => {
-              this.props.navigation.navigate("Register_1");
+              this.onPressReset();
             }}
           >
             <LinearGradient

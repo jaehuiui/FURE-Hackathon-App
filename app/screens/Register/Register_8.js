@@ -37,13 +37,20 @@ export default class Register_1 extends Component {
       isLoading: true,
       index: "",
       selectplan: "",
+      startdate: "",
     };
   }
   async componentDidMount() {
     this.focusListener = this.props.navigation.addListener(
       "focus",
       async () => {
-        var user = firebase.auth().currentUser;
+        var date = new Date().getDate();
+        var month = new Date().getMonth() + 1;
+        var year = new Date().getFullYear();
+        this.setState({
+          startdate: date + "-" + month + "-" + year, //format: dd-mm-yyyy;
+        });
+
         if (user != null) {
           firebase
             .firestore()
@@ -100,6 +107,7 @@ export default class Register_1 extends Component {
         console.log("2달 플랜 거리 : " + this.state.plan2_dist);
         console.log("4달 플랜 거리 : " + this.state.plan4_dist);
         console.log("6달 플랜 거리 : " + this.state.plan6_dist);
+        console.log(this.state.startdate);
         setTimeout(
           function () {
             this.setState({ isLoading: false });
@@ -127,6 +135,8 @@ export default class Register_1 extends Component {
         plan4: this.state.plan4,
         plan6: this.state.plan6,
         defaultplan: "2month",
+        reset_status: false,
+        startdate: this.state.startdate,
       })
       .then(() => {
         setTimeout(
@@ -153,6 +163,8 @@ export default class Register_1 extends Component {
         plan4: this.state.plan4,
         plan6: this.state.plan6,
         defaultplan: "4month",
+        reset_status: false,
+        startdate: this.state.startdate,
       })
       .then(() => {
         setTimeout(
@@ -179,6 +191,8 @@ export default class Register_1 extends Component {
         plan4: this.state.plan4,
         plan6: this.state.plan6,
         defaultplan: "6month",
+        reset_status: false,
+        startdate: this.state.startdate,
       })
       .then(() => {
         setTimeout(

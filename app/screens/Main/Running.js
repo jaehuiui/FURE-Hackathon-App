@@ -36,11 +36,21 @@ export default class App extends React.Component {
       count3: true,
       count2: true,
       count1: true,
+      hour1: 0,
+      hour2: 0,
+      min1: 0,
+      min2: 0,
+      hist_hour: 0,
+      hist_min: 0,
+      speed: 0,
+      kcal: 0,
+      msg: false,
     };
     this._subscribe = this._subscribe.bind(this);
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
     this.resetStopwatch = this.resetStopwatch.bind(this);
     this.getFormattedTime = this.getFormattedTime.bind(this);
+    console.disableYellowBox = true;
   }
 
   componentDidMount() {
@@ -78,19 +88,27 @@ export default class App extends React.Component {
       });
   }
 
-  componentWillUnmount() {
-    this._unsubscribe();
-    console.log(this.currentTime);
-  }
-
   _subscribe = () => {
     var toc = this.state.todaycount;
     var tod = this.state.todaydist;
     this._subscription = Pedometer.watchStepCount((result) => {
+      var timearr = this.currentTime.split(":");
+      var time_hour1 = Number.parseInt(timearr[0], 10);
+      var time_min1 = Number.parseInt(timearr[1], 10);
+      var time_sec1 = Number.parseInt(timearr[2], 10);
+      var total = time_hour1 + time_min1 / 60 + time_sec1 / 3600;
       this.setState({
         currentStepCount: result.steps,
         currentmeter: Number(this.state.currentStepCount) * 0.7,
+        hour1: Number(time_hour1),
+        min1: Number(time_min1),
+        speed: (Number(this.state.currentStepCount) * 0.7) / 1000 / total,
       });
+      if (Number.parseInt(this.state.speed, 10) > 6) {
+        this.setState({
+          msg: true,
+        });
+      }
       if (Number(this.state.currentmeter) < 1000) {
         this.setState({
           dist: Number(this.state.currentmeter).toFixed(1) + "m",
@@ -121,6 +139,22 @@ export default class App extends React.Component {
     const data = firebase.firestore();
     const meter =
       Number(this.state.today_dist) + Number(this.state.currentmeter);
+    var timearr = this.currentTime.split(":");
+    var time_hour1 = Number.parseInt(timearr[0], 10);
+    var time_min1 = Number.parseInt(timearr[1], 10);
+
+    this.setState({});
+    console.log("tlqkf1 : " + time_hour1);
+
+    console.log("tlqkf3 : " + time_min1);
+
+    const increment_count = firebase.firestore.FieldValue.increment(1);
+    const increment_hour = firebase.firestore.FieldValue.increment(
+      Number(time_hour1)
+    );
+    const increment_min = firebase.firestore.FieldValue.increment(
+      Number(time_min1)
+    );
 
     data
       .collection("users")
@@ -128,7 +162,9 @@ export default class App extends React.Component {
       .collection("info")
       .doc(user.uid)
       .update({
-        runningtime: this.currentTime,
+        count_ex: increment_count,
+        runninghour: increment_hour,
+        runningmin: increment_min,
         today_count:
           Number(this.state.currentStepCount) + Number(this.state.today_count),
         today_dist: meter,
@@ -136,6 +172,8 @@ export default class App extends React.Component {
       .then(() => {
         this.props.navigation.navigate("Today");
       });
+    this._unsubscribe();
+    console.log(this.currentTime);
   }
 
   toggleStopwatch() {
@@ -195,18 +233,26 @@ export default class App extends React.Component {
               <Text style={styles.dist_text}>거리</Text>
             </View>
             <View style={styles.second_ele}>
-              <Text style={styles.cal}>230</Text>
-              <Text style={styles.cal_text}></Text>
+              <Text style={styles.dist}>
+                {this.state.dist}
+                {"\n"}
+              </Text>
+              <Text style={styles.dist_text}>칼로리 (Kcal)</Text>
             </View>
             <View style={styles.third_ele}>
-              <Text style={styles.speed}></Text>
-              <Text style={styles.speed_text}></Text>
+              <Text style={styles.dist}>
+                {Number(this.state.speed).toFixed(2)}
+                {"\n"}
+              </Text>
+              <Text style={styles.dist_text}>페이스 (km/h)</Text>
             </View>
           </View>
 
           <View style={styles.middle}>
             <Text style={styles.advice}>
-              오늘은 컨디션이 좋으시군요? {"\n"} 플랜대로 잘 뛰고 있어요!
+              {!this.state.msg
+                ? "조금 더 속도를 올려볼까요?\n화이팅!"
+                : "오늘 컨디션이 좋으시군요?\n플랜대로 잘 뛰고 있어요!"}
             </Text>
           </View>
 

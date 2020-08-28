@@ -17,8 +17,8 @@ export default class Register_1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: this.props.route.params.username,
-      uid: this.props.route.params.userid,
+      name: "",
+      uid: "",
       purpose: "",
       checked: "",
       count1: 0,
@@ -27,6 +27,21 @@ export default class Register_1 extends Component {
       count4: 0,
     };
     this.selectpurpose = this.selectpurpose.bind(this);
+  }
+
+  componentDidMount() {
+    const user = firebase.auth().currentUser;
+    firebase
+      .firestore()
+      .collection("users")
+      .doc("App")
+      .collection("info")
+      .doc(user.uid)
+      .onSnapshot((doc) => {
+        this.setState({
+          name: doc.data().name,
+        });
+      });
   }
 
   selectpurpose() {
