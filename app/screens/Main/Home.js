@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
-  assign,
 } from "react-native";
 import firebase from "firebase";
 import "firebase/firestore";
@@ -32,10 +31,11 @@ export default class Today extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
+      name: null,
       current: false,
       isLoading: true,
       weight: 80,
+      height: 178,
       goal: 77,
       gap1: 0,
       gap2: 0,
@@ -46,6 +46,20 @@ export default class Today extends Component {
       axis2: "",
       axis3: "",
       axis4: "",
+      axis_x: 0,
+      const_two: 0,
+      const_four: 0,
+      const_six: 0,
+      methd_two: 0,
+      methd_four: 0,
+      methd_six: 0,
+      coefficient_two: 0,
+      coefficient_four: 0,
+      coefficient_six: 0,
+      coefficient_def: 0,
+      const_def: 0,
+      methd_def: 0,
+      default: null,
     };
   }
 
@@ -59,7 +73,6 @@ export default class Today extends Component {
     this.focusListener = this.props.navigation.addListener(
       "focus",
       async () => {
-        console.log(this.state.isLoading + "1");
         var user = firebase.auth().currentUser;
         if (user != null) {
           firebase
@@ -77,7 +90,6 @@ export default class Today extends Component {
                 setTimeout(
                   function () {
                     this.setState({ isLoading: false });
-                    console.log(this.state.isLoading + "2222");
                     this.props.navigation.dispatch(
                       CommonActions.setParams({
                         tabBarVisible: false,
@@ -93,12 +105,11 @@ export default class Today extends Component {
                 setTimeout(
                   function () {
                     this.setState({ isLoading: false });
-                    console.log(this.state.isLoading + "2222");
                   }.bind(this),
                   1500
                 );
               }
-              console.log(this.state.isLoading + "2");
+
               if (this.state.current) {
                 firebase
                   .firestore()
@@ -107,49 +118,133 @@ export default class Today extends Component {
                   .collection("info")
                   .doc(user.uid)
                   .onSnapshot((doc) => {
-                    console.log(doc.data().name);
                     this.setState({
-                      name: doc.data().name,
+                      name: String(doc.data().name),
                       weight: Number(doc.data().weight),
-                      //goal: Number(doc.data().goal),
+                      height: Number(doc.data().height),
+                      goal: Number(doc.data().goal),
                       kcal: (Number(doc.data().height) - 100) * 27,
-                      gap1:
-                        (Number(doc.data().goal) - Number(doc.data().weight)) *
-                          0.33 +
-                        Number(doc.data().weight),
-                      gap2:
-                        (Number(doc.data().goal) - Number(doc.data().weight)) *
-                          0.66 +
-                        Number(doc.data().weight),
-                      //domain_top: Number(doc.data().weight) + 1,
-                      axis1: "2주 후",
-                      axis2: "4주 후",
-                      axis3: "6주 후",
-                      axis4: "8주 후",
+                      default: String(doc.data().defaultplan),
                     });
-                    setTimeout(
-                      function () {
-                        this.setState({ isLoading: false });
-                        console.log(this.state.isLoading + "2222");
-                        this.props.navigation.dispatch(
-                          CommonActions.setParams({
-                            tabBarVisible: true,
-                          })
-                        );
-                      }.bind(this),
-                      1500
-                    );
                   });
+                console.log("name : " + this.state.name);
+                console.log("weight : " + this.state.weight);
+                console.log("height : " + this.state.height);
+                console.log("goal : " + this.state.goal);
+                console.log("default : " + this.state.default);
+                firebase
+                  .firestore()
+                  .collection("users")
+                  .doc("App")
+                  .collection("info")
+                  .doc(user.uid)
+                  .collection("prediction")
+                  .doc("data")
+                  .onSnapshot((doc) => {
+                    this.setState({
+                      const_two: Number(doc.data().const_two),
+                      const_four: Number(doc.data().const_four),
+                      const_six: Number(doc.data().const_six),
+                      methd_two: Number(doc.data().methd_two),
+                      methd_four: Number(doc.data().methd_four),
+                      methd_six: Number(doc.data().methd_six),
+                      coefficient_two:
+                        Number(doc.data().methd_two) * 2.99 * 0.00001,
+                      coefficient_four:
+                        Number(doc.data().methd_four) * 2.99 * 0.00001,
+                      coefficient_six:
+                        Number(doc.data().methd_six) * 2.99 * 0.00001,
+                    });
+                    console.log("const_two : " + this.state.const_two);
+                    console.log("const_four : " + this.state.const_four);
+                    console.log("const_six : " + this.state.const_six);
+
+                    console.log("methd_two : " + this.state.methd_two);
+                    console.log("methd_four : " + this.state.methd_four);
+                    console.log("methd_six : " + this.state.methd_six);
+                    console.log(
+                      "coefficient_two : " + this.state.coefficient_two
+                    );
+                    console.log(
+                      "coefficient_four : " + this.state.coefficient_four
+                    );
+                    console.log(
+                      "coefficient_six : " + this.state.coefficient_six
+                    );
+
+                    if (this.state.default === "2month") {
+                      this.setState({
+                        axis_x: 60,
+                        axis1: "2주 후",
+                        axis2: "4주 후",
+                        axis3: "6주 후",
+                        axis4: "8주 후",
+                        coefficient_def: this.state.coefficient_two,
+                        methd_def: this.state.methd_two,
+                        const_def: this.state.const_two,
+                      });
+                    } else if (this.state.default === "4month") {
+                      this.setState({
+                        axis_x: 120,
+                        axis1: "1달 후",
+                        axis2: "2달 후",
+                        axis3: "3달 후",
+                        axis4: "4달 후",
+                        coefficient_def: this.state.coefficient_four,
+                        methd_def: this.state.methd_four,
+                        const_def: this.state.const_four,
+                      });
+                    } else if (this.state.default === "6month") {
+                      this.setState({
+                        axis_x: 180,
+                        axis1: "6주 후",
+                        axis2: "12주 후",
+                        axis3: "18주 후",
+                        axis4: "24주 후",
+                        coefficient_def: this.state.coefficient_six,
+                        methd_def: this.state.methd_six,
+                        const_def: this.state.const_six,
+                      });
+                    }
+                    console.log("axis : " + (this.state.axis_x * 2) / 4);
+                    console.log("const_def : " + this.state.const_def);
+                    console.log("methd_def : " + this.state.methd_def);
+                    console.log(
+                      "coefficient_def : " + this.state.coefficient_def
+                    );
+                    if (this.state.coefficient_def == 0) {
+                      this.props.navigation.dispatch(
+                        CommonActions.setParams({
+                          tabBarVisible: false,
+                        })
+                      );
+                    } else {
+                      setTimeout(
+                        function () {
+                          this.setState({ isLoading: false });
+                          this.props.navigation.dispatch(
+                            CommonActions.setParams({
+                              tabBarVisible: true,
+                            })
+                          );
+                        }.bind(this),
+                        1500
+                      );
+                    }
+                  });
+
+                //console.log(this.state.isLoading);
+              } else {
+                this.setState({
+                  current: false,
+                });
               }
             });
-
-          //console.log(this.state.isLoading);
-        } else {
-          this.props.navigation.navigate("SignIn");
         }
       }
     );
   }
+
   setTimePassed() {
     this.setState({ isLoading: false });
   }
@@ -158,72 +253,6 @@ export default class Today extends Component {
     const VictoryZoomVoronoiContainer = createContainer("zoom", "voronoi");
     if (this.state.isLoading) {
       return <Loading />;
-    } else if (this.state.current && !this.state.isLoading) {
-      return (
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <View style={styles.topbanner}>
-              <Text style={styles.title}>
-                <Text style={styles.name}>{this.state.name}</Text>
-                <Text style={styles.name2}>님</Text>
-              </Text>
-              <Text style={styles.subtitle}>
-                이번 주도 계획대로 잘하고 계세요!
-              </Text>
-            </View>
-          </View>
-          <View style={styles.top}>
-            <View style={styles.graphbox}>
-              <VictoryChart
-                theme={VictoryTheme.grayscale}
-                width={Dimensions.get("window").width * 0.95}
-                animate={{ duration: 2000 }}
-                containerComponent={
-                  <VictoryZoomVoronoiContainer
-                    labels={({ datum }) => `${datum.y}`}
-                    minimumZoom={{ x: 3.5, y: 3.5 }}
-                  />
-                }
-              >
-                <VictoryAxis
-                  tickValues={[1, 2, 3, 4, 5]}
-                  tickFormat={["시작", "2주 후", "4주 후", "6주 후", "8주 후"]}
-                />
-                <VictoryAxis
-                  dependentAxis
-                  tickValues={[this.state.goal, this.state.domain_top]}
-                  tickFormat={(tick) => `${Math.round(tick)}kg`}
-                />
-                <VictoryLine
-                  interpolation="natural"
-                  style={{
-                    data: { stroke: "#0f4c75" },
-                    parent: { border: "1px solid #ccc" },
-                  }}
-                  data={[
-                    { x: 1, y: 80 },
-                    { x: 2, y: 79.3 },
-                    { x: 3, y: 78.8 },
-                    { x: 4, y: 77.6 },
-                    { x: 5, y: 77 },
-                  ]}
-                />
-              </VictoryChart>
-            </View>
-          </View>
-          <View style={styles.middle}>
-            <View style={styles.thingment}></View>
-          </View>
-          <View style={styles.bottom}>
-            <View style={styles.eat}>
-              <Text style={styles.recommendation}>
-                {this.state.name}님의 하루 권장 섭취 칼로리는 {"\n"}{" "}
-                {this.state.kcal}Kcal입니다!
-              </Text>
-            </View>
-          </View>
-        </View>
-      );
     } else if (!this.state.current && !this.state.isLoading) {
       return (
         <View style={styles.container}>
@@ -267,6 +296,133 @@ export default class Today extends Component {
               source={require("../../images/logo_new.png")}
               style={styles.logo}
             ></Image>
+          </View>
+        </View>
+      );
+    } else if (this.state.coefficient_def == 0) {
+      return (
+        <View style={styles.container}>
+          <View style={styles.header1}>
+            <Icon
+              name="arrow-left"
+              size={30}
+              type="material-community"
+              style={styles.backicon}
+              onPress={() => {
+                this.props.navigation.navigate("SignIn");
+              }}
+            />
+          </View>
+          <View style={styles.top1}>
+            <Text style={styles.title1}>플랜 선택이 완료되지 않았어요..</Text>
+          </View>
+          <View style={styles.middle1}>
+            <Text style={styles.title1}>다시 목표를 세워볼까요?</Text>
+          </View>
+          <View style={styles.bottom1}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("Register_1");
+              }}
+            >
+              <LinearGradient
+                start={{ x: 0.1, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+                colors={["#303966", "#c3cfe2"]}
+                style={styles.next_button}
+              >
+                <Text style={styles.button_text}>다시 시작하기</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.footer1}>
+            <Image
+              source={require("../../images/logo_new.png")}
+              style={styles.logo}
+            ></Image>
+          </View>
+        </View>
+      );
+    } else if (this.state.current && !this.state.isLoading) {
+      return (
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <View style={styles.topbanner}>
+              <Text style={styles.title}>
+                <Text style={styles.name}>{this.state.name}</Text>
+                <Text style={styles.name2}>님</Text>
+              </Text>
+              <Text style={styles.subtitle}>
+                이번 주도 계획대로 잘하고 계세요!
+              </Text>
+            </View>
+          </View>
+          <View style={styles.top}>
+            <View style={styles.graphbox}>
+              <VictoryChart
+                theme={VictoryTheme.grayscale}
+                width={Dimensions.get("window").width * 0.95}
+                animate={{ duration: 2000 }}
+                containerComponent={
+                  <VictoryZoomVoronoiContainer
+                    labels={({ datum }) =>
+                      `목표까지 ${(this.state.weight - datum.y).toFixed(1)}kg`
+                    }
+                    minimumZoom={{ x: 300, y: 20 }}
+                  />
+                }
+              >
+                <VictoryAxis
+                  tickValues={[
+                    0,
+                    this.state.axis_x * 0.25,
+                    this.state.axis_x * 0.5,
+                    this.state.axis_x * 0.75,
+                    this.state.axis_x,
+                  ]}
+                  tickFormat={[
+                    "시작",
+                    this.state.axis1,
+                    this.state.axis2,
+                    this.state.axis3,
+                    this.state.axis4,
+                  ]}
+                />
+                <VictoryAxis
+                  dependentAxis
+                  tickValues={[this.state.goal, this.state.weight]}
+                  tickFormat={(tick) => `${Math.round(tick)}kg`}
+                />
+                <VictoryLine
+                  interpolation="natural"
+                  style={{
+                    data: { stroke: "#0f4c75" },
+                    parent: { border: "1px solid #ccc" },
+                  }}
+                  y={(d) =>
+                    (Math.log(
+                      1 /
+                        ((d.x / 24) * this.state.coefficient_def +
+                          this.state.const_def)
+                    ) /
+                      0.279) *
+                    (this.state.height / 100) *
+                    (this.state.height / 100)
+                  }
+                />
+              </VictoryChart>
+            </View>
+          </View>
+          <View style={styles.middle}>
+            <View style={styles.thingment}></View>
+          </View>
+          <View style={styles.bottom}>
+            <View style={styles.eat}>
+              <Text style={styles.recommendation}>
+                {this.state.name}님의 하루 권장 섭취 칼로리는 {"\n"}{" "}
+                {this.state.kcal}Kcal입니다!
+              </Text>
+            </View>
           </View>
         </View>
       );

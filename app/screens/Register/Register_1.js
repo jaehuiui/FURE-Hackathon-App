@@ -14,6 +14,7 @@ import "firebase/firestore";
 import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
 import { Icon } from "react-native-elements";
+import Loading from "../Main/Loading";
 
 export default class Register_1 extends Component {
   constructor(props) {
@@ -21,8 +22,46 @@ export default class Register_1 extends Component {
     this.state = {
       name: "",
       userid: "",
+      current: false,
+      isLoading: true,
     };
     this.handleChangename = this.handleChangename.bind(this);
+  }
+
+  async componentDidMount() {
+    this.focusListener = this.props.navigation.addListener(
+      "focus",
+      async () => {
+        var user = firebase.auth().currentUser;
+        if (user != null) {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc("App")
+            .collection("info")
+            .doc(user.uid)
+            .get()
+            .then((doc) => {
+              if (!doc.exists) {
+                this.setState({
+                  current: false,
+                });
+              } else {
+                this.setState({
+                  current: true,
+                });
+              }
+              setTimeout(
+                function () {
+                  this.setState({ isLoading: false });
+                }.bind(this),
+                1000
+              );
+            });
+          console.log(this.state.current);
+        }
+      }
+    );
   }
 
   handleChangename(newText) {
@@ -34,87 +73,112 @@ export default class Register_1 extends Component {
   }
 
   OnInsertPress() {
-    const data = firebase.firestore();
-    data
-      .collection("users")
-      .doc("App")
-      .collection("info")
-      .doc(this.state.userid)
-      .set({
-        name: this.state.name,
-      })
-      .then(() => {
-        this.props.navigation.navigate("Register_2", {
-          username: this.state.name,
-          uid: this.state.uid,
+    if (this.state.current) {
+      const data = firebase.firestore();
+      data
+        .collection("users")
+        .doc("App")
+        .collection("info")
+        .doc(this.state.userid)
+        .update({
+          name: this.state.name,
+        })
+        .then(() => {
+          this.props.navigation.navigate("Register_2", {
+            username: this.state.name,
+            uid: this.state.uid,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    } else {
+      const data = firebase.firestore();
+      data
+        .collection("users")
+        .doc("App")
+        .collection("info")
+        .doc(this.state.userid)
+        .set({
+          name: this.state.name,
+        })
+        .then(() => {
+          this.props.navigation.navigate("Register_2", {
+            username: this.state.name,
+            uid: this.state.uid,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
   render() {
-    return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <Icon
-              name="arrow-left"
-              size={30}
-              type="material-community"
-              style={styles.backicon}
-              onPress={() => {
-                this.props.navigation.navigate("SignIn");
-              }}
-            />
-          </View>
-          <View style={styles.top}>
-            <View style={styles.textbox}>
-              <Text style={styles.title}>
+    if (!this.state.isLoading) {
+      return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Icon
+                name="arrow-left"
+                size={30}
+                type="material-community"
+                style={styles.backicon}
+                onPress={() => {
+                  this.props.navigation.navigate("SignIn");
+                }}
+              />
+            </View>
+            <View style={styles.top}>
+              <View style={styles.textbox}>
+                <Text style={styles.title}>
+                  {" "}
+                  안녕하세요!{"\n"}당신의 AI 러닝 코치{"\n"}
+                  FU:RE입니다.
+                </Text>
+              </View>
+            </View>
+            <View style={styles.middle}>
+              <Text style={styles.ask_name}>
                 {" "}
-                안녕하세요!{"\n"}당신의 AI 러닝 코치{"\n"}
-                FU:RE입니다.
+                당신의 닉네임을 정해주세요.{"\n"}
+                {"\n"}
               </Text>
+              <TextInput
+                style={styles.nameinput}
+                placeholder=""
+                onChangeText={this.handleChangename}
+                onSubmitEditing={Keyboard.dismiss}
+              ></TextInput>
+            </View>
+            <View style={styles.bottom}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.OnInsertPress();
+                }}
+              >
+                <LinearGradient
+                  start={{ x: 0.1, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  colors={["#303966", "#c3cfe2"]}
+                  style={styles.next_button}
+                >
+                  <Text style={styles.button_text}>다음</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.footer}>
+              <Image
+                source={require("../../images/logo_new.png")}
+                style={styles.logo}
+              ></Image>
             </View>
           </View>
-          <View style={styles.middle}>
-            <Text style={styles.ask_name}>
-              {" "}
-              당신의 닉네임을 정해주세요.{"\n"}
-              {"\n"}
-            </Text>
-            <TextInput
-              style={styles.nameinput}
-              placeholder=""
-              onChangeText={this.handleChangename}
-              onSubmitEditing={Keyboard.dismiss}
-            ></TextInput>
-          </View>
-          <View style={styles.bottom}>
-            <TouchableOpacity
-              onPress={() => {
-                this.OnInsertPress();
-              }}
-            >
-              <LinearGradient
-                start={{ x: 0.1, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                colors={["#303966", "#c3cfe2"]}
-                style={styles.next_button}
-              >
-                <Text style={styles.button_text}>다음</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.footer}>
-            <Image
-              source={require("../../images/logo_new.png")}
-              style={styles.logo}
-            ></Image>
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-    );
+        </TouchableWithoutFeedback>
+      );
+    } else {
+      return <Loading />;
+    }
   }
 }
 

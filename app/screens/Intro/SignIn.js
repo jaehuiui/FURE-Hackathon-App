@@ -49,6 +49,7 @@ export default class SignIn extends Component {
           error: "",
           loading: false,
         });
+        this.props.navigation.navigate("Mainpage");
       })
       .catch((e) => {
         this.setState({
@@ -62,7 +63,6 @@ export default class SignIn extends Component {
         }
       });
 
-    this.props.navigation.navigate("Mainpage");
     /*if (this.state.user) {
       this.props.navigation.navigate("Mainpage");
     } else {

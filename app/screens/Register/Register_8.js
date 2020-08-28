@@ -129,10 +129,12 @@ export default class Register_1 extends Component {
         defaultplan: "2month",
       })
       .then(() => {
-        this.props.navigation.navigate("Mainpage", {
-          username: this.state.name,
-          uid: this.state.uid,
-        });
+        setTimeout(
+          function () {
+            this.props.navigation.navigate("Mainpage");
+          }.bind(this),
+          1000
+        );
       })
       .catch((error) => {
         console.log(error);
@@ -153,10 +155,12 @@ export default class Register_1 extends Component {
         defaultplan: "4month",
       })
       .then(() => {
-        this.props.navigation.navigate("Mainpage", {
-          username: this.state.name,
-          uid: this.state.uid,
-        });
+        setTimeout(
+          function () {
+            this.props.navigation.navigate("Mainpage");
+          }.bind(this),
+          1000
+        );
       })
       .catch((error) => {
         console.log(error);
@@ -177,10 +181,12 @@ export default class Register_1 extends Component {
         defaultplan: "6month",
       })
       .then(() => {
-        this.props.navigation.navigate("Mainpage", {
-          username: this.state.name,
-          uid: this.state.uid,
-        });
+        setTimeout(
+          function () {
+            this.props.navigation.navigate("Mainpage");
+          }.bind(this),
+          1000
+        );
       })
       .catch((error) => {
         console.log(error);
