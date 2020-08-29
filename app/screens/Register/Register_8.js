@@ -21,12 +21,12 @@ export default class Register_1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: this.props.route.params.username,
-      uid: this.props.route.params.userid,
-      interval: this.props.route.params.interval,
-      time: this.props.route.params.time,
-      weight: this.props.route.params.weight_pre,
-      goal: this.props.route.params.weight_goal,
+      name: "",
+      uid: "",
+      interval: "",
+      time: "",
+      weight: "",
+      goal: "",
       gap: 0,
       plan2: "",
       plan4: "",
@@ -35,6 +35,7 @@ export default class Register_1 extends Component {
       plan4_dist: "",
       plan6_dist: "",
       isLoading: true,
+      isLoadingend: true,
       index: "",
       selectplan: "",
       startdate: "",
@@ -65,6 +66,7 @@ export default class Register_1 extends Component {
               var time = doc.data().time;
               var gap = weight - goal;
               this.setState({
+                name: doc.data().name,
                 interval: interval,
                 goal: goal,
                 weight: weight,
@@ -141,10 +143,13 @@ export default class Register_1 extends Component {
       .then(() => {
         setTimeout(
           function () {
-            this.props.navigation.navigate("Mainpage");
+            this.setState({
+              isLoadingend: false,
+            });
           }.bind(this),
           1000
         );
+        this.props.navigation.navigate("Mainpage");
       })
       .catch((error) => {
         console.log(error);
@@ -169,10 +174,13 @@ export default class Register_1 extends Component {
       .then(() => {
         setTimeout(
           function () {
-            this.props.navigation.navigate("Mainpage");
+            this.setState({
+              isLoadingend: false,
+            });
           }.bind(this),
           1000
         );
+        this.props.navigation.navigate("Mainpage");
       })
       .catch((error) => {
         console.log(error);
@@ -197,10 +205,13 @@ export default class Register_1 extends Component {
       .then(() => {
         setTimeout(
           function () {
-            this.props.navigation.navigate("Mainpage");
+            this.setState({
+              isLoadingend: false,
+            });
           }.bind(this),
           1000
         );
+        this.props.navigation.navigate("Mainpage");
       })
       .catch((error) => {
         console.log(error);
@@ -210,7 +221,7 @@ export default class Register_1 extends Component {
   render() {
     if (this.state.isLoading) {
       return <Loading />;
-    } else {
+    } else if (!this.state.isLoading && this.state.isLoadingend) {
       return (
         <ImageBackground
           source={require("../../images/plan.jpeg")}
@@ -231,7 +242,7 @@ export default class Register_1 extends Component {
             </View>
             <View style={styles.top}>
               <Text style={styles.title}>
-                {this.state.name}님만을 위한 플랜이예요.
+                {this.state.name}님만을 위한 PLAN이예요.
               </Text>
             </View>
             <Swiper
@@ -246,15 +257,22 @@ export default class Register_1 extends Component {
                     {"\n"}
                   </Text>
                   <Text style={styles.plan}>
-                    {this.state.time} 시간 동안 {this.state.plan2_dist}km 씩
-                    {"\n"}
-                    일주일에 {this.state.interval}번씩 뛰어볼까요?
+                    {Number(this.state.plan2) > 7.5
+                      ? "2개월 플랜은 무리입니다..\n 다른 플랜을 골라주세요!"
+                      : this.state.time +
+                        " 시간 동안 " +
+                        this.state.plan2_dist +
+                        " km 씩\n일주일에 " +
+                        this.state.interval +
+                        " 번씩 뛰어볼까요?"}
                   </Text>
                 </View>
                 <View style={styles.bottom}>
                   <TouchableOpacity
                     onPress={() => {
-                      this.selectplan2();
+                      Number(this.state.plan2) > 7.5
+                        ? this.props.navigation.navigate("Register_6")
+                        : this.selectplan2();
                     }}
                   >
                     <LinearGradient
@@ -263,7 +281,12 @@ export default class Register_1 extends Component {
                       colors={["#303966", "#c3cfe2"]}
                       style={styles.next_button}
                     >
-                      <Text style={styles.button_text}>PLAN 선택</Text>
+                      <Text style={styles.button_text}>
+                        {" "}
+                        {Number(this.state.plan2) > 7.5
+                          ? "목표 체중 재설정하기"
+                          : "PLAN 선택"}
+                      </Text>
                     </LinearGradient>
                   </TouchableOpacity>
                 </View>
@@ -276,15 +299,22 @@ export default class Register_1 extends Component {
                     {"\n"}
                   </Text>
                   <Text style={styles.plan}>
-                    {this.state.time} 시간 동안 {this.state.plan4_dist}km 씩
-                    {"\n"}
-                    일주일에 {this.state.interval}번씩 뛰어볼까요?
+                    {Number(this.state.plan4) > 7.5
+                      ? "4개월 플랜은 무리입니다..\n 다른 플랜을 골라주세요!"
+                      : this.state.time +
+                        " 시간 동안 " +
+                        this.state.plan4_dist +
+                        " km 씩\n일주일에 " +
+                        this.state.interval +
+                        " 번씩 뛰어볼까요?"}
                   </Text>
                 </View>
                 <View style={styles.bottom}>
                   <TouchableOpacity
                     onPress={() => {
-                      this.selectplan4();
+                      Number(this.state.plan4) > 7.5
+                        ? this.props.navigation.navigate("Register_6")
+                        : this.selectplan4();
                     }}
                   >
                     <LinearGradient
@@ -293,7 +323,11 @@ export default class Register_1 extends Component {
                       colors={["#303966", "#c3cfe2"]}
                       style={styles.next_button}
                     >
-                      <Text style={styles.button_text}>PLAN 선택</Text>
+                      <Text style={styles.button_text}>
+                        {Number(this.state.plan4) > 7.5
+                          ? "목표 체중 재설정하기"
+                          : "PLAN 선택"}
+                      </Text>
                     </LinearGradient>
                   </TouchableOpacity>
                 </View>
@@ -306,15 +340,24 @@ export default class Register_1 extends Component {
                     {"\n"}
                   </Text>
                   <Text style={styles.plan}>
-                    {this.state.time} 시간 동안 {this.state.plan6_dist}km 씩
-                    {"\n"}
-                    일주일에 {this.state.interval}번씩 뛰어볼까요?
+                    {Number(this.state.plan6) > 7.5
+                      ? "6개월 플랜은 무리입니다..\n 다른 플랜을 골라주세요!"
+                      : this.state.time +
+                        " 시간 동안 " +
+                        this.state.plan6_dist +
+                        " km 씩\n일주일에 " +
+                        this.state.interval +
+                        " 번씩 뛰어볼까요?"}
                   </Text>
                 </View>
                 <View style={styles.bottom}>
                   <TouchableOpacity
                     onPress={() => {
-                      this.selectplan6();
+                      {
+                        Number(this.state.plan6) > 7.5
+                          ? this.props.navigation.navigate("Register_6")
+                          : this.selectplan6();
+                      }
                     }}
                   >
                     <LinearGradient
@@ -323,7 +366,11 @@ export default class Register_1 extends Component {
                       colors={["#303966", "#c3cfe2"]}
                       style={styles.next_button}
                     >
-                      <Text style={styles.button_text}>PLAN 선택</Text>
+                      <Text style={styles.button_text}>
+                        {Number(this.state.plan6) > 7.5
+                          ? "목표 체중 재설정하기"
+                          : "PLAN 선택"}
+                      </Text>
                     </LinearGradient>
                   </TouchableOpacity>
                 </View>
@@ -333,6 +380,8 @@ export default class Register_1 extends Component {
           </View>
         </ImageBackground>
       );
+    } else if (!this.state.isLoading && !this.state.isLoadingend) {
+      return <Loading />;
     }
   }
 }

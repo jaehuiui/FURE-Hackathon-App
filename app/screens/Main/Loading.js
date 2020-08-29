@@ -9,7 +9,7 @@ export default class Loading extends Component {
       <View style={styles.container}>
         <View style={styles.upper}>
           <Image
-            source={require("../../images/logo.png")}
+            source={require("../../images/new_logo.png")}
             style={styles.logo_load}
           ></Image>
         </View>

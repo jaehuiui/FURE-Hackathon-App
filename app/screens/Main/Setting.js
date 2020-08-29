@@ -12,7 +12,24 @@ export default class Today extends Component {
     this.state = {
       name: "",
       date: "",
+      email: "",
     };
+  }
+
+  async componentDidMount() {
+    const user = firebase.auth().currentUser;
+    firebase
+      .firestore()
+      .collection("users")
+      .doc("App")
+      .collection("info")
+      .doc(user.uid)
+      .onSnapshot((doc) => {
+        this.setState({
+          name: doc.data().name,
+          email: user.email,
+        });
+      });
   }
 
   onPressReset() {
@@ -40,9 +57,48 @@ export default class Today extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.header}></View>
-        <View style={styles.top}></View>
-        <View style={styles.middle}></View>
+        <View style={styles.header}>
+          <Text style={styles.title}>Setting</Text>
+        </View>
+        <View style={styles.top}>
+          <View style={styles.profile}>
+            <Text style={styles.profile_title}>유저 정보{"\n"}</Text>
+            <Text style={styles.info}>
+              <Text style={styles.name_t}>닉네임 : </Text>
+              <Text style={styles.name}>
+                {this.state.name}
+                {"\n"}
+              </Text>
+            </Text>
+            <Text style={styles.info}>
+              <Text style={styles.name_t}>이메일 : </Text>
+              <Text style={styles.name}>
+                {this.state.email}
+                {"\n"}
+              </Text>
+            </Text>
+            <Text style={styles.info}>
+              <Text style={styles.name_t}>등급 : </Text>
+              <Text style={styles.name}>
+                일반 회원
+                {"\n"}
+              </Text>
+            </Text>
+
+            <Text style={styles.info}></Text>
+          </View>
+        </View>
+        <View style={styles.middle}>
+          <View style={styles.teaminfo}>
+            <Image
+              source={require("../../images/logo_new.png")}
+              style={styles.logo}
+            ></Image>
+            <Text style={styles.team}>Team FU:RE</Text>
+            <Text style={styles.team}>Co-Founder : Koo, Oh, Lee</Text>
+            <Text style={styles.copy}>Copyright All Rights Reserved 2020</Text>
+          </View>
+        </View>
         <View style={styles.bottom}></View>
         <View style={styles.footer}>
           <TouchableOpacity
@@ -70,17 +126,88 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
-  header: {},
-  top: {
-    flex: 3.5,
+  header: {
+    flex: 3,
     justifyContent: "center",
   },
-  middle: {
-    flex: 8.5,
+  profile_title: {
+    marginTop: RFValue(15, 812),
+    fontSize: RFValue(25, 812),
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: RFValue(5, 812),
   },
+  title: {
+    marginTop: RFValue(15, 812),
+    fontSize: RFValue(25, 812),
+    fontWeight: "bold",
+    marginLeft: RFValue(30, 812),
+    marginBottom: RFValue(5, 812),
+  },
+  top: {
+    flex: 8.5,
+    justifyContent: "center",
+  },
+  profile: {
+    width: "90%",
+    height: "90%",
+    backgroundColor: "white",
+    borderRadius: 20,
+    alignSelf: "center",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    shadowColor: "gray",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  info: {
+    marginLeft: RFValue(20, 812),
+  },
+  name_t: {
+    fontSize: RFValue(20, 812),
+    fontWeight: "bold",
+    marginTop: RFValue(20, 812),
+  },
+  name: {
+    fontSize: RFValue(17, 812),
 
+    marginTop: RFValue(20, 812),
+  },
+  middle: {
+    flex: 7.5,
+  },
+  teaminfo: {
+    width: "90%",
+    height: "90%",
+    backgroundColor: "white",
+    borderRadius: 20,
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "gray",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  logo: {
+    aspectRatio: 1,
+  },
+  team: {
+    textAlign: "center",
+    fontSize: RFValue(16, 812),
+    marginBottom: RFValue(10, 812),
+    fontWeight: "600",
+  },
+  copy: {
+    textAlign: "center",
+    fontSize: RFValue(15, 812),
+    marginTop: RFValue(30, 812),
+  },
   bottom: {
-    flex: 3.5,
+    flex: 0,
   },
 
   //footer

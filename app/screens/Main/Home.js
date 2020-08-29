@@ -71,6 +71,7 @@ export default class Today extends Component {
       hour: 0,
       min: 0,
       count_ex: 0,
+      weight_today: 0,
     };
   }
 
@@ -144,13 +145,14 @@ export default class Today extends Component {
                       hour: Number(doc.data().runninghour),
                       min: Number(doc.data().runningmin),
                       count_ex: Number(doc.data().count_ex),
+                      weight_today: Number(doc.data().weight_today),
                     });
                   });
-                console.log("name : " + this.state.name);
+                /*console.log("name : " + this.state.name);
                 console.log("weight : " + this.state.weight);
                 console.log("height : " + this.state.height);
                 console.log("goal : " + this.state.goal);
-                console.log("default : " + this.state.default);
+                console.log("default : " + this.state.default);*/
                 firebase
                   .firestore()
                   .collection("users")
@@ -187,7 +189,7 @@ export default class Today extends Component {
                         1500
                       );
                     } else {
-                      console.log("const_two : " + this.state.const_two);
+                      /*console.log("const_two : " + this.state.const_two);
                       console.log("const_four : " + this.state.const_four);
                       console.log("const_six : " + this.state.const_six);
 
@@ -204,7 +206,7 @@ export default class Today extends Component {
                         "coefficient_six : " + this.state.coefficient_six
                       );
 
-                      console.log(this.state.today_date);
+                      console.log(this.state.today_date); */
                       var timearr = this.state.start_date
                         .split("-")
                         .map(Number);
@@ -269,13 +271,13 @@ export default class Today extends Component {
                             100
                           ).toFixed(1) + "%",
                       });
-                      console.log("axis : " + (this.state.axis_x * 2) / 4);
+                      /*console.log("axis : " + (this.state.axis_x * 2) / 4);
                       console.log("const_def : " + this.state.const_def);
                       console.log("methd_def : " + this.state.methd_def);
                       console.log(
                         "coefficient_def : " + this.state.coefficient_def
                       );
-                      console.log("due date : " + this.state.gap_date);
+                      console.log("due date : " + this.state.gap_date); */
                       if (this.state.coefficient_def == 0) {
                         this.props.navigation.dispatch(
                           CommonActions.setParams({
@@ -460,7 +462,7 @@ export default class Today extends Component {
             <View style={styles.topbanner}>
               <Text style={styles.title}>
                 <Text style={styles.name}>{this.state.name}</Text>
-                <Text style={styles.name2}>님</Text>
+                <Text style={styles.name2}> 님</Text>
               </Text>
               <Text style={styles.subtitle}>
                 이번 주도 계획대로 잘하고 계세요!
@@ -522,7 +524,7 @@ export default class Today extends Component {
                 />
                 <VictoryLine
                   style={{
-                    data: { stroke: "#0f4c75" },
+                    data: { stroke: "#0f4c75", strokeWidth: 2 },
                     parent: { border: "1px solid #ccc" },
                   }}
                   y={(d) =>
@@ -539,15 +541,15 @@ export default class Today extends Component {
                 <VictoryLine
                   interpolation="cardinal"
                   style={{
-                    data: { stroke: "#f67280" },
+                    data: { stroke: "#f67280", strokeWidth: 2 },
                     parent: { border: "1px solid #ccc" },
                   }}
                   data={[
                     { x: 0, y: this.state.weight },
-                    { x: 20, y: 79 },
-                    { x: 40, y: 77 },
-                    { x: 60, y: 76 },
-                    { x: 80, y: 75 },
+                    {
+                      x: Number(this.state.gap_date),
+                      y: Number(this.state.weight_today),
+                    },
                   ]}
                 />
               </VictoryChart>
@@ -555,25 +557,35 @@ export default class Today extends Component {
           </View>
           <View style={styles.middle}>
             <View style={styles.thingment}>
-              <Text style={styles.encourage}>
-                <Text style={styles.bold}>{this.state.count_ex}</Text>
-                <Text style={styles.unit}>회</Text>
-                <Text style={styles.bold}>{this.state.hour}</Text>
-                <Text style={styles.unit}>시간</Text>
-                <Text style={styles.bold}>{this.state.min}</Text>
-                <Text style={styles.unit}>분</Text>
-              </Text>
-              <Text style={styles.unit_bottom}>
-                <Text style={styles.unit}>운동횟수</Text>
-                <Text style={styles.unit}>운동시간</Text>
-              </Text>
+              <View style={styles.encourage}>
+                <Text style={styles.ex_num}>
+                  <Text style={styles.bold}>
+                    {isNaN(this.state.count_ex) ? 0 : this.state.count_ex}
+                  </Text>
+                  <Text style={styles.unit}> 회{"\n"}</Text>
+                  <Text style={styles.unit_bottom}>운동횟수</Text>
+                </Text>
+                <Text style={styles.ex_hour}>
+                  <Text style={styles.bold}>
+                    {isNaN(this.state.hour) ? 0 : this.state.hour}
+                  </Text>
+                  <Text style={styles.unit}> 시간{"  "}</Text>
+                  <Text style={styles.bold}>
+                    {isNaN(this.state.min) ? 0 : this.state.min}
+                  </Text>
+                  <Text style={styles.unit}> 분{"\n"}</Text>
+                  <Text style={styles.unit_bottom}>운동시간</Text>
+                </Text>
+              </View>
             </View>
           </View>
           <View style={styles.bottom}>
             <View style={styles.eat}>
               <Text style={styles.recommendation}>
-                {this.state.name}님의 하루 권장 섭취 칼로리는 {"\n"}{" "}
-                {this.state.kcal}Kcal입니다!
+                <Text style={styles.rec_bold}>{this.state.name}</Text>
+                님의 하루 권장 섭취 칼로리는 {"\n"}{" "}
+                <Text style={styles.rec_bold}>{this.state.kcal}</Text>
+                <Text style={styles.recommendation}>Kcal입니다!</Text>
               </Text>
             </View>
           </View>
@@ -591,13 +603,13 @@ const styles = StyleSheet.create({
   //header
   header: {
     flex: 0.9,
-    justifyContent: "center",
+    justifyContent: "flex-end",
   },
   title: {
     marginTop: RFValue(15, 812),
-    fontSize: RFValue(30, 812),
+    fontSize: RFValue(35, 812),
     flexDirection: "row",
-    textAlign: "center",
+    marginLeft: RFValue(30, 812),
     marginBottom: RFValue(5, 812),
   },
   name: {
@@ -606,8 +618,8 @@ const styles = StyleSheet.create({
   },
   name2: {},
   subtitle: {
-    fontSize: RFValue(20, 812),
-    textAlign: "center",
+    marginLeft: RFValue(30, 812),
+    fontSize: RFValue(25, 812),
   },
 
   //top
@@ -617,19 +629,20 @@ const styles = StyleSheet.create({
   },
   graphbox: {
     width: "90%",
-    height: "100%",
+    height: "90%",
     alignSelf: "center",
     borderRadius: 10,
     borderColor: "#465881",
+    backgroundColor: "white",
     justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-
-    shadowRadius: 2,
-    elevation: 1,
+    shadowColor: "gray",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
+    elevation: 2,
   },
   graphtitle: {
-    marginTop: RFValue(10, 812),
+    top: RFValue(40, 812),
     fontSize: RFValue(20, 812),
     fontWeight: "bold",
     textAlign: "center",
@@ -643,31 +656,44 @@ const styles = StyleSheet.create({
   thingment: {
     width: "90%",
     height: "90%",
-    backgroundColor: "#3282b8",
+    backgroundColor: "white",
     borderRadius: 20,
     alignSelf: "center",
     justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "gray",
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 1,
+    shadowRadius: 3,
+    elevation: 2,
   },
   encourage: {
-    fontSize: RFValue(20, 812),
-    textAlign: "center",
-    color: "white",
     justifyContent: "space-evenly",
-    flexDirection: "column",
+    flexDirection: "row",
+  },
+  ex_hour: {
+    marginHorizontal: RFValue(20, 812),
+    textAlign: "center",
+  },
+  ex_num: {
+    marginHorizontal: RFValue(20, 812),
+    textAlign: "center",
   },
   bold: {
-    fontSize: RFValue(25, 812),
+    fontSize: RFValue(45, 812),
     fontWeight: "bold",
-    color: "white",
+    color: "black",
+    textShadowColor: "gray",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
+  },
+  unit_bottom: {
+    fontSize: RFValue(15, 812),
+    color: "black",
+    textAlign: "center",
   },
   unit: {
-    fontSize: RFValue(15, 812),
-    color: "#e3e7f1",
+    fontSize: RFValue(20, 812),
+    color: "black",
   },
 
   //bottom
@@ -682,14 +708,20 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignSelf: "center",
     justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: "gray",
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 1,
+    shadowRadius: 3,
+    elevation: 2,
   },
   recommendation: {
     fontSize: RFValue(20, 812),
+    textAlign: "center",
+    color: "white",
+  },
+  rec_bold: {
+    fontSize: RFValue(25, 812),
+    fontWeight: "bold",
     textAlign: "center",
     color: "white",
   },

@@ -7,19 +7,22 @@ import {
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
+  ScrollView,
+  TextInput,
 } from "react-native";
 import firebase from "firebase";
 import "firebase/firestore";
 import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
 import { Icon, Input } from "react-native-elements";
+import KeyboardSpacer from "react-native-keyboard-spacer";
 
 export default class Register_1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: this.props.route.params.username,
-      uid: this.props.route.params.userid,
+      name: "",
+      uid: "",
       gender: "",
       height: null,
       weight: null,
@@ -30,6 +33,20 @@ export default class Register_1 extends Component {
     this.handleChange_height = this.handleChange_height.bind(this);
     this.handleChange_weight = this.handleChange_weight.bind(this);
     this.handleChange_age = this.handleChange_age.bind(this);
+  }
+  componentDidMount() {
+    const user = firebase.auth().currentUser;
+    firebase
+      .firestore()
+      .collection("users")
+      .doc("App")
+      .collection("info")
+      .doc(user.uid)
+      .onSnapshot((doc) => {
+        this.setState({
+          name: doc.data().name,
+        });
+      });
   }
 
   handleChange_gender(newText) {
@@ -71,6 +88,7 @@ export default class Register_1 extends Component {
       .update({
         gender: this.state.gender,
         height: this.state.height,
+        weight_today: this.state.weight,
         weight: this.state.weight,
         age: this.state.age,
       })
@@ -94,84 +112,99 @@ export default class Register_1 extends Component {
           colors={["#bbe1fa", "white"]}
           style={styles.container}
         >
-          <View style={styles.header}>
-            <Icon
-              name="arrow-left"
-              size={30}
-              type="material-community"
-              style={styles.backicon}
-              onPress={() => {
-                this.props.navigation.navigate("Register_4");
-              }}
-            />
-            <Text style={styles.stage}>2/4</Text>
-          </View>
-          <View style={styles.top}>
-            <Text style={styles.title}>
-              {this.state.name} 님에 대해 알아볼까요?
-            </Text>
-          </View>
-          <View style={styles.middle}>
-            <View style={styles.inputinfo}>
-              <Text style={styles.question}>성별 : </Text>
-              <Input
-                placeholder="남자/여자"
-                containerStyle={styles.inputbox}
-                inputStyle={styles.inputtext}
-                onChangeText={this.handleChange_gender}
+          <ScrollView
+            scrollEnabled={false}
+            contentContainerStyle={{
+              height: "100%",
+              justifyContent: "space-between",
+            }}
+          >
+            <View style={styles.header}>
+              <Icon
+                name="arrow-left"
+                size={30}
+                type="material-community"
+                style={styles.backicon}
+                onPress={() => {
+                  this.props.navigation.navigate("Register_4");
+                }}
               />
-              <Text style={styles.question}>{"     "} </Text>
+              <Text style={styles.stage}>2/4</Text>
             </View>
-            <View style={styles.inputinfo}>
-              <Text style={styles.question}>신장 : </Text>
-              <Input
-                placeholder=""
-                containerStyle={styles.inputbox}
-                inputStyle={styles.inputtext}
-                onChangeText={this.handleChange_height}
-                keyboardType="numeric"
-              />
-              <Text style={styles.question}>cm</Text>
+
+            <View style={styles.top}>
+              <Text style={styles.title}>
+                {this.state.name} 님에 대해 알아볼까요?
+              </Text>
             </View>
-            <View style={styles.inputinfo}>
-              <Text style={styles.question}>체중 : </Text>
-              <Input
-                placeholder=""
-                containerStyle={styles.inputbox}
-                inputStyle={styles.inputtext}
-                onChangeText={this.handleChange_weight}
-                keyboardType="numeric"
-              />
-              <Text style={styles.question}>kg</Text>
+            <View style={styles.middle}>
+              <View style={styles.inputinfo}>
+                <Text style={styles.question}>
+                  성별{"    "}:{"      "}
+                </Text>
+                <TextInput
+                  placeholder="남자/여자"
+                  style={styles.inputbox}
+                  onChangeText={this.handleChange_gender}
+                />
+                <Text style={styles.question}>{"       "} </Text>
+              </View>
+              <View style={styles.inputinfo}>
+                <Text style={styles.question}>
+                  신장{"    "}:{"      "}
+                </Text>
+                <TextInput
+                  placeholder=""
+                  style={styles.inputbox}
+                  onChangeText={this.handleChange_height}
+                  keyboardType="numeric"
+                />
+                <Text style={styles.question}>{"  "}cm</Text>
+              </View>
+              <View style={styles.inputinfo}>
+                <Text style={styles.question}>
+                  체중{"    "}:{"      "}
+                </Text>
+                <TextInput
+                  placeholder=""
+                  style={styles.inputbox}
+                  onChangeText={this.handleChange_weight}
+                  keyboardType="numeric"
+                />
+                <Text style={styles.question}>{"   "}kg</Text>
+              </View>
+              <View style={styles.inputinfo}>
+                <Text style={styles.question}>
+                  나이{"    "}:{"      "}
+                </Text>
+                <TextInput
+                  placeholder=""
+                  style={styles.inputbox}
+                  onChangeText={this.handleChange_age}
+                  keyboardType="numeric"
+                />
+                <Text style={styles.question}>{"    "}세</Text>
+              </View>
             </View>
-            <View style={styles.inputinfo}>
-              <Text style={styles.question}>나이 : </Text>
-              <Input
-                placeholder=""
-                containerStyle={styles.inputbox}
-                inputStyle={styles.inputtext}
-                onChangeText={this.handleChange_age}
-                keyboardType="numeric"
-              />
-              <Text style={styles.question}>{"     "} </Text>
-            </View>
-          </View>
-          <View style={styles.bottom}>
-            <TouchableOpacity
-              onPress={() => {
-                this.getbodyData();
-              }}
-            >
-              <LinearGradient
-                start={{ x: 0.1, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                colors={["#303966", "#c3cfe2"]}
-                style={styles.next_button}
+
+            <View style={styles.bottom}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.getbodyData();
+                }}
               >
-                <Text style={styles.button_text}>다음</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
+                <LinearGradient
+                  start={{ x: 0.1, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  colors={["#303966", "#c3cfe2"]}
+                  style={styles.next_button}
+                >
+                  <Text style={styles.button_text}>다음</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+            <KeyboardSpacer topSpacing={RFValue(0, 812)} />
+          </ScrollView>
           <View style={styles.footer}>
             <Image
               source={require("../../images/logo_new.png")}
@@ -219,7 +252,7 @@ const styles = StyleSheet.create({
     flex: 5.5,
   },
   inputinfo: {
-    marginVertical: RFValue(10, 812),
+    marginVertical: RFValue(20, 812),
     flexDirection: "row",
     justifyContent: "center",
   },
@@ -227,11 +260,13 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     textAlign: "center",
     fontSize: RFValue(23, 812),
-    top: RFValue(10, 812),
     fontWeight: "bold",
   },
   inputbox: {
     width: RFValue(150, 812),
+    fontSize: RFValue(23, 812),
+    borderBottomWidth: 1,
+    textAlign: "center",
   },
   inputtext: {
     fontSize: RFValue(20, 812),

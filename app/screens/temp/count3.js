@@ -20,5 +20,6 @@ const styles = StyleSheet.create({
   count: {
     textAlign: "center",
     fontSize: 60,
+    fontWeight: "bold",
   },
 });

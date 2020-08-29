@@ -7,26 +7,43 @@ import {
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
+  ScrollView,
+  TextInput,
 } from "react-native";
 import firebase from "firebase";
 import "firebase/firestore";
 import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
 import { Icon, Input } from "react-native-elements";
+import KeyboardSpacer from "react-native-keyboard-spacer";
 
 export default class Register_1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: this.props.route.params.username,
-      uid: this.props.route.params.userid,
-      weight: this.props.route.params.weight_pre,
-      goal: this.props.route.params.weight_goal,
+      name: "",
+      uid: "",
+      weight: "",
+      goal: "",
       dayperweek: 0,
       hourperday: 0,
     };
     this.handleChange_dpw = this.handleChange_dpw.bind(this);
     this.handleChange_hpd = this.handleChange_hpd.bind(this);
+  }
+  componentDidMount() {
+    const user = firebase.auth().currentUser;
+    firebase
+      .firestore()
+      .collection("users")
+      .doc("App")
+      .collection("info")
+      .doc(user.uid)
+      .onSnapshot((doc) => {
+        this.setState({
+          name: doc.data().name,
+        });
+      });
   }
   handleChange_dpw(newText) {
     this.setState({
@@ -76,63 +93,74 @@ export default class Register_1 extends Component {
           colors={["#bbe1fa", "white"]}
           style={styles.container}
         >
-          <View style={styles.header}>
-            <Icon
-              name="arrow-left"
-              size={30}
-              type="material-community"
-              style={styles.backicon}
-              onPress={() => {
-                this.props.navigation.navigate("Register_6");
-              }}
-            />
-            <Text style={styles.stage}>4/4</Text>
-          </View>
-          <View style={styles.top}>
-            <Text style={styles.title}>
-              {this.state.name} 님,{"\n"}
-              운동에 얼마나 시간을 내실 수 있나요?
-            </Text>
-          </View>
-          <View style={styles.middle}>
-            <View style={styles.inputinfo}>
-              <Input
-                placeholder=""
-                containerStyle={styles.inputbox}
-                inputStyle={styles.inputtext}
-                onChangeText={this.handleChange_dpw}
-                keyboardType="numeric"
+          <ScrollView
+            scrollEnabled={false}
+            contentContainerStyle={{
+              height: "100%",
+              justifyContent: "space-between",
+            }}
+          >
+            <View style={styles.header}>
+              <Icon
+                name="arrow-left"
+                size={30}
+                type="material-community"
+                style={styles.backicon}
+                onPress={() => {
+                  this.props.navigation.navigate("Register_6");
+                }}
               />
-              <Text style={styles.question}> 회 / 일주일 </Text>
+              <Text style={styles.stage}>4/4</Text>
             </View>
+            <View style={styles.top}>
+              <Text style={styles.title}>
+                {this.state.name} 님,{"\n"}
+                운동에 얼마나 시간을 내실 수 있나요?
+              </Text>
+            </View>
+            <View style={styles.middle}>
+              <View style={styles.inputinfo}>
+                <Text style={styles.question}>
+                  주당 몇번 운동하실 수 있나요?{"\n"}
+                </Text>
+                <TextInput
+                  placeholder=""
+                  style={styles.inputbox}
+                  onChangeText={this.handleChange_dpw}
+                  keyboardType="numeric"
+                />
+              </View>
 
-            <View style={styles.inputinfo}>
-              <Input
-                placeholder=""
-                containerStyle={styles.inputbox}
-                inputStyle={styles.inputtext}
-                onChangeText={this.handleChange_hpd}
-                keyboardType="numeric"
-              />
-              <Text style={styles.question}> 시간 / 회 </Text>
+              <View style={styles.inputinfo}>
+                <Text style={styles.question}>
+                  몇시간 정도 운동하세요?{"\n"}
+                </Text>
+                <TextInput
+                  placeholder=""
+                  style={styles.inputbox}
+                  onChangeText={this.handleChange_hpd}
+                  keyboardType="numeric"
+                />
+              </View>
             </View>
-          </View>
-          <View style={styles.bottom}>
-            <TouchableOpacity
-              onPress={() => {
-                this.selecttime();
-              }}
-            >
-              <LinearGradient
-                start={{ x: 0.1, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                colors={["#303966", "#c3cfe2"]}
-                style={styles.next_button}
+            <View style={styles.bottom}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.selecttime();
+                }}
               >
-                <Text style={styles.button_text}>다음</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
+                <LinearGradient
+                  start={{ x: 0.1, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  colors={["#303966", "#c3cfe2"]}
+                  style={styles.next_button}
+                >
+                  <Text style={styles.button_text}>다음</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+            <KeyboardSpacer topSpacing={RFValue(0, 812)} />
+          </ScrollView>
           <View style={styles.footer}>
             <Image
               source={require("../../images/logo_new.png")}
@@ -172,6 +200,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     fontSize: RFValue(25, 812),
+    marginBottom: RFValue(30, 812),
   },
 
   middle: {
@@ -180,7 +209,7 @@ const styles = StyleSheet.create({
   },
   inputinfo: {
     marginVertical: RFValue(10, 812),
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "center",
   },
   question: {
@@ -190,7 +219,14 @@ const styles = StyleSheet.create({
     top: RFValue(10, 812),
   },
   inputbox: {
+    marginVertical: RFValue(20, 812),
     width: RFValue(150, 812),
+    borderBottomWidth: 1,
+    borderColor: "black",
+    fontSize: RFValue(20, 812),
+    alignSelf: "center",
+    textAlign: "center",
+    paddingBottom: 5,
   },
   inputtext: {
     fontSize: RFValue(20, 812),

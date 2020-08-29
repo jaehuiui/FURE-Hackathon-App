@@ -35,6 +35,8 @@ import Register_8 from "./app/screens/Register/Register_8";
 
 import Test from "./app/screens/temp/Test";
 
+console.disableYellowBox = true;
+
 firebase.initializeApp(firebaseConfig);
 
 const Stack = createStackNavigator();

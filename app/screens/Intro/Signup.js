@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  Keyboard,
+  TouchableWithoutFeedback,
   KeyboardAvoidingView,
   ScrollView,
 } from "react-native";
@@ -13,6 +15,7 @@ import firebase from "firebase";
 import { TextInput } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
 import { RFValue } from "react-native-responsive-fontsize";
+import KeyboardSpacer from "react-native-keyboard-spacer";
 
 export default class CreateScreen extends React.Component {
   constructor(props) {
@@ -51,7 +54,7 @@ export default class CreateScreen extends React.Component {
     });
 
     if (!(this.state.password === this.state.passwordconfirm)) {
-      alert("Password confirm failed!!");
+      alert("비밀번호가 일치하지 않습니다!");
       await this.setState({
         password: "",
         passwordconfirm: "",
@@ -75,91 +78,102 @@ export default class CreateScreen extends React.Component {
           error: "Authentification failed",
           loading: false,
         });
-        alert(this.state.error);
+        alert("입력 정보를 확인해주세요!");
       });
   }
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.Theme}>
-          <Image
-            source={require("../../images/logo.png")}
-            style={styles.logo}
-          ></Image>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={styles.container}>
+          <ScrollView
+            scrollEnabled={true}
+            contentContainerStyle={{
+              height: "100%",
+              justifyContent: "space-between",
+            }}
+          >
+            <View style={styles.Theme}>
+              <Image
+                source={require("../../images/logo.png")}
+                style={styles.logo}
+              ></Image>
+            </View>
+            <View style={styles.form}>
+              <Text style={styles.inputinfo}>User Email</Text>
+              <View style={styles.input_box}>
+                <TextInput
+                  style={styles.input_text}
+                  autoCompleteType="email"
+                  placeholder="fure@gmail.com"
+                  onChangeText={this.handleChangeemail}
+                  keyboardType={"email-address"}
+                ></TextInput>
+              </View>
+              <Text style={styles.inputinfo}>Password</Text>
+              <View style={styles.input_box}>
+                <TextInput
+                  style={styles.input_text}
+                  secureTextEntry
+                  placeholder="********"
+                  onChangeText={this.handleChangepassword}
+                ></TextInput>
+              </View>
+              <Text style={styles.inputinfo}>Confirm Password</Text>
+              <View style={styles.input_box}>
+                <TextInput
+                  style={styles.input_text}
+                  secureTextEntry
+                  placeholder="********"
+                  onChangeText={this.handleChangePasswordConfirm}
+                ></TextInput>
+              </View>
+            </View>
+            <View style={styles.bottomlayer}>
+              <View style={styles.signup_button}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.OnSignUpPress();
+                  }}
+                >
+                  <LinearGradient
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={["#f5f7fa", "#c3cfe2"]}
+                    style={styles.buttonL}
+                  >
+                    <Text style={styles.signin}>Sign Up</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <KeyboardSpacer topSpacing={RFValue(-30, 812)} />
+          </ScrollView>
         </View>
-        <View style={styles.form}>
-          <Text style={styles.inputinfo}>User Email</Text>
-          <View style={styles.inputtogether}>
-            <TextInput
-              style={styles.tinput}
-              autoCompleteType="email"
-              placeholder=""
-              onChangeText={this.handleChangeemail}
-            ></TextInput>
-          </View>
-          <Text style={styles.inputinfo}>Password</Text>
-          <View style={styles.inputtogether}>
-            <TextInput
-              style={styles.tinput}
-              secureTextEntry
-              placeholder=""
-              onChangeText={this.handleChangepassword}
-            ></TextInput>
-          </View>
-          <Text style={styles.inputinfo}>Confirm Password</Text>
-          <View style={styles.inputtogether}>
-            <TextInput
-              style={styles.tinput}
-              secureTextEntry
-              placeholder=""
-              onChangeText={this.handleChangePasswordConfirm}
-            ></TextInput>
-          </View>
-        </View>
-        <View style={styles.bottomlayer}>
-          <View style={styles.signup_button}>
-            <TouchableOpacity
-              onPress={() => {
-                this.OnSignUpPress();
-              }}
-            >
-              <LinearGradient
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                colors={["#f5f7fa", "#c3cfe2"]}
-                style={styles.buttonL}
-              >
-                <Text style={styles.signin}>Sign Up</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
 
 const styles = StyleSheet.create({
   Theme: {
-    paddingTop: RFValue(50, 812),
-    top: RFValue(80, 812),
-    flex: 2.5,
+    flex: 2,
     justifyContent: "center",
   },
 
   form: {
-    flex: 5,
+    flex: 6,
     justifyContent: "center",
   },
 
   bottomlayer: {
     flex: 2,
+    justifyContent: "center",
   },
 
   logo: {
     alignSelf: "center",
-    transform: [{ scale: 0.3 }],
-    resizeMode: "center",
+    top: RFValue(50, 812),
+    height: RFValue(180, 812),
     aspectRatio: 1,
   },
 
@@ -167,7 +181,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFF",
     alignContent: "center",
-    justifyContent: "space-evenly",
   },
 
   text: {
@@ -188,6 +201,31 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: "center",
   },
+
+  input_box: {
+    fontSize: RFValue(15, 812),
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 15,
+    backgroundColor: "#fdfbfb",
+    marginVertical: RFValue(5, 812),
+    marginHorizontal: 20,
+    alignSelf: "stretch",
+    marginBottom: RFValue(30, 812),
+  },
+
+  input_text: {
+    marginVertical: 5,
+    marginRight: 5,
+    height: 50,
+    color: "black",
+    borderRadius: 4,
+
+    padding: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "stretch",
+  },
   inputtogether: {
     flexDirection: "row",
     borderColor: "gray",
@@ -201,17 +239,17 @@ const styles = StyleSheet.create({
   },
 
   tinput: {
-    flex: 6,
     marginVertical: 5,
-    marginRight: 5,
-    height: RFValue(40, 812),
+
+    marginRight: 10,
+    height: 50,
     color: "black",
     borderRadius: 4,
 
     padding: 12,
+    alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    alignSelf: "stretch",
   },
   signin: {
     fontSize: 20,
@@ -229,13 +267,14 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
   buttonL: {
-    borderWidth: 1,
+    borderWidth: 0.5,
+    borderColor: "gray",
     height: 50,
     //borderColor: colors.c3,
     marginTop: 15,
     marginHorizontal: 40,
     marginBottom: 30,
-    borderRadius: 30,
+    borderRadius: 25,
     alignItems: "center",
     alignContent: "center",
     justifyContent: "center",

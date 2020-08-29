@@ -25,6 +25,7 @@ export default class Register_1 extends Component {
       count2: 0,
       count3: 0,
       count4: 0,
+      status: false,
     };
     this.selectpurpose = this.selectpurpose.bind(this);
   }
@@ -40,6 +41,7 @@ export default class Register_1 extends Component {
       .onSnapshot((doc) => {
         this.setState({
           name: doc.data().name,
+          status: doc.data().reset_status,
         });
       });
   }
@@ -54,6 +56,9 @@ export default class Register_1 extends Component {
       .doc(user.uid)
       .update({
         purpose: this.state.checked,
+        runninghour: 0,
+        runningmin: 0,
+        count_ex: 0,
       })
       .then(() => {
         this.props.navigation.navigate("Register_4", {
@@ -76,7 +81,11 @@ export default class Register_1 extends Component {
             type="material-community"
             style={styles.backicon}
             onPress={() => {
-              this.props.navigation.navigate("Register_1");
+              if (this.state.status) {
+                this.props.navigation.navigate("Mainpage");
+              } else {
+                this.props.navigation.navigate("Register_1");
+              }
             }}
           />
         </View>
@@ -112,7 +121,7 @@ export default class Register_1 extends Component {
                     checked: "opt1",
                     count1: this.state.count1 + 1,
                   });
-                  if (this.state.count1 > 1) {
+                  if (this.state.count1 > 0) {
                     this.selectpurpose();
                   }
                 }}
@@ -138,13 +147,7 @@ export default class Register_1 extends Component {
                 containerStyle={styles.box}
                 textStyle={styles.check_text}
                 onPress={() => {
-                  this.setState({
-                    checked: "opt2",
-                    count2: this.state.count2 + 1,
-                  });
-                  if (this.state.count2 > 1) {
-                    this.selectpurpose();
-                  }
+                  alert("준비중인 서비스입니다.");
                 }}
               ></CheckBox>
             </ImageBackground>
@@ -168,13 +171,7 @@ export default class Register_1 extends Component {
                 containerStyle={styles.box}
                 textStyle={styles.check_text}
                 onPress={() => {
-                  this.setState({
-                    checked: "opt3",
-                    count3: this.state.count3 + 1,
-                  });
-                  if (this.state.count3 > 1) {
-                    this.selectpurpose();
-                  }
+                  alert("준비중인 서비스입니다.");
                 }}
               ></CheckBox>
             </ImageBackground>
@@ -198,13 +195,7 @@ export default class Register_1 extends Component {
                 containerStyle={styles.box}
                 textStyle={styles.check_text}
                 onPress={() => {
-                  this.setState({
-                    checked: "opt4",
-                    count4: this.state.count4 + 1,
-                  });
-                  if (this.state.count4 > 1) {
-                    this.selectpurpose();
-                  }
+                  alert("준비중인 서비스입니다.");
                 }}
               ></CheckBox>
             </ImageBackground>

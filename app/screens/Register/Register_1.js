@@ -8,6 +8,7 @@ import {
   TextInput,
   Keyboard,
   TouchableWithoutFeedback,
+  ScrollView,
 } from "react-native";
 import firebase from "firebase";
 import "firebase/firestore";
@@ -15,6 +16,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
 import { Icon } from "react-native-elements";
 import Loading from "../Main/Loading";
+import KeyboardSpacer from "react-native-keyboard-spacer";
 
 export default class Register_1 extends Component {
   constructor(props) {
@@ -46,10 +48,7 @@ export default class Register_1 extends Component {
         reset_status: false,
       })
       .then(() => {
-        this.props.navigation.navigate("Register_2", {
-          username: this.state.name,
-          uid: this.state.uid,
-        });
+        this.props.navigation.navigate("Register_2", {});
       })
       .catch((error) => {
         console.log(error);
@@ -108,6 +107,7 @@ export default class Register_1 extends Component {
               </LinearGradient>
             </TouchableOpacity>
           </View>
+          <KeyboardSpacer topSpacing={RFValue(-50, 812)} />
           <View style={styles.footer}>
             <Image
               source={require("../../images/logo_new.png")}
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     borderColor: "#e1f2fb",
     borderWidth: 3,
     borderRadius: 20,
-    height: "80%",
+    height: RFValue(130, 812),
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",

@@ -17,12 +17,26 @@ export default class Register_1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: this.props.route.params.username,
-      uid: this.props.route.params.userid,
+      name: "",
+      uid: "",
       ability: "",
       checked: "",
     };
     this.selectability = this.selectability.bind(this);
+  }
+  componentDidMount() {
+    const user = firebase.auth().currentUser;
+    firebase
+      .firestore()
+      .collection("users")
+      .doc("App")
+      .collection("info")
+      .doc(user.uid)
+      .onSnapshot((doc) => {
+        this.setState({
+          name: doc.data().name,
+        });
+      });
   }
   selectability() {
     const user = firebase.auth().currentUser;
@@ -36,9 +50,7 @@ export default class Register_1 extends Component {
         ability: this.state.checked,
       })
       .then(() => {
-        this.props.navigation.navigate("Register_5", {
-          username: this.state.name,
-        });
+        this.props.navigation.navigate("Register_5", {});
       })
       .catch((error) => {
         console.log(error);

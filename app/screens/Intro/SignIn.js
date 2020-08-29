@@ -17,6 +17,7 @@ import {
 import firebase from "firebase";
 import { LinearGradient } from "expo-linear-gradient";
 import { RFValue } from "react-native-responsive-fontsize";
+import KeyboardSpacer from "react-native-keyboard-spacer";
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -57,9 +58,9 @@ export default class SignIn extends Component {
           loading: false,
         });
         if (e.code == "auth/user-not-found") {
-          alert("User not found, Create new account");
+          alert("회원정보가 없습니다!");
         } else {
-          alert(e.message);
+          alert("입력 정보를 다시 확인해주세요!");
         }
       });
 
@@ -83,72 +84,78 @@ export default class SignIn extends Component {
 
   render() {
     return (
-      /*<KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-        enabled={true}
-      > */
-      <View style={styles.background}>
-        <View style={styles.Theme}>
-          <Image
-            source={require("../../images/logo.png")}
-            style={styles.logo}
-          ></Image>
-        </View>
-
-        <View style={styles.form}>
-          <Text style={styles.inputinfo}>User Email</Text>
-          <View style={styles.input_box}>
-            <TextInput
-              style={styles.input_text}
-              autoCompleteType="email"
-              placeholder="fure@gmail.com"
-              onChangeText={this.handleChangeemail}
-            ></TextInput>
-          </View>
-          <Text style={styles.inputinfo}>Password</Text>
-          <View style={styles.input_box}>
-            <TextInput
-              style={styles.input_text}
-              secureTextEntry
-              placeholder="********"
-              onChangeText={this.handleChangepassword}
-            ></TextInput>
-          </View>
-        </View>
-
-        <View style={styles.bottom_layer}>
-          <TouchableOpacity
-            onPress={() => {
-              this.OnLoginPress();
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={styles.background}>
+          <ScrollView
+            scrollEnabled={true}
+            contentContainerStyle={{
+              height: "100%",
+              justifyContent: "space-between",
             }}
           >
-            <LinearGradient
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              colors={["#f5f7fa", "#c3cfe2"]}
-              style={styles.signin_button}
-            >
-              <Text style={styles.signin}>Sign In</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+            <View style={styles.Theme}>
+              <Image
+                source={require("../../images/logo.png")}
+                style={styles.logo}
+              ></Image>
+            </View>
+            <View style={styles.form}>
+              <Text style={styles.inputinfo}>User Email</Text>
+              <View style={styles.input_box}>
+                <TextInput
+                  style={styles.input_text}
+                  autoCompleteType="email"
+                  placeholder="fure@gmail.com"
+                  onChangeText={this.handleChangeemail}
+                  keyboardType={"email-address"}
+                ></TextInput>
+              </View>
+              <Text style={styles.inputinfo}>Password</Text>
+              <View style={styles.input_box}>
+                <TextInput
+                  style={styles.input_text}
+                  secureTextEntry
+                  placeholder="********"
+                  onChangeText={this.handleChangepassword}
+                ></TextInput>
+              </View>
+            </View>
 
-          <View style={styles.signup}>
-            <Text>Don't have account? </Text>
-            <TouchableOpacity
-              style={styles.signup_button}
-              onPress={() => {
-                this.props.navigation.navigate("Signup");
-              }}
-            >
-              <Text style={{ color: "black", fontWeight: "bold" }}>
-                Sign Up
-              </Text>
-            </TouchableOpacity>
-          </View>
+            <View style={styles.bottom_layer1}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.OnLoginPress();
+                }}
+              >
+                <LinearGradient
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  colors={["#f5f7fa", "#c3cfe2"]}
+                  style={styles.signin_button}
+                >
+                  <Text style={styles.signin}>Sign In</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+            <KeyboardSpacer topSpacing={RFValue(-100, 812)} />
+            <View style={styles.bottom_layer2}>
+              <View style={styles.signup}>
+                <Text>Don't have account? </Text>
+                <TouchableOpacity
+                  style={styles.signup_button}
+                  onPress={() => {
+                    this.props.navigation.navigate("Signup");
+                  }}
+                >
+                  <Text style={{ color: "black", fontWeight: "bold" }}>
+                    Sign Up
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
         </View>
-      </View>
-      //</KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     );
   }
 }
@@ -158,27 +165,30 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: "white",
+    justifyContent: "center",
   },
 
   //layer level 2
   Theme: {
-    paddingTop: RFValue(50, 812),
-    top: RFValue(80, 812),
-
-    flex: 2.5,
+    flex: 3,
     justifyContent: "center",
-    //position: "absolute",
   },
   form: {
-    flex: 2,
-
+    flex: 2.5,
+    justifyContent: "center",
     //top: 0,
     //position: "absolute",
   },
 
-  bottom_layer: {
-    flex: 3,
-
+  bottom_layer1: {
+    flex: 1.5,
+    justifyContent: "center",
+    //top: 0,
+    //position: "absolute",
+  },
+  bottom_layer2: {
+    flex: 1,
+    justifyContent: "center",
     //top: 0,
     //position: "absolute",
   },
@@ -190,9 +200,10 @@ const styles = StyleSheet.create({
   //level 3 - Form
   logo: {
     alignSelf: "center",
-    transform: [{ scale: 0.3 }],
-    resizeMode: "center",
+    top: RFValue(50, 812),
+    height: RFValue(180, 812),
     aspectRatio: 1,
+    marginBottom: RFValue(30, 812),
   },
 
   inputinfo: {
@@ -202,20 +213,18 @@ const styles = StyleSheet.create({
   },
 
   input_box: {
-    flex: 1,
-    flexDirection: "row",
+    fontSize: RFValue(15, 812),
     borderColor: "gray",
     borderWidth: 1,
     borderRadius: 15,
     backgroundColor: "#fdfbfb",
-    marginVertical: 5,
+    marginVertical: RFValue(5, 812),
     marginHorizontal: 20,
     alignSelf: "stretch",
-    marginBottom: 30,
+    marginBottom: RFValue(30, 812),
   },
 
   input_text: {
-    flex: 6,
     marginVertical: 5,
     marginRight: 5,
     height: 50,
@@ -233,7 +242,7 @@ const styles = StyleSheet.create({
   signup: {
     flexDirection: "row",
     //position: "absolute",
-    bottom: 0,
+    bottom: RFValue(30, 812),
     alignSelf: "center",
   },
 
@@ -247,9 +256,8 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     height: 50,
 
-    marginTop: 15,
     marginHorizontal: 40,
-    marginBottom: 30,
+
     borderRadius: 25,
     alignItems: "center",
     alignContent: "center",

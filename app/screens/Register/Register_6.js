@@ -8,24 +8,39 @@ import {
   TextInput,
   Keyboard,
   TouchableWithoutFeedback,
+  ScrollView,
 } from "react-native";
 import firebase from "firebase";
 import "firebase/firestore";
 import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
 import { Icon } from "react-native-elements";
+import KeyboardSpacer from "react-native-keyboard-spacer";
 
 export default class Register_1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: this.props.route.params.username,
-      uid: this.props.route.params.userid,
+      name: "",
+      uid: "",
       weight: this.props.route.params.weight_pre,
       goal: null,
-      visualize: false,
     };
     this.handleChange_goal = this.handleChange_goal.bind(this);
+  }
+  componentDidMount() {
+    const user = firebase.auth().currentUser;
+    firebase
+      .firestore()
+      .collection("users")
+      .doc("App")
+      .collection("info")
+      .doc(user.uid)
+      .onSnapshot((doc) => {
+        this.setState({
+          name: doc.data().name,
+        });
+      });
   }
   handleChange_goal(newText) {
     this.setState({
@@ -57,14 +72,20 @@ export default class Register_1 extends Component {
   }
 
   render() {
-    if (!this.state.visualize) {
-      return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <LinearGradient
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 0.3 }}
-            colors={["#bbe1fa", "white"]}
-            style={styles.container}
+    return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <LinearGradient
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 0.3 }}
+          colors={["#bbe1fa", "white"]}
+          style={styles.container}
+        >
+          <ScrollView
+            scrollEnabled={false}
+            contentContainerStyle={{
+              height: "100%",
+              justifyContent: "space-between",
+            }}
           >
             <View style={styles.header}>
               <Icon
@@ -81,7 +102,6 @@ export default class Register_1 extends Component {
             <View style={styles.top}>
               <Text style={styles.title}>
                 {this.state.name} 님의 목표 체중은 얼마인가요?{"\n"}
-                체감되는 변화를 보여드릴게요
               </Text>
             </View>
             <View style={styles.middle}>
@@ -90,19 +110,20 @@ export default class Register_1 extends Component {
                 목표 체중을 입력해주세요.{"\n"}
                 {"\n"}
               </Text>
-              <TextInput
-                style={styles.goalinput}
-                placeholder=""
-                onChangeText={this.handleChange_goal}
-                keyboardType="numeric"
-              ></TextInput>
+              <View style={styles.info}>
+                <TextInput
+                  style={styles.goalinput}
+                  placeholder=""
+                  onChangeText={this.handleChange_goal}
+                  keyboardType="numeric"
+                ></TextInput>
+                <Text style={styles.ask_goal}>{"  "}kg</Text>
+              </View>
             </View>
             <View style={styles.bottom}>
               <TouchableOpacity
                 onPress={() => {
-                  this.setState({
-                    visualize: true,
-                  });
+                  this.selectgoal();
                 }}
               >
                 <LinearGradient
@@ -111,63 +132,12 @@ export default class Register_1 extends Component {
                   colors={["#303966", "#c3cfe2"]}
                   style={styles.next_button}
                 >
-                  <Text style={styles.button_text}>확인하기</Text>
+                  <Text style={styles.button_text}>다음</Text>
                 </LinearGradient>
               </TouchableOpacity>
             </View>
-            <View style={styles.footer}>
-              <Image
-                source={require("../../images/logo_new.png")}
-                style={styles.logo}
-              ></Image>
-            </View>
-          </LinearGradient>
-        </TouchableWithoutFeedback>
-      );
-    } else {
-      return (
-        <LinearGradient
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 0.3 }}
-          colors={["#bbe1fa", "white"]}
-          style={styles.container}
-        >
-          <View style={styles.header}>
-            <Icon
-              name="arrow-left"
-              size={30}
-              type="material-community"
-              style={styles.backicon}
-              onPress={() => {
-                this.props.navigation.navigate("Register_5");
-              }}
-            />
-            <Text style={styles.stage}>4/5</Text>
-          </View>
-          <View style={styles.top}>
-            <Text style={styles.title}>
-              {this.state.name} 님의 예상변화입니다!
-            </Text>
-          </View>
-          <View style={styles.middle}>
-            <View style={styles.result}></View>
-          </View>
-          <View style={styles.bottom}>
-            <TouchableOpacity
-              onPress={() => {
-                this.selectgoal();
-              }}
-            >
-              <LinearGradient
-                start={{ x: 0.1, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                colors={["#303966", "#c3cfe2"]}
-                style={styles.next_button}
-              >
-                <Text style={styles.button_text}>다음</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
+            <KeyboardSpacer topSpacing={RFValue(0, 812)} />
+          </ScrollView>
           <View style={styles.footer}>
             <Image
               source={require("../../images/logo_new.png")}
@@ -175,8 +145,8 @@ export default class Register_1 extends Component {
             ></Image>
           </View>
         </LinearGradient>
-      );
-    }
+      </TouchableWithoutFeedback>
+    );
   }
 }
 
@@ -225,12 +195,17 @@ const styles = StyleSheet.create({
   goalinput: {
     borderColor: "gray",
     borderBottomWidth: 1,
-    width: RFValue(200, 812),
+    width: RFValue(160, 812),
     marginHorizontal: RFValue(20, 812),
     fontSize: RFValue(25, 812),
     bottom: RFValue(30, 812),
     textAlign: "center",
     alignSelf: "center",
+  },
+  info: {
+    alignItems: "center",
+    alignSelf: "center",
+    flexDirection: "row",
   },
 
   //second page

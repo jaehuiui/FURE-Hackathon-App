@@ -35,6 +35,7 @@ export default class App extends React.Component {
       sumdist: 0,
       count3: true,
       count2: true,
+      weight: 0,
       count1: true,
       hour1: 0,
       hour2: 0,
@@ -53,7 +54,7 @@ export default class App extends React.Component {
     console.disableYellowBox = true;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this._subscribe();
     const user = firebase.auth().currentUser;
     firebase
@@ -64,6 +65,7 @@ export default class App extends React.Component {
       .doc(user.uid)
       .onSnapshot((doc) => {
         this.setState({
+          weight: Number(doc.data().weight_today),
           today_count: Number(doc.data().today_count),
           today_dist: Number(doc.data().today_dist),
         });
@@ -88,15 +90,26 @@ export default class App extends React.Component {
       });
   }
 
+  playSound() {
+    alert("준비 중인 서비스입니다.");
+    console.log("play");
+  }
+
   _subscribe = () => {
     var toc = this.state.todaycount;
     var tod = this.state.todaydist;
     this._subscription = Pedometer.watchStepCount((result) => {
-      var timearr = this.currentTime.split(":");
+      if (this.currentTime !== undefined) {
+        var time = String(this.currentTime);
+      } else {
+        var time = "00:00:00:000";
+      }
+      var timearr = time.split(":");
       var time_hour1 = Number.parseInt(timearr[0], 10);
       var time_min1 = Number.parseInt(timearr[1], 10);
       var time_sec1 = Number.parseInt(timearr[2], 10);
       var total = time_hour1 + time_min1 / 60 + time_sec1 / 3600;
+      var total_min = time_hour1 * 60 + time_min1 + time_sec1 / 60;
       this.setState({
         currentStepCount: result.steps,
         currentmeter: Number(this.state.currentStepCount) * 0.7,
@@ -104,9 +117,21 @@ export default class App extends React.Component {
         min1: Number(time_min1),
         speed: (Number(this.state.currentStepCount) * 0.7) / 1000 / total,
       });
+
       if (Number.parseInt(this.state.speed, 10) > 6) {
         this.setState({
           msg: true,
+          kcal:
+            ((((Number(this.state.speed) / 1.6 - 4.2182) / 0.5682) *
+              3.5 *
+              Number(this.state.weight)) /
+              200) *
+            total_min,
+        });
+      } else {
+        this.setState({
+          msg: false,
+          kcal: ((4.5 * 3.5 * Number(this.state.weight)) / 200) * total_min,
         });
       }
       if (Number(this.state.currentmeter) < 1000) {
@@ -234,7 +259,9 @@ export default class App extends React.Component {
             </View>
             <View style={styles.second_ele}>
               <Text style={styles.dist}>
-                {this.state.dist}
+                {isNaN(this.state.kcal)
+                  ? 0
+                  : Number(this.state.kcal).toFixed(1)}
                 {"\n"}
               </Text>
               <Text style={styles.dist_text}>칼로리 (Kcal)</Text>
@@ -251,9 +278,19 @@ export default class App extends React.Component {
           <View style={styles.middle}>
             <Text style={styles.advice}>
               {!this.state.msg
-                ? "조금 더 속도를 올려볼까요?\n화이팅!"
-                : "오늘 컨디션이 좋으시군요?\n플랜대로 잘 뛰고 있어요!"}
+                ? "조금 더 속도를 올려볼까요?\n\n화이팅!\n"
+                : "오늘 컨디션이 좋으시군요?\n\n플랜대로 잘 뛰고 있어요!\n"}
             </Text>
+            <TouchableOpacity>
+              <Text
+                style={styles.audio}
+                onPress={() => {
+                  this.playSound();
+                }}
+              >
+                오디오 코칭 듣기
+              </Text>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.footer}>
@@ -293,6 +330,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     fontSize: RFValue(30, 812),
+    fontWeight: "bold",
   },
 
   //top
@@ -311,17 +349,20 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   start_button: {
-    fontSize: RFValue(20, 812),
+    fontSize: RFValue(23, 812),
     color: "#0f4c75",
+    fontWeight: "bold",
   },
   reset_button: {
-    fontSize: RFValue(20, 812),
+    fontSize: RFValue(23, 812),
     color: "gray",
+    fontWeight: "bold",
   },
 
   //top2
   top2: {
     flex: 1,
+    marginTop: RFValue(20, 812),
     flexDirection: "row",
     justifyContent: "center",
   },
@@ -375,7 +416,14 @@ const styles = StyleSheet.create({
   },
   advice: {
     textAlign: "center",
-    fontSize: RFValue(25, 812),
+    fontSize: RFValue(30, 812),
+    fontWeight: "bold",
+    color: "#005086",
+  },
+  audio: {
+    fontSize: RFValue(20, 812),
+    color: "#005086",
+    textAlign: "center",
   },
 
   //footer
