@@ -16,6 +16,7 @@ import { TextInput } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
 import { RFValue } from "react-native-responsive-fontsize";
 import KeyboardSpacer from "react-native-keyboard-spacer";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
 export default class CreateScreen extends React.Component {
   constructor(props) {
@@ -98,6 +99,7 @@ export default class CreateScreen extends React.Component {
                 style={styles.logo}
               ></Image>
             </View>
+
             <View style={styles.form}>
               <Text style={styles.inputinfo}>User Email</Text>
               <View style={styles.input_box}>

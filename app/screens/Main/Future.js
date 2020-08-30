@@ -16,6 +16,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
 import { Icon } from "react-native-elements";
 import KeyboardSpacer from "react-native-keyboard-spacer";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
 export default class Today extends Component {
   constructor(props) {
@@ -269,6 +270,7 @@ export default class Today extends Component {
             <Text style={styles.plan}></Text>
           </View>
           <View style={styles.middle}></View>
+
           <ScrollView scrollEnabled={false}>
             <View style={styles.bottom}>
               <View style={styles.form}>

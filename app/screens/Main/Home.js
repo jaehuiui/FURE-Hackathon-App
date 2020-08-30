@@ -481,7 +481,7 @@ export default class Today extends Component {
                 animate={{ duration: 2000 }}
                 domain={{
                   x: [0, this.state.axis_x],
-                  y: [this.state.goal - 2, this.state.weight + 1],
+                  y: [this.state.goal - 1, this.state.weight + 1],
                 }}
                 containerComponent={
                   <VictoryZoomVoronoiContainer

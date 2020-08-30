@@ -30,6 +30,7 @@
     "react-native-chart-kit": "^6.6.0",
     "react-native-elements": "^2.2.1",
     "react-native-gesture-handler": "~1.6.0",
+    "react-native-keyboard-aware-scrollview": "^2.1.0",
     "react-native-keyboard-spacer": "^0.4.1",
     "react-native-material-ui": "^1.30.1",
     "react-native-reanimated": "~1.9.0",

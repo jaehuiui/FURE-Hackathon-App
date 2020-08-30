@@ -13,6 +13,7 @@ export default class Today extends Component {
       name: "",
       date: "",
       email: "",
+      count: 0,
     };
   }
 
@@ -52,6 +53,11 @@ export default class Today extends Component {
       .catch((error) => {
         console.log(error);
       });
+  }
+  componentWillUnmount() {
+    this.setState({
+      count: 0,
+    });
   }
 
   render() {
@@ -103,7 +109,14 @@ export default class Today extends Component {
         <View style={styles.footer}>
           <TouchableOpacity
             onPress={() => {
-              this.onPressReset();
+              if (this.state.count == 0) {
+                alert("기존 플랜이 초기화됩니다!");
+                this.setState({
+                  count: this.state.count + 1,
+                });
+              } else if (this.state.count == 1) {
+                this.onPressReset();
+              }
             }}
           >
             <LinearGradient

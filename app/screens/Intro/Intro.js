@@ -24,7 +24,7 @@ export default class Intro extends Component {
           </View>
         </View>
         <View style={styles.middle_layer_1}>
-          <Text>
+          <Text style={styles.mission}>
             <Text style={styles.explanation_1}>Aim</Text>
             <Text style={styles.explanation}> your </Text>
             <Text style={styles.explanation_1}>Fit</Text>
@@ -62,12 +62,16 @@ const styles = StyleSheet.create({
   },
   middle_layer_1: {
     flex: 4,
+    alignItems: "center",
   },
   bottom_layer_1: {
     flex: 2,
     justifyContent: "center",
 
     marginBottom: RFValue(50, 812),
+  },
+  mission: {
+    textAlign: "center",
   },
   logo_box: {
     justifyContent: "center",

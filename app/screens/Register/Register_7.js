@@ -16,6 +16,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
 import { Icon, Input } from "react-native-elements";
 import KeyboardSpacer from "react-native-keyboard-spacer";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
 export default class Register_1 extends Component {
   constructor(props) {
@@ -118,10 +119,11 @@ export default class Register_1 extends Component {
                 운동에 얼마나 시간을 내실 수 있나요?
               </Text>
             </View>
+
             <View style={styles.middle}>
               <View style={styles.inputinfo}>
                 <Text style={styles.question}>
-                  주당 몇번 운동하실 수 있나요?{"\n"}
+                  한 주에 며칠 정도 운동하실 수 있나요?{"\n"}
                 </Text>
                 <TextInput
                   placeholder=""
@@ -133,7 +135,7 @@ export default class Register_1 extends Component {
 
               <View style={styles.inputinfo}>
                 <Text style={styles.question}>
-                  몇시간 정도 운동하세요?{"\n"}
+                  하루에 몇시간 정도 운동하세요?{"\n"}
                 </Text>
                 <TextInput
                   placeholder=""
@@ -143,10 +145,17 @@ export default class Register_1 extends Component {
                 />
               </View>
             </View>
+
             <View style={styles.bottom}>
               <TouchableOpacity
                 onPress={() => {
-                  this.selecttime();
+                  if (Number(this.state.hourperday) > 24) {
+                    alert("하루는 24시간인거 잊지 않으셨죠?");
+                  } else if (Number(this.state.dayperweek) > 7) {
+                    alert("일주일은 7일인거 잊지 않으셨죠?");
+                  } else {
+                    this.selecttime();
+                  }
                 }}
               >
                 <LinearGradient

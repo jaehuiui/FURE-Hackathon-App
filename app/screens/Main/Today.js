@@ -241,6 +241,7 @@ export default class Today extends Component {
         weight_today: this.state.new_weight,
       });
     this.textInput.clear();
+    alert("감사합니다!");
   }
 
   render() {

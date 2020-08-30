@@ -2,9 +2,9 @@
   "expo": {
     "name": "fure",
     "slug": "fure",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/fure_icon_square.png",
     "splash": {
       "image": "./app/images/logo.png",
       "resizeMode": "contain",
@@ -21,11 +21,12 @@
     },
     "android": {
       "package": "com.mypackage.fure",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": ""
+    "description": "FU:RE ver 1.0.2"
   }
 }
