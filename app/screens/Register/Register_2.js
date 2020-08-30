@@ -20,7 +20,7 @@ export default class Register_1 extends Component {
       name: "",
       uid: "",
       purpose: "",
-      checked: "",
+      checked: "opt1",
       count1: 0,
       count2: 0,
       count3: 0,
@@ -117,13 +117,7 @@ export default class Register_1 extends Component {
                 containerStyle={styles.box}
                 textStyle={styles.check_text}
                 onPress={() => {
-                  this.setState({
-                    checked: "opt1",
-                    count1: this.state.count1 + 1,
-                  });
-                  if (this.state.count1 > 0) {
-                    this.selectpurpose();
-                  }
+                  this.selectpurpose();
                 }}
               ></CheckBox>
             </ImageBackground>

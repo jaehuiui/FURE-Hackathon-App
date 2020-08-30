@@ -13,7 +13,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
 import { Icon } from "react-native-elements";
 import axios from "axios";
-import Loading from "../Main/Loading";
+import Loading from "../Main/Loading_reg";
 import { ThemeProvider } from "@react-navigation/native";
 import Swiper from "react-native-swiper";
 
@@ -139,6 +139,7 @@ export default class Register_1 extends Component {
         defaultplan: "2month",
         reset_status: false,
         startdate: this.state.startdate,
+        first: false,
       })
       .then(() => {
         setTimeout(
@@ -170,6 +171,7 @@ export default class Register_1 extends Component {
         defaultplan: "4month",
         reset_status: false,
         startdate: this.state.startdate,
+        first: false,
       })
       .then(() => {
         setTimeout(
@@ -201,6 +203,7 @@ export default class Register_1 extends Component {
         defaultplan: "6month",
         reset_status: false,
         startdate: this.state.startdate,
+        first: false,
       })
       .then(() => {
         setTimeout(
@@ -247,8 +250,10 @@ export default class Register_1 extends Component {
             </View>
             <Swiper
               showsButtons={true}
-              autoplay={false}
+              autoplay={true}
               containerStyle={styles.middle}
+              activeDotColor="#2866ab"
+              dotColor="#eeeeee"
             >
               <View style={styles.swipe}>
                 <View style={styles.list}>

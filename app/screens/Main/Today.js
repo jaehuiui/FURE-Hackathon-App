@@ -10,6 +10,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   ImageBackground,
+  Alert,
 } from "react-native";
 import firebase from "firebase";
 import "firebase/firestore";
@@ -44,6 +45,7 @@ export default class Today extends Component {
       humidity: "",
       uri: "",
       sibal: 0,
+      weight: 0,
     };
     this.handleChangename = this.handleChangename.bind(this);
   }
@@ -66,6 +68,7 @@ export default class Today extends Component {
           plan6_dist: Number(doc.data().plan6),
           defaultplan: Number.parseInt(doc.data().defaultplan),
           start_date: doc.data().startdate,
+          weight: doc.data().goal,
         });
 
         var timearr = this.state.start_date.split("-").map(Number);
@@ -241,7 +244,23 @@ export default class Today extends Component {
         weight_today: this.state.new_weight,
       });
     this.textInput.clear();
-    alert("감사합니다!");
+    if (Number(this.state.weight) >= Number(this.state.new_weight)) {
+      Alert.alert(
+        "목표를 달성하셨습니다",
+        "축하드립니다!",
+        [
+          {
+            text: "친구에게 공유하기",
+            onPress: () => console.log("Ask me later pressed"),
+          },
+
+          { text: "OK", onPress: () => console.log("OK Pressed") },
+        ],
+        { cancelable: false }
+      );
+    } else {
+      alert("감사합니다!");
+    }
   }
 
   render() {
@@ -352,7 +371,7 @@ export default class Today extends Component {
                     overflow: "hidden",
                     alignSelf: "center",
                     justifyContent: "center",
-                    opacity: 0.3,
+                    opacity: 0.7,
                   }}
                 >
                   <View style={styles.planbox_test}>
@@ -496,7 +515,7 @@ const styles = StyleSheet.create({
   },
   plan_text_2: {
     textAlign: "center",
-    marginTop: RFValue(80, 812),
+
     fontSize: RFValue(25, 812),
     fontWeight: "600",
     color: "white",

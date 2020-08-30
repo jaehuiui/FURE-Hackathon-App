@@ -46,6 +46,7 @@ export default class Register_1 extends Component {
       .set({
         name: this.state.name,
         reset_status: false,
+        first: true,
       })
       .then(() => {
         this.props.navigation.navigate("Register_2", {});

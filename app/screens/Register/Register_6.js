@@ -23,7 +23,7 @@ export default class Register_1 extends Component {
     this.state = {
       name: "",
       uid: "",
-      weight: this.props.route.params.weight_pre,
+      weight: 0,
       goal: null,
     };
     this.handleChange_goal = this.handleChange_goal.bind(this);
@@ -39,6 +39,7 @@ export default class Register_1 extends Component {
       .onSnapshot((doc) => {
         this.setState({
           name: doc.data().name,
+          weight: doc.data().weight,
         });
       });
   }
@@ -123,7 +124,11 @@ export default class Register_1 extends Component {
             <View style={styles.bottom}>
               <TouchableOpacity
                 onPress={() => {
-                  this.selectgoal();
+                  if (Number(this.state.goal) >= Number(this.state.weight)) {
+                    alert("목표 체중이 지금보다 높아요..");
+                  } else {
+                    this.selectgoal();
+                  }
                 }}
               >
                 <LinearGradient

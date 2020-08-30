@@ -72,6 +72,7 @@ export default class Today extends Component {
       min: 0,
       count_ex: 0,
       weight_today: 0,
+      first: true,
     };
   }
 
@@ -98,6 +99,7 @@ export default class Today extends Component {
               if (!doc.exists) {
                 this.setState({
                   current: false,
+                  first: true,
                 });
                 setTimeout(
                   function () {
@@ -146,6 +148,7 @@ export default class Today extends Component {
                       min: Number(doc.data().runningmin),
                       count_ex: Number(doc.data().count_ex),
                       weight_today: Number(doc.data().weight_today),
+                      first: doc.data().first,
                     });
                   });
                 /*console.log("name : " + this.state.name);
@@ -319,52 +322,6 @@ export default class Today extends Component {
     const VictoryZoomVoronoiContainer = createContainer("zoom", "voronoi");
     if (this.state.isLoading) {
       return <Loading />;
-    } else if (this.state.reset_status) {
-      return (
-        <View style={styles.container}>
-          <View style={styles.header1}>
-            <Icon
-              name="arrow-left"
-              size={30}
-              type="material-community"
-              style={styles.backicon}
-              onPress={() => {
-                this.props.navigation.navigate("SignIn");
-              }}
-            />
-          </View>
-          <View style={styles.top1}>
-            <Text style={styles.title1}>
-              목표 재설정이 완료되지 않았습니다..
-            </Text>
-          </View>
-          <View style={styles.middle1}>
-            <Text style={styles.title1}>다시 진행해주세요</Text>
-          </View>
-          <View style={styles.bottom1}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("Register_2");
-              }}
-            >
-              <LinearGradient
-                start={{ x: 0.1, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                colors={["#303966", "#c3cfe2"]}
-                style={styles.next_button}
-              >
-                <Text style={styles.button_text}>다시 시작하기</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.footer1}>
-            <Image
-              source={require("../../images/logo_new.png")}
-              style={styles.logo}
-            ></Image>
-          </View>
-        </View>
-      );
     } else if (!this.state.current && !this.state.isLoading) {
       return (
         <View style={styles.container}>
@@ -411,186 +368,295 @@ export default class Today extends Component {
           </View>
         </View>
       );
-    } else if (this.state.coefficient_def == 0) {
-      return (
-        <View style={styles.container}>
-          <View style={styles.header1}>
-            <Icon
-              name="arrow-left"
-              size={30}
-              type="material-community"
-              style={styles.backicon}
-              onPress={() => {
-                this.props.navigation.navigate("SignIn");
-              }}
-            />
-          </View>
-          <View style={styles.top1}>
-            <Text style={styles.title1}>플랜 선택이 완료되지 않았어요..</Text>
-          </View>
-          <View style={styles.middle1}>
-            <Text style={styles.title1}>다시 목표를 세워볼까요?</Text>
-          </View>
-          <View style={styles.bottom1}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("Register_2");
-              }}
-            >
-              <LinearGradient
-                start={{ x: 0.1, y: 0.5 }}
-                end={{ x: 1, y: 0.5 }}
-                colors={["#303966", "#c3cfe2"]}
-                style={styles.next_button}
-              >
-                <Text style={styles.button_text}>다시 시작하기</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.footer1}>
-            <Image
-              source={require("../../images/logo_new.png")}
-              style={styles.logo}
-            ></Image>
-          </View>
-        </View>
-      );
-    } else if (this.state.current && !this.state.isLoading) {
-      return (
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <View style={styles.topbanner}>
-              <Text style={styles.title}>
-                <Text style={styles.name}>{this.state.name}</Text>
-                <Text style={styles.name2}> 님</Text>
-              </Text>
-              <Text style={styles.subtitle}>
-                이번 주도 계획대로 잘하고 계세요!
-              </Text>
-            </View>
-          </View>
-          <View style={styles.top}>
-            <View style={styles.graphbox}>
-              <Text style={styles.graphtitle}>
-                진행률 : {this.state.progress}
-              </Text>
-
-              <VictoryChart
-                theme={VictoryTheme.grayscale}
-                width={Dimensions.get("window").width * 0.95}
-                animate={{ duration: 2000 }}
-                domain={{
-                  x: [0, this.state.axis_x],
-                  y: [this.state.goal - 1, this.state.weight + 1],
+    } else {
+      if (this.state.first) {
+        return (
+          <View style={styles.container}>
+            <View style={styles.header1}>
+              <Icon
+                name="arrow-left"
+                size={30}
+                type="material-community"
+                style={styles.backicon}
+                onPress={() => {
+                  this.props.navigation.navigate("SignIn");
                 }}
-                containerComponent={
-                  <VictoryZoomVoronoiContainer
-                    labels={({ datum }) =>
-                      `목표까지 ${(this.state.weight - datum.y).toFixed(1)}kg`
-                    }
-                    minimumZoom={{ x: 300, y: 20 }}
-                  />
-                }
+              />
+            </View>
+            <View style={styles.top1}>
+              <Text style={styles.title1}>
+                목표 설정이 완료되지 않았습니다..
+              </Text>
+            </View>
+            <View style={styles.middle1}>
+              <Text style={styles.title1}>다시 진행해주세요</Text>
+            </View>
+            <View style={styles.bottom1}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("Register_2");
+                }}
               >
-                <VictoryAxis
-                  tickValues={[
-                    0,
-                    this.state.axis_x * 0.25,
-                    this.state.axis_x * 0.5,
-                    this.state.axis_x * 0.75,
-                    this.state.axis_x,
-                    this.state.axis_x * 1.25,
-                  ]}
-                  tickFormat={[
-                    "시작",
-                    this.state.axis1,
-                    this.state.axis2,
-                    this.state.axis3,
-                    this.state.axis4,
-                    "",
-                  ]}
-                />
-                <VictoryAxis
-                  dependentAxis
-                  tickValues={[
-                    this.state.goal - (this.state.weight - this.state.goal) / 3,
-                    this.state.goal,
-                    (this.state.weight - this.state.goal) / 3 + this.state.goal,
-                    ((this.state.weight - this.state.goal) * 2) / 3 +
-                      this.state.goal,
-                    this.state.weight,
-                  ]}
-                  tickFormat={(tick) => `${Math.round(tick)}kg`}
-                />
-                <VictoryLine
-                  style={{
-                    data: { stroke: "#0f4c75", strokeWidth: 2 },
-                    parent: { border: "1px solid #ccc" },
-                  }}
-                  y={(d) =>
-                    (Math.log(
-                      1 /
-                        ((d.x / 24) * this.state.coefficient_def +
-                          this.state.const_def)
-                    ) /
-                      0.279) *
-                    (this.state.height / 100) *
-                    (this.state.height / 100)
-                  }
-                />
-                <VictoryLine
-                  interpolation="cardinal"
-                  style={{
-                    data: { stroke: "#f67280", strokeWidth: 2 },
-                    parent: { border: "1px solid #ccc" },
-                  }}
-                  data={[
-                    { x: 0, y: this.state.weight },
-                    {
-                      x: Number(this.state.gap_date) - 1,
-                      y: Number(this.state.weight_today),
-                    },
-                  ]}
-                />
-              </VictoryChart>
+                <LinearGradient
+                  start={{ x: 0.1, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
+                  colors={["#303966", "#c3cfe2"]}
+                  style={styles.next_button}
+                >
+                  <Text style={styles.button_text}>다시 시작하기</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.footer1}>
+              <Image
+                source={require("../../images/logo_new.png")}
+                style={styles.logo}
+              ></Image>
             </View>
           </View>
-          <View style={styles.middle}>
-            <View style={styles.thingment}>
-              <View style={styles.encourage}>
-                <Text style={styles.ex_num}>
-                  <Text style={styles.bold}>
-                    {isNaN(this.state.count_ex) ? 0 : this.state.count_ex}
-                  </Text>
-                  <Text style={styles.unit}> 회{"\n"}</Text>
-                  <Text style={styles.unit_bottom}>운동횟수</Text>
-                </Text>
-                <Text style={styles.ex_hour}>
-                  <Text style={styles.bold}>
-                    {isNaN(this.state.hour) ? 0 : this.state.hour}
-                  </Text>
-                  <Text style={styles.unit}> 시간{"  "}</Text>
-                  <Text style={styles.bold}>
-                    {isNaN(this.state.min) ? 0 : this.state.min}
-                  </Text>
-                  <Text style={styles.unit}> 분{"\n"}</Text>
-                  <Text style={styles.unit_bottom}>운동시간</Text>
+        );
+      } else {
+        if (this.state.reset_status) {
+          return (
+            <View style={styles.container}>
+              <View style={styles.header1}>
+                <Icon
+                  name="arrow-left"
+                  size={30}
+                  type="material-community"
+                  style={styles.backicon}
+                  onPress={() => {
+                    this.props.navigation.navigate("SignIn");
+                  }}
+                />
+              </View>
+              <View style={styles.top1}>
+                <Text style={styles.title1}>
+                  목표 재설정이 완료되지 않았습니다..
                 </Text>
               </View>
+              <View style={styles.middle1}>
+                <Text style={styles.title1}>다시 진행해주세요</Text>
+              </View>
+              <View style={styles.bottom1}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate("Register_2");
+                  }}
+                >
+                  <LinearGradient
+                    start={{ x: 0.1, y: 0.5 }}
+                    end={{ x: 1, y: 0.5 }}
+                    colors={["#303966", "#c3cfe2"]}
+                    style={styles.next_button}
+                  >
+                    <Text style={styles.button_text}>다시 시작하기</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.footer1}>
+                <Image
+                  source={require("../../images/logo_new.png")}
+                  style={styles.logo}
+                ></Image>
+              </View>
             </View>
-          </View>
-          <View style={styles.bottom}>
-            <View style={styles.eat}>
-              <Text style={styles.recommendation}>
-                <Text style={styles.rec_bold}>{this.state.name}</Text>
-                님의 하루 권장 섭취 칼로리는 {"\n"}{" "}
-                <Text style={styles.rec_bold}>{this.state.kcal}</Text>
-                <Text style={styles.recommendation}>Kcal입니다!</Text>
-              </Text>
-            </View>
-          </View>
-        </View>
-      );
+          );
+        } else {
+          if (this.state.coefficient_def == 0) {
+            return (
+              <View style={styles.container}>
+                <View style={styles.header1}>
+                  <Icon
+                    name="arrow-left"
+                    size={30}
+                    type="material-community"
+                    style={styles.backicon}
+                    onPress={() => {
+                      this.props.navigation.navigate("SignIn");
+                    }}
+                  />
+                </View>
+                <View style={styles.top1}>
+                  <Text style={styles.title1}>
+                    플랜 선택이 완료되지 않았어요..
+                  </Text>
+                </View>
+                <View style={styles.middle1}>
+                  <Text style={styles.title1}>다시 목표를 세워볼까요?</Text>
+                </View>
+                <View style={styles.bottom1}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.props.navigation.navigate("Register_2");
+                    }}
+                  >
+                    <LinearGradient
+                      start={{ x: 0.1, y: 0.5 }}
+                      end={{ x: 1, y: 0.5 }}
+                      colors={["#303966", "#c3cfe2"]}
+                      style={styles.next_button}
+                    >
+                      <Text style={styles.button_text}>다시 시작하기</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.footer1}>
+                  <Image
+                    source={require("../../images/logo_new.png")}
+                    style={styles.logo}
+                  ></Image>
+                </View>
+              </View>
+            );
+          } else {
+            if (this.state.current && !this.state.isLoading) {
+              return (
+                <View style={styles.container}>
+                  <View style={styles.header}>
+                    <View style={styles.topbanner}>
+                      <Text style={styles.title}>
+                        <Text style={styles.name}>{this.state.name}</Text>
+                        <Text style={styles.name2}> 님</Text>
+                      </Text>
+                      <Text style={styles.subtitle}>
+                        이번 주도 계획대로 잘하고 계세요!
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.top}>
+                    <View style={styles.graphbox}>
+                      <Text style={styles.graphtitle}>
+                        진행률 : {this.state.progress}
+                      </Text>
+
+                      <VictoryChart
+                        theme={VictoryTheme.grayscale}
+                        width={Dimensions.get("window").width * 0.95}
+                        height={RFValue(300, 812)}
+                        animate={{ duration: 2000 }}
+                        domain={{
+                          x: [0, this.state.axis_x],
+                          y: [this.state.goal - 1, this.state.weight + 1],
+                        }}
+                        containerComponent={
+                          <VictoryZoomVoronoiContainer
+                            labels={({ datum }) =>
+                              `목표까지 ${(this.state.weight - datum.y).toFixed(
+                                1
+                              )}kg`
+                            }
+                            minimumZoom={{ x: 300, y: 20 }}
+                          />
+                        }
+                      >
+                        <VictoryAxis
+                          tickValues={[
+                            0,
+                            this.state.axis_x * 0.25,
+                            this.state.axis_x * 0.5,
+                            this.state.axis_x * 0.75,
+                            this.state.axis_x,
+                            this.state.axis_x * 1.25,
+                          ]}
+                          tickFormat={[
+                            "시작",
+                            this.state.axis1,
+                            this.state.axis2,
+                            this.state.axis3,
+                            this.state.axis4,
+                            "",
+                          ]}
+                        />
+                        <VictoryAxis
+                          dependentAxis
+                          tickValues={[
+                            this.state.goal -
+                              (this.state.weight - this.state.goal) / 3,
+                            this.state.goal,
+                            (this.state.weight - this.state.goal) / 3 +
+                              this.state.goal,
+                            ((this.state.weight - this.state.goal) * 2) / 3 +
+                              this.state.goal,
+                            this.state.weight,
+                          ]}
+                          tickFormat={(tick) => `${Math.round(tick)}kg`}
+                        />
+                        <VictoryLine
+                          style={{
+                            data: { stroke: "#0f4c75", strokeWidth: 2 },
+                            parent: { border: "1px solid #ccc" },
+                          }}
+                          y={(d) =>
+                            (Math.log(
+                              1 /
+                                ((d.x / 24) * this.state.coefficient_def +
+                                  this.state.const_def)
+                            ) /
+                              0.279) *
+                            (this.state.height / 100) *
+                            (this.state.height / 100)
+                          }
+                        />
+                        <VictoryLine
+                          interpolation="cardinal"
+                          style={{
+                            data: { stroke: "#f67280", strokeWidth: 2 },
+                            parent: { border: "1px solid #ccc" },
+                          }}
+                          data={[
+                            { x: 0, y: this.state.weight },
+                            {
+                              x: Number(this.state.gap_date) - 1,
+                              y: Number(this.state.weight_today),
+                            },
+                          ]}
+                        />
+                      </VictoryChart>
+                    </View>
+                  </View>
+                  <View style={styles.middle}>
+                    <View style={styles.thingment}>
+                      <View style={styles.encourage}>
+                        <Text style={styles.ex_num}>
+                          <Text style={styles.bold}>
+                            {isNaN(this.state.count_ex)
+                              ? 0
+                              : this.state.count_ex}
+                          </Text>
+                          <Text style={styles.unit}> 회{"\n"}</Text>
+                          <Text style={styles.unit_bottom}>운동횟수</Text>
+                        </Text>
+                        <Text style={styles.ex_hour}>
+                          <Text style={styles.bold}>
+                            {isNaN(this.state.hour) ? 0 : this.state.hour}
+                          </Text>
+                          <Text style={styles.unit}> 시간{"  "}</Text>
+                          <Text style={styles.bold}>
+                            {isNaN(this.state.min) ? 0 : this.state.min}
+                          </Text>
+                          <Text style={styles.unit}> 분{"\n"}</Text>
+                          <Text style={styles.unit_bottom}>운동시간</Text>
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.bottom}>
+                    <View style={styles.eat}>
+                      <Text style={styles.recommendation}>
+                        <Text style={styles.rec_bold}>{this.state.name} </Text>
+                        님의 하루 권장 섭취 칼로리는 {"\n"}{" "}
+                        <Text style={styles.rec_bold}>{this.state.kcal}</Text>
+                        <Text style={styles.recommendation}> Kcal입니다!</Text>
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              );
+            }
+          }
+        }
+      }
     }
   }
 }
