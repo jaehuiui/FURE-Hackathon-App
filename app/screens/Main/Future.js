@@ -287,7 +287,7 @@ export default class Today extends Component {
                 </View>
               </View>
             </View>
-            <KeyboardSpacer topSpacing={RFValue(-150, 812)} />
+            <KeyboardSpacer topSpacing={RFValue(-130, 812)} />
           </ScrollView>
           <View style={styles.footer}>
             <TouchableOpacity
@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
   },
 
   bottom: {
-    flex: 3.5,
+    flex: 4,
     justifyContent: "center",
   },
   form: {

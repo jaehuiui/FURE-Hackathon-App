@@ -4,7 +4,7 @@
     "slug": "fure",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/fure_icon_square.png",
+    "icon": "./assets/icon_real.png",
     "splash": {
       "image": "./app/images/logo.png",
       "resizeMode": "contain",
@@ -27,6 +27,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "FU:RE ver 1.0.2"
+    "description": "FU:RE ver 1.0.3"
   }
 }

@@ -547,7 +547,7 @@ export default class Today extends Component {
                   data={[
                     { x: 0, y: this.state.weight },
                     {
-                      x: Number(this.state.gap_date),
+                      x: Number(this.state.gap_date) - 1,
                       y: Number(this.state.weight_today),
                     },
                   ]}
