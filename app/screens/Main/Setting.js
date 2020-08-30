@@ -100,7 +100,7 @@ export default class Today extends Component {
               source={require("../../images/logo_new.png")}
               style={styles.logo}
             ></Image>
-            <Text style={styles.team}>Team FU:RE</Text>
+            <Text style={styles.team}>FU:RE 1.0.3 ver</Text>
             <Text style={styles.team}>Co-Founder : Koo, Oh, Lee</Text>
             <Text style={styles.copy}>Copyright All Rights Reserved 2020</Text>
           </View>
