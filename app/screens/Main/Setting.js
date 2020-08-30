@@ -120,7 +120,7 @@ export default class Today extends Component {
               source={require("../../images/logo_new.png")}
               style={styles.logo}
             ></Image>
-            <Text style={styles.team}>FU:RE 1.0.5 ver</Text>
+            <Text style={styles.team}>FU:RE 1.0.6 ver</Text>
             <Text style={styles.team}>Co-Founder : Koo, Oh, Lee</Text>
             <Text style={styles.copy}>Copyright All Rights Reserved 2020</Text>
           </View>
@@ -164,8 +164,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   profile_title: {
-    marginTop: RFValue(15, 812),
-    fontSize: RFValue(25, 812),
+    marginTop: RFValue(10, 812),
+    fontSize: RFValue(20, 812),
     fontWeight: "bold",
     textAlign: "center",
   },
@@ -203,10 +203,10 @@ const styles = StyleSheet.create({
     marginTop: RFValue(15, 812),
   },
   name_l: {
-    fontSize: RFValue(20, 812),
+    fontSize: RFValue(17, 812),
     fontWeight: "bold",
     textAlign: "center",
-    marginTop: RFValue(20, 812),
+    marginTop: RFValue(10, 812),
     color: "#1b3c59",
   },
   name: {

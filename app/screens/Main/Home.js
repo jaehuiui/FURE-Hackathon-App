@@ -46,6 +46,7 @@ export default class Today extends Component {
       axis1: "",
       axis2: "",
       axis3: "",
+      gender: "",
       axis4: "",
       axis_x: 0,
       const_two: 0,
@@ -150,6 +151,7 @@ export default class Today extends Component {
                       count_ex: Number(doc.data().count_ex),
                       weight_today: Number(doc.data().weight_today),
                       first: doc.data().first,
+                      gender: doc.data().gender,
                     });
                   });
                 /*console.log("name : " + this.state.name);
@@ -166,20 +168,38 @@ export default class Today extends Component {
                   .collection("prediction")
                   .doc("data")
                   .onSnapshot((doc) => {
-                    this.setState({
-                      const_two: Number(doc.data().const_two),
-                      const_four: Number(doc.data().const_four),
-                      const_six: Number(doc.data().const_six),
-                      methd_two: Number(doc.data().methd_two),
-                      methd_four: Number(doc.data().methd_four),
-                      methd_six: Number(doc.data().methd_six),
-                      coefficient_two:
-                        Number(doc.data().methd_two) * 2.99 * 0.00001,
-                      coefficient_four:
-                        Number(doc.data().methd_four) * 2.99 * 0.00001,
-                      coefficient_six:
-                        Number(doc.data().methd_six) * 2.99 * 0.00001,
-                    });
+                    if (this.state.gender === "M") {
+                      this.setState({
+                        const_two: Number(doc.data().const_two),
+                        const_four: Number(doc.data().const_four),
+                        const_six: Number(doc.data().const_six),
+                        methd_two: Number(doc.data().methd_two),
+                        methd_four: Number(doc.data().methd_four),
+                        methd_six: Number(doc.data().methd_six),
+                        coefficient_two:
+                          Number(doc.data().methd_two) * 2.99 * 0.00001,
+                        coefficient_four:
+                          Number(doc.data().methd_four) * 2.99 * 0.00001,
+                        coefficient_six:
+                          Number(doc.data().methd_six) * 2.99 * 0.00001,
+                      });
+                    } else {
+                      this.setState({
+                        const_two: Number(doc.data().const_two),
+                        const_four: Number(doc.data().const_four),
+                        const_six: Number(doc.data().const_six),
+                        methd_two: Number(doc.data().methd_two),
+                        methd_four: Number(doc.data().methd_four),
+                        methd_six: Number(doc.data().methd_six),
+                        coefficient_two:
+                          Number(doc.data().methd_two) * 1.6 * 0.0000001,
+                        coefficient_four:
+                          Number(doc.data().methd_four) * 1.6 * 0.0000001,
+                        coefficient_six:
+                          Number(doc.data().methd_six) * 1.6 * 0.0000001,
+                      });
+                    }
+
                     if (this.state.reset_status) {
                       setTimeout(
                         function () {
@@ -768,7 +788,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title1: {
-    fontSize: RFValue(25, 812),
+    fontSize: RFValue(22, 812),
     flexDirection: "row",
     textAlign: "center",
   },
