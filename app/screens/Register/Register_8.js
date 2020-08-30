@@ -231,18 +231,7 @@ export default class Register_1 extends Component {
           style={styles.container_image}
         >
           <View style={styles.container}>
-            <View style={styles.header}>
-              <Icon
-                name="arrow-left"
-                color="white"
-                size={30}
-                type="material-community"
-                style={styles.backicon}
-                onPress={() => {
-                  this.props.navigation.navigate("Register_7");
-                }}
-              />
-            </View>
+            <View style={styles.header}></View>
             <View style={styles.top}>
               <Text style={styles.title}>
                 {this.state.name}님만을 위한 PLAN이예요.

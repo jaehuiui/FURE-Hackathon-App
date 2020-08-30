@@ -83,6 +83,7 @@ export default class Today extends Component {
         tabBarVisible: false,
       })
     );
+
     this.focusListener = this.props.navigation.addListener(
       "focus",
       async () => {
@@ -325,17 +326,7 @@ export default class Today extends Component {
     } else if (!this.state.current && !this.state.isLoading) {
       return (
         <View style={styles.container}>
-          <View style={styles.header1}>
-            <Icon
-              name="arrow-left"
-              size={30}
-              type="material-community"
-              style={styles.backicon}
-              onPress={() => {
-                this.props.navigation.navigate("SignIn");
-              }}
-            />
-          </View>
+          <View style={styles.header1}></View>
           <View style={styles.top1}>
             <Text style={styles.title1}>
               막연한 유산소 다이어트에 지치셨나요?
@@ -372,17 +363,7 @@ export default class Today extends Component {
       if (this.state.first) {
         return (
           <View style={styles.container}>
-            <View style={styles.header1}>
-              <Icon
-                name="arrow-left"
-                size={30}
-                type="material-community"
-                style={styles.backicon}
-                onPress={() => {
-                  this.props.navigation.navigate("SignIn");
-                }}
-              />
-            </View>
+            <View style={styles.header1}></View>
             <View style={styles.top1}>
               <Text style={styles.title1}>
                 목표 설정이 완료되지 않았습니다..
@@ -419,17 +400,7 @@ export default class Today extends Component {
         if (this.state.reset_status) {
           return (
             <View style={styles.container}>
-              <View style={styles.header1}>
-                <Icon
-                  name="arrow-left"
-                  size={30}
-                  type="material-community"
-                  style={styles.backicon}
-                  onPress={() => {
-                    this.props.navigation.navigate("SignIn");
-                  }}
-                />
-              </View>
+              <View style={styles.header1}></View>
               <View style={styles.top1}>
                 <Text style={styles.title1}>
                   목표 재설정이 완료되지 않았습니다..
@@ -466,17 +437,7 @@ export default class Today extends Component {
           if (this.state.coefficient_def == 0) {
             return (
               <View style={styles.container}>
-                <View style={styles.header1}>
-                  <Icon
-                    name="arrow-left"
-                    size={30}
-                    type="material-community"
-                    style={styles.backicon}
-                    onPress={() => {
-                      this.props.navigation.navigate("SignIn");
-                    }}
-                  />
-                </View>
+                <View style={styles.header1}></View>
                 <View style={styles.top1}>
                   <Text style={styles.title1}>
                     플랜 선택이 완료되지 않았어요..

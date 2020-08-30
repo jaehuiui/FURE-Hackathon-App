@@ -74,21 +74,7 @@ export default class Register_1 extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Icon
-            name="arrow-left"
-            size={30}
-            type="material-community"
-            style={styles.backicon}
-            onPress={() => {
-              if (this.state.status) {
-                this.props.navigation.navigate("Mainpage");
-              } else {
-                this.props.navigation.navigate("Register_1");
-              }
-            }}
-          />
-        </View>
+        <View style={styles.header}></View>
         <View style={styles.top}>
           <View style={styles.textbox}>
             <Text style={styles.title}>

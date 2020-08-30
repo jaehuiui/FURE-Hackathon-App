@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, AsyncStorage } from "react-native";
 import { firebaseConfig } from "./app/config/firebaseConfig";
 import firebase from "firebase";
 import "firebase/firestore";
@@ -23,6 +23,7 @@ import Future from "./app/screens/Main/Future";
 import Running from "./app/screens/Main/Running";
 import Setting from "./app/screens/Main/Setting";
 import Loading from "./app/screens/Main/Loading";
+import Loading_start from "./app/screens/Main/Loading_start";
 
 import Register_1 from "./app/screens/Register/Register_1";
 import Register_2 from "./app/screens/Register/Register_2";
@@ -135,9 +136,10 @@ function App() {
         }}
       >
         <Stack.Screen name="Intro" component={Intro} />
+        <Stack.Screen name="Mainpage" component={MyTab} />
+
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="Loading" component={Loading} />
 
         <Stack.Screen name="Register_1" component={Register_1} />
         <Stack.Screen name="Register_2" component={Register_2} />
@@ -148,7 +150,6 @@ function App() {
         <Stack.Screen name="Register_7" component={Register_7} />
         <Stack.Screen name="Register_8" component={Register_8} />
 
-        <Stack.Screen name="Mainpage" component={MyTab} />
         <Stack.Screen name="Running" component={Running} />
         <Stack.Screen name="Test" component={Test} />
       </Stack.Navigator>

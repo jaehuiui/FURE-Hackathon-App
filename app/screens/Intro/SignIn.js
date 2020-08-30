@@ -12,6 +12,7 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback,
   Keyboard,
+  AsyncStorage,
 } from "react-native";
 
 import firebase from "firebase";
@@ -40,28 +41,39 @@ export default class SignIn extends Component {
       error: "",
       loading: true,
     });
-
     const { email, password } = this.state;
     firebase
       .auth()
-      .signInWithEmailAndPassword(email, password)
+      .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
       .then(() => {
-        this.setState({
-          error: "",
-          loading: false,
-        });
-        this.props.navigation.navigate("Mainpage");
+        firebase
+          .auth()
+          .signInWithEmailAndPassword(email, password)
+          .then(() => {
+            console.log("nononono");
+            this.setState({
+              error: "",
+              loading: false,
+            });
+
+            this.props.navigation.navigate("Mainpage");
+          })
+          .catch((e) => {
+            this.setState({
+              error: e.message,
+              loading: false,
+            });
+            if (e.code == "auth/user-not-found") {
+              alert("회원정보가 없습니다!");
+            } else {
+              alert("입력 정보를 다시 확인해주세요!");
+            }
+          });
       })
-      .catch((e) => {
-        this.setState({
-          error: e.message,
-          loading: false,
-        });
-        if (e.code == "auth/user-not-found") {
-          alert("회원정보가 없습니다!");
-        } else {
-          alert("입력 정보를 다시 확인해주세요!");
-        }
+      .catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
       });
 
     /*if (this.state.user) {

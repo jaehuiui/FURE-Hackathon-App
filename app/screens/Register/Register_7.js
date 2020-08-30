@@ -102,15 +102,6 @@ export default class Register_1 extends Component {
             }}
           >
             <View style={styles.header}>
-              <Icon
-                name="arrow-left"
-                size={30}
-                type="material-community"
-                style={styles.backicon}
-                onPress={() => {
-                  this.props.navigation.navigate("Register_6");
-                }}
-              />
               <Text style={styles.stage}>4/4</Text>
             </View>
             <View style={styles.top}>
@@ -123,7 +114,7 @@ export default class Register_1 extends Component {
             <View style={styles.middle}>
               <View style={styles.inputinfo}>
                 <Text style={styles.question}>
-                  한 주에 며칠 정도 운동하실 수 있나요?{"\n"}
+                  일주일에 며칠 정도 운동하실 수 있나요?{"\n"}
                 </Text>
                 <TextInput
                   placeholder=""

@@ -268,7 +268,9 @@ export default class App extends React.Component {
             </View>
             <View style={styles.third_ele}>
               <Text style={styles.dist}>
-                {Number(this.state.speed).toFixed(2)}
+                {isNaN(this.state.speed)
+                  ? 0
+                  : Number(this.state.speed).toFixed(2)}
                 {"\n"}
               </Text>
               <Text style={styles.dist_text}>페이스 (km/h)</Text>

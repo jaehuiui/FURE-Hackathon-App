@@ -90,8 +90,28 @@ export default class Today extends Component {
                 {"\n"}
               </Text>
             </Text>
-
-            <Text style={styles.info}></Text>
+            <Text style={styles.info}>
+              <Text style={styles.name_t}>연동 웨어러블 기기 : </Text>
+              <Text style={styles.name}>
+                없음
+                {"\n"}
+              </Text>
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                firebase
+                  .auth()
+                  .signOut()
+                  .then(() => {
+                    this.props.navigation.navigate("SignIn");
+                  })
+                  .catch(function (error) {
+                    // An error happened.
+                  });
+              }}
+            >
+              <Text style={styles.name_l}>로그아웃</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.middle}>
@@ -100,7 +120,7 @@ export default class Today extends Component {
               source={require("../../images/logo_new.png")}
               style={styles.logo}
             ></Image>
-            <Text style={styles.team}>FU:RE 1.0.3 ver</Text>
+            <Text style={styles.team}>FU:RE 1.0.5 ver</Text>
             <Text style={styles.team}>Co-Founder : Koo, Oh, Lee</Text>
             <Text style={styles.copy}>Copyright All Rights Reserved 2020</Text>
           </View>
@@ -148,7 +168,6 @@ const styles = StyleSheet.create({
     fontSize: RFValue(25, 812),
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: RFValue(5, 812),
   },
   title: {
     marginTop: RFValue(15, 812),
@@ -179,12 +198,19 @@ const styles = StyleSheet.create({
     marginLeft: RFValue(20, 812),
   },
   name_t: {
+    fontSize: RFValue(17, 812),
+    fontWeight: "bold",
+    marginTop: RFValue(15, 812),
+  },
+  name_l: {
     fontSize: RFValue(20, 812),
     fontWeight: "bold",
+    textAlign: "center",
     marginTop: RFValue(20, 812),
+    color: "#1b3c59",
   },
   name: {
-    fontSize: RFValue(17, 812),
+    fontSize: RFValue(15, 812),
 
     marginTop: RFValue(20, 812),
   },

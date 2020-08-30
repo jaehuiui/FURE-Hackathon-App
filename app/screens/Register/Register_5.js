@@ -120,15 +120,6 @@ export default class Register_1 extends Component {
             }}
           >
             <View style={styles.header}>
-              <Icon
-                name="arrow-left"
-                size={30}
-                type="material-community"
-                style={styles.backicon}
-                onPress={() => {
-                  this.props.navigation.navigate("Register_4");
-                }}
-              />
               <Text style={styles.stage}>2/4</Text>
             </View>
 

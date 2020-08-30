@@ -16,7 +16,7 @@ export default class Loading extends Component {
         </View>
         <View style={styles.lower}>
           <Text style={styles.loading}>
-            사용자 정보를 불러오고 있습니다. {"\n"} 잠시만 기다려주세요
+            로딩중입니다. {"\n"} 잠시만 기다려주세요
           </Text>
         </View>
       </View>
