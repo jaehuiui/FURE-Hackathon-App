@@ -79,7 +79,7 @@ export default class Intro extends Component {
                 몇 km 달리기 다이어트에 지치셨나요?{"\n"}
               </Text>
               <Text style={styles.explanation}>
-                살뺀다고 무작정 달리고 계시진 않나요?{"\n"}
+                다이어트를 위해 무작정 달리고 계시진 않나요?{"\n"}
                 {"\n"}
                 {"\n"}
               </Text>

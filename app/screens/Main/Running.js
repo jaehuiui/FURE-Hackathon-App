@@ -290,7 +290,7 @@ export default class App extends React.Component {
                   this.playSound();
                 }}
               >
-                오디오 코칭 듣기
+                오디오 페이스메이커
               </Text>
             </TouchableOpacity>
           </View>

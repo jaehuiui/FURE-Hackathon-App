@@ -23,13 +23,14 @@ export default class Register_1 extends Component {
     this.state = {
       name: "",
       uid: "",
-      gender: "",
+      gender: "M",
       height: null,
       weight: null,
       age: null,
       real_gender: "",
+      check_a: false,
+      check_b: false,
     };
-    this.handleChange_gender = this.handleChange_gender.bind(this);
     this.handleChange_height = this.handleChange_height.bind(this);
     this.handleChange_weight = this.handleChange_weight.bind(this);
     this.handleChange_age = this.handleChange_age.bind(this);
@@ -49,17 +50,6 @@ export default class Register_1 extends Component {
       });
   }
 
-  handleChange_gender(newText) {
-    if (newText === "남자") {
-      this.setState({
-        gender: "M",
-      });
-    } else if (newText === "여자") {
-      this.setState({
-        gender: "W",
-      });
-    }
-  }
   handleChange_height(newText) {
     this.setState({
       height: newText,
@@ -125,20 +115,53 @@ export default class Register_1 extends Component {
 
             <View style={styles.top}>
               <Text style={styles.title}>
-                {this.state.name} 님에 대해 알아볼까요?
+                <Text style={styles.nick}>{this.state.name}</Text> 님에 대해
+                알아볼까요?
               </Text>
             </View>
             <View style={styles.middle}>
               <View style={styles.inputinfo}>
                 <Text style={styles.question}>
-                  성별{"    "}:{"      "}
+                  성별{"    "}:{"   "}
                 </Text>
-                <TextInput
-                  placeholder="남자/여자"
-                  style={styles.inputbox}
-                  onChangeText={this.handleChange_gender}
-                />
-                <Text style={styles.question}>{"       "} </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({
+                      check_a: false,
+                      gender: "M",
+                    });
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: this.state.check_a ? "gray" : "black",
+                      fontWeight: this.state.check_a ? null : "bold",
+                      fontSize: RFValue(23, 812),
+                    }}
+                  >
+                    {"    남자    "}
+                  </Text>
+                </TouchableOpacity>
+                <Text style={styles.question}>/</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({
+                      check_a: true,
+                      gender: "W",
+                    });
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: this.state.check_a ? "black" : "gray",
+                      fontWeight: this.state.check_a ? "bold" : null,
+                      fontSize: RFValue(23, 812),
+                    }}
+                  >
+                    {"     여자    "}
+                  </Text>
+                </TouchableOpacity>
+                <Text style={styles.question}>{"    "}</Text>
               </View>
               <View style={styles.inputinfo}>
                 <Text style={styles.question}>
@@ -236,6 +259,11 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     fontSize: RFValue(25, 812),
+  },
+  nick: {
+    color: "#76B4FF",
+    fontWeight: "bold",
+    fontSize: RFValue(27, 812),
   },
 
   //middle

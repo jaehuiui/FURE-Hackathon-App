@@ -216,7 +216,6 @@ export default class Today extends Component {
                       /*console.log("const_two : " + this.state.const_two);
                       console.log("const_four : " + this.state.const_four);
                       console.log("const_six : " + this.state.const_six);
-
                       console.log("methd_two : " + this.state.methd_two);
                       console.log("methd_four : " + this.state.methd_four);
                       console.log("methd_six : " + this.state.methd_six);
@@ -229,7 +228,6 @@ export default class Today extends Component {
                       console.log(
                         "coefficient_six : " + this.state.coefficient_six
                       );
-
                       console.log(this.state.today_date); */
                       var timearr = this.state.start_date
                         .split("-")
@@ -515,7 +513,7 @@ export default class Today extends Component {
                         theme={VictoryTheme.grayscale}
                         width={Dimensions.get("window").width * 0.95}
                         height={RFValue(300, 812)}
-                        animate={{ duration: 2000 }}
+                        //animate={{ duration: 2000 }}
                         domain={{
                           x: [0, this.state.axis_x],
                           y: [this.state.goal - 1, this.state.weight + 1],
@@ -551,16 +549,23 @@ export default class Today extends Component {
                         />
                         <VictoryAxis
                           dependentAxis
-                          tickValues={[
-                            this.state.goal -
-                              (this.state.weight - this.state.goal) / 3,
-                            this.state.goal,
-                            (this.state.weight - this.state.goal) / 3 +
-                              this.state.goal,
-                            ((this.state.weight - this.state.goal) * 2) / 3 +
-                              this.state.goal,
-                            this.state.weight,
-                          ]}
+                          tickValues={
+                            Number(this.state.weight) -
+                              Number(this.state.goal) >=
+                            3
+                              ? [
+                                  this.state.goal -
+                                    (this.state.weight - this.state.goal) / 3,
+                                  this.state.goal,
+                                  (this.state.weight - this.state.goal) / 3 +
+                                    this.state.goal,
+                                  ((this.state.weight - this.state.goal) * 2) /
+                                    3 +
+                                    this.state.goal,
+                                  this.state.weight,
+                                ]
+                              : [this.state.goal, this.state.weight]
+                          }
                           tickFormat={(tick) => `${Math.round(tick)}kg`}
                         />
                         <VictoryLine

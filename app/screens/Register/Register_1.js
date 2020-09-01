@@ -75,7 +75,7 @@ export default class Register_1 extends Component {
               <Text style={styles.title}>
                 {" "}
                 안녕하세요!{"\n"}당신의 AI 러닝 코치{"\n"}
-                FU:RE입니다.
+                <Text style={styles.title_a}>FU:RE</Text>입니다.
               </Text>
             </View>
           </View>
@@ -154,6 +154,10 @@ const styles = StyleSheet.create({
   title: {
     textAlignVertical: "center",
     textAlign: "center",
+    fontSize: RFValue(23, 812),
+  },
+  title_a: {
+    color: "#76B4FF",
     fontSize: RFValue(23, 812),
   },
 

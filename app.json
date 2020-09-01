@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "FU:RE",
+    "name": "FURE",
     "slug": "FURE",
-    "version": "1.0.6",
+    "version": "1.0.9",
     "orientation": "portrait",
     "icon": "./assets/icon_fure.png",
     "splash": {
@@ -17,16 +17,28 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.mypackage.fure",
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "buildNumber": "1.0.9",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.mypackage.fure",
       "googleServicesFile": "./google-services.json",
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "versionCode": 11,
+      "permissions": [
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "RECORD_AUDIO",
+        "READ_PHONE_STATE",
+        "READ_CONTACTS"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "FU:RE ver 1.0.6"
+    "description": "FU:RE ver 1.0.9"
   }
 }

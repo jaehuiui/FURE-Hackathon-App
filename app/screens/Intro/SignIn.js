@@ -64,7 +64,9 @@ export default class SignIn extends Component {
               loading: false,
             });
             if (e.code == "auth/user-not-found") {
-              alert("회원정보가 없습니다!");
+              alert("등록되지 않은 계정입니다!");
+            } else if (e.code == "auth/invalid-password") {
+              alert("비밀번호가 틀렸습니다!");
             } else {
               alert("입력 정보를 다시 확인해주세요!");
             }
@@ -112,7 +114,7 @@ export default class SignIn extends Component {
               ></Image>
             </View>
             <View style={styles.form}>
-              <Text style={styles.inputinfo}>User Email</Text>
+              <Text style={styles.inputinfo}>이메일</Text>
               <View style={styles.input_box}>
                 <TextInput
                   style={styles.input_text}
@@ -122,7 +124,7 @@ export default class SignIn extends Component {
                   keyboardType={"email-address"}
                 ></TextInput>
               </View>
-              <Text style={styles.inputinfo}>Password</Text>
+              <Text style={styles.inputinfo}>비밀번호</Text>
               <View style={styles.input_box}>
                 <TextInput
                   style={styles.input_text}
@@ -142,17 +144,17 @@ export default class SignIn extends Component {
                 <LinearGradient
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
-                  colors={["#f5f7fa", "#c3cfe2"]}
+                  colors={["#303966", "#c3cfe2"]}
                   style={styles.signin_button}
                 >
-                  <Text style={styles.signin}>Sign In</Text>
+                  <Text style={styles.signin}>로그인</Text>
                 </LinearGradient>
               </TouchableOpacity>
             </View>
             <KeyboardSpacer topSpacing={RFValue(-100, 812)} />
             <View style={styles.bottom_layer2}>
               <View style={styles.signup}>
-                <Text>Don't have account? </Text>
+                <Text>계정이 없으신가요? </Text>
                 <TouchableOpacity
                   style={styles.signup_button}
                   onPress={() => {
@@ -160,7 +162,7 @@ export default class SignIn extends Component {
                   }}
                 >
                   <Text style={{ color: "black", fontWeight: "bold" }}>
-                    Sign Up
+                    회원가입
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -239,7 +241,7 @@ const styles = StyleSheet.create({
   input_text: {
     marginVertical: 5,
     marginRight: 5,
-    height: 50,
+    height: RFValue(50, 812),
     color: "black",
     borderRadius: 4,
 
@@ -266,7 +268,7 @@ const styles = StyleSheet.create({
   signin_button: {
     borderWidth: 0.5,
     borderColor: "gray",
-    height: 50,
+    height: RFValue(50, 812),
 
     marginHorizontal: 40,
 

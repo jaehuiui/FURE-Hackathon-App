@@ -78,8 +78,10 @@ export default class Register_1 extends Component {
         <View style={styles.top}>
           <View style={styles.textbox}>
             <Text style={styles.title}>
-              {this.state.name} 님, 반갑습니다.{"\n"}
-              {this.state.name} 님의 러닝 목적은 무엇인가요?
+              <Text style={styles.nick}>{this.state.name}</Text> 님, 반갑습니다.
+              {"\n"}
+              <Text style={styles.nick}>{this.state.name}</Text> 님의 러닝
+              목적은 무엇인가요?
             </Text>
           </View>
         </View>
@@ -221,6 +223,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     alignSelf: "center",
+  },
+  nick: {
+    color: "#76B4FF",
+    fontWeight: "bold",
+    fontSize: RFValue(25, 812),
   },
   title: {
     textAlignVertical: "center",

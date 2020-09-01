@@ -69,7 +69,8 @@ export default class Register_1 extends Component {
         </View>
         <View style={styles.top}>
           <Text style={styles.title}>
-            {this.state.name} 님,{"\n"}혹시 다음 중 해당되는 사항이 있나요?
+            <Text style={styles.nick}>{this.state.name}</Text> 님,{"\n"}혹시
+            다음 중 해당되는 사항이 있나요?
           </Text>
         </View>
 
@@ -245,7 +246,11 @@ const styles = StyleSheet.create({
     fontSize: RFValue(20, 812),
     color: "black",
   },
-
+  nick: {
+    color: "#76B4FF",
+    fontWeight: "bold",
+    fontSize: RFValue(27, 812),
+  },
   //bottom
   bottom: {
     flex: 1.5,

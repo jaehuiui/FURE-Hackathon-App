@@ -93,7 +93,8 @@ export default class Register_1 extends Component {
             </View>
             <View style={styles.top}>
               <Text style={styles.title}>
-                {this.state.name} 님의 목표 체중은 얼마인가요?{"\n"}
+                <Text style={styles.nick}>{this.state.name}</Text> 님의 목표
+                체중은 얼마인가요?{"\n"}
               </Text>
             </View>
             <View style={styles.middle}>
@@ -117,6 +118,10 @@ export default class Register_1 extends Component {
                 onPress={() => {
                   if (Number(this.state.goal) >= Number(this.state.weight)) {
                     alert("목표 체중이 지금보다 높아요..");
+                  } else if (Number(this.state.weight - this.state.goal) > 10) {
+                    alert(
+                      "아직 10Kg 이상 감량 플랜은\n 생성할 수 없습니다..\n더 발전하는 FU:RE가 되겠습니다!"
+                    );
                   } else {
                     this.selectgoal();
                   }
@@ -174,6 +179,11 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     fontSize: RFValue(25, 812),
+  },
+  nick: {
+    color: "#76B4FF",
+    fontWeight: "bold",
+    fontSize: RFValue(27, 812),
   },
 
   //middle

@@ -16,7 +16,7 @@ import firebase from "firebase";
 import "firebase/firestore";
 import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
-import { Icon } from "react-native-elements";
+import { Icon, Overlay } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import Swiper from "react-native-swiper";
 import axios from "axios";
@@ -46,8 +46,17 @@ export default class Today extends Component {
       uri: "",
       sibal: 0,
       weight: 0,
+      visible: false,
+      weight_modal: 0,
+      weigth_height: 0,
     };
     this.handleChangename = this.handleChangename.bind(this);
+  }
+
+  onPressOverlay() {
+    this.setState({
+      visible: !this.state.visible,
+    });
   }
 
   async componentDidMount() {
@@ -69,6 +78,8 @@ export default class Today extends Component {
           defaultplan: Number.parseInt(doc.data().defaultplan),
           start_date: doc.data().startdate,
           weight: doc.data().goal,
+          weight_modal: doc.data().weight,
+          weigth_height: doc.data().height,
         });
 
         var timearr = this.state.start_date.split("-").map(Number);
@@ -307,6 +318,13 @@ export default class Today extends Component {
                 </Text>
                 km를 뛰어볼까요?
               </Text>
+              <Text style={styles.question_a}>
+                {"\n"}오늘의 체중을 토대로 인공지능이{"\n"}
+                <Text style={styles.plan_text_3_a_1}>
+                  {this.state.name}
+                </Text>{" "}
+                님에 맞춰 진화합니다.
+              </Text>
             </View>
           </View>
           <View style={styles.middle}>
@@ -336,11 +354,61 @@ export default class Today extends Component {
           </View>
           <View style={styles.bottom}>
             <Swiper
-              showsButtons={false}
+              showsButtons={true}
               autoplay={true}
               activeDotColor="#cae8d5"
-              autoplayTimeout={3.5}
+              autoplayTimeout={4}
             >
+              <View style={styles.planbox_c}>
+                <Text style={styles.plan_text_3}>
+                  <Text style={styles.plan_text_3_a_2}>{this.state.name}</Text>{" "}
+                  님, 이것도 확인해보세요{"\n"}
+                </Text>
+                <Text style={styles.plan_text_3_a}>
+                  <Text style={styles.plan_text_3_a_1}>{this.state.name}</Text>{" "}
+                  님과 체형이 비슷했던{"\n"} 회원님들의 다이어트 성공기{"\n"}
+                  {"\n"}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.onPressOverlay();
+                  }}
+                >
+                  <Text style={styles.plan_text_3_b}>눌러서 확인하기</Text>
+                </TouchableOpacity>
+                <Overlay
+                  isVisible={this.state.visible}
+                  onBackdropPress={() => {
+                    this.onPressOverlay();
+                  }}
+                >
+                  <LinearGradient
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0, y: 0.3 }}
+                    colors={["white", "white"]}
+                    style={styles.modal}
+                  >
+                    <Text style={styles.modal_title}>
+                      라이언님의 플랜{"\n"}
+                    </Text>
+                    <Text style={styles.modal_subtitle}>
+                      {Number(this.state.weigth_height) - 1.3}cm /{" "}
+                      {Number(this.state.weight_modal) + 1.8}kg 에서{" "}
+                      {Number(this.state.weight) - 0.9}kg 로{"\n"} {"\n"} 3달
+                      동안 감량에 성공하셨어요!{"\n"}
+                      {"\n"}
+                    </Text>
+                    <Text style={styles.modal_title}>엘사님의 플랜{"\n"}</Text>
+                    <Text style={styles.modal_subtitle}>
+                      {Number(this.state.weigth_height) + 0.2}cm /{" "}
+                      {(Number(this.state.weight_modal) + 0.6).toFixed(1)}kg
+                      에서 {Number(this.state.weight) - 0.2}kg 로{"\n"} {"\n"}{" "}
+                      4달 동안 감량에 성공하셨어요!
+                    </Text>
+                    <Text style={styles.modal_content}></Text>
+                  </LinearGradient>
+                </Overlay>
+              </View>
               <View style={styles.planbox_a}>
                 <View style={styles.weather}>
                   <Image
@@ -380,12 +448,6 @@ export default class Today extends Component {
                     </Text>
                   </View>
                 </ImageBackground>
-              </View>
-              <View style={styles.planbox_c}>
-                <Text style={styles.plan_text_3}>
-                  오늘의 칼럼 : {"\n"}
-                  {"\n"}2주 만에 빼는 살이 위험한 이유
-                </Text>
               </View>
             </Swiper>
           </View>
@@ -489,6 +551,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: RFValue(20, 812),
   },
+  question_a: {
+    textAlign: "center",
+    fontSize: RFValue(17, 812),
+  },
   audio: {
     textAlign: "center",
     fontSize: RFValue(20, 812),
@@ -521,14 +587,50 @@ const styles = StyleSheet.create({
     color: "white",
   },
   plan_text_3: {
-    marginLeft: RFValue(30, 812),
-    fontSize: RFValue(20, 812),
+    textAlign: "center",
+    fontSize: RFValue(23, 812),
     fontWeight: "600",
     color: "white",
+  },
+  plan_text_3_a: {
+    textAlign: "center",
+    fontSize: RFValue(17, 812),
+    fontWeight: "600",
+    color: "white",
+  },
+  plan_text_3_a_1: {
+    color: "#76B4FF",
+    fontSize: RFValue(20, 812),
+    fontWeight: "600",
+  },
+  plan_text_3_a_2: {
+    color: "#76B4FF",
+    fontSize: RFValue(28, 812),
+    fontWeight: "600",
+  },
+  plan_text_3_b: {
+    textAlign: "center",
+    fontSize: RFValue(15, 812),
+    color: "#eeeeee",
   },
   weather: {
     flexDirection: "row",
     justifyContent: "space-evenly",
+  },
+  modal: {
+    height: RFValue(450, 812),
+    width: RFValue(300, 812),
+    justifyContent: "center",
+  },
+  modal_title: {
+    textAlign: "center",
+    fontSize: RFValue(23, 812),
+    fontWeight: "600",
+  },
+  modal_subtitle: {
+    textAlign: "center",
+    fontSize: RFValue(17, 812),
+    fontWeight: "600",
   },
   logo: {
     marginTop: RFValue(20, 812),

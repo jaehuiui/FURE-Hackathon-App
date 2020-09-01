@@ -251,8 +251,8 @@ export default class Register_1 extends Component {
                     {"\n"}
                   </Text>
                   <Text style={styles.plan}>
-                    {Number(this.state.plan2) > 7.5
-                      ? "2개월 플랜은 무리입니다..\n 다른 플랜을 골라주세요!"
+                    {Number(this.state.plan2) > 6.25
+                      ? "2개월 플랜은 무리입니다..\n다른 플랜을 골라주세요!\n\n시간을 늘려보시는 건 어떨까요?"
                       : this.state.time +
                         " 시간 동안 " +
                         this.state.plan2_dist +
@@ -264,7 +264,7 @@ export default class Register_1 extends Component {
                 <View style={styles.bottom}>
                   <TouchableOpacity
                     onPress={() => {
-                      Number(this.state.plan2) > 7.5
+                      Number(this.state.plan2) > 6.25
                         ? this.props.navigation.navigate("Register_6")
                         : this.selectplan2();
                     }}
@@ -277,7 +277,7 @@ export default class Register_1 extends Component {
                     >
                       <Text style={styles.button_text}>
                         {" "}
-                        {Number(this.state.plan2) > 7.5
+                        {Number(this.state.plan2) > 6.25
                           ? "목표 체중 재설정하기"
                           : "PLAN 선택"}
                       </Text>
@@ -293,8 +293,8 @@ export default class Register_1 extends Component {
                     {"\n"}
                   </Text>
                   <Text style={styles.plan}>
-                    {Number(this.state.plan4) > 7.5
-                      ? "4개월 플랜은 무리입니다..\n 다른 플랜을 골라주세요!"
+                    {Number(this.state.plan4) > 6.25
+                      ? "4개월 플랜은 무리입니다..\n 다른 플랜을 골라주세요!\n\n시간을 늘려보시는 건 어떨까요?"
                       : this.state.time +
                         " 시간 동안 " +
                         this.state.plan4_dist +
@@ -306,7 +306,7 @@ export default class Register_1 extends Component {
                 <View style={styles.bottom}>
                   <TouchableOpacity
                     onPress={() => {
-                      Number(this.state.plan4) > 7.5
+                      Number(this.state.plan4) > 6.25
                         ? this.props.navigation.navigate("Register_6")
                         : this.selectplan4();
                     }}
@@ -318,7 +318,7 @@ export default class Register_1 extends Component {
                       style={styles.next_button}
                     >
                       <Text style={styles.button_text}>
-                        {Number(this.state.plan4) > 7.5
+                        {Number(this.state.plan4) > 6.25
                           ? "목표 체중 재설정하기"
                           : "PLAN 선택"}
                       </Text>
@@ -334,8 +334,8 @@ export default class Register_1 extends Component {
                     {"\n"}
                   </Text>
                   <Text style={styles.plan}>
-                    {Number(this.state.plan6) > 7.5
-                      ? "6개월 플랜은 무리입니다..\n 다른 플랜을 골라주세요!"
+                    {Number(this.state.plan6) > 6.25
+                      ? "6개월 플랜은 무리입니다..\n 다른 플랜을 골라주세요!\n\n시간을 늘려보시는 건 어떨까요?"
                       : this.state.time +
                         " 시간 동안 " +
                         this.state.plan6_dist +
@@ -348,7 +348,7 @@ export default class Register_1 extends Component {
                   <TouchableOpacity
                     onPress={() => {
                       {
-                        Number(this.state.plan6) > 7.5
+                        Number(this.state.plan6) > 6.25
                           ? this.props.navigation.navigate("Register_6")
                           : this.selectplan6();
                       }
@@ -361,7 +361,7 @@ export default class Register_1 extends Component {
                       style={styles.next_button}
                     >
                       <Text style={styles.button_text}>
-                        {Number(this.state.plan6) > 7.5
+                        {Number(this.state.plan6) > 6.25
                           ? "목표 체중 재설정하기"
                           : "PLAN 선택"}
                       </Text>

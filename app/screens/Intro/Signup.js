@@ -74,12 +74,18 @@ export default class CreateScreen extends React.Component {
         });
         this.props.navigation.navigate("SignIn");
       })
-      .catch(() => {
+      .catch((e) => {
         this.setState({
           error: "Authentification failed",
           loading: false,
         });
-        alert("입력 정보를 확인해주세요!");
+        if (e.code == "invalid-email") {
+          alert("이메일 정보를 확인해주세요");
+        } else if (e.code == "auth/email-already-in-use") {
+          alert("이미 존재하는 이메일입니다!");
+        } else {
+          alert("입력 정보를 다시 확인해주세요!");
+        }
       });
   }
   render() {
@@ -101,7 +107,7 @@ export default class CreateScreen extends React.Component {
             </View>
 
             <View style={styles.form}>
-              <Text style={styles.inputinfo}>User Email</Text>
+              <Text style={styles.inputinfo}>이메일</Text>
               <View style={styles.input_box}>
                 <TextInput
                   style={styles.input_text}
@@ -111,7 +117,7 @@ export default class CreateScreen extends React.Component {
                   keyboardType={"email-address"}
                 ></TextInput>
               </View>
-              <Text style={styles.inputinfo}>Password</Text>
+              <Text style={styles.inputinfo}>비밀번호</Text>
               <View style={styles.input_box}>
                 <TextInput
                   style={styles.input_text}
@@ -120,7 +126,7 @@ export default class CreateScreen extends React.Component {
                   onChangeText={this.handleChangepassword}
                 ></TextInput>
               </View>
-              <Text style={styles.inputinfo}>Confirm Password</Text>
+              <Text style={styles.inputinfo}>비밀번호 확인</Text>
               <View style={styles.input_box}>
                 <TextInput
                   style={styles.input_text}
@@ -140,10 +146,10 @@ export default class CreateScreen extends React.Component {
                   <LinearGradient
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
-                    colors={["#f5f7fa", "#c3cfe2"]}
+                    colors={["#303966", "#c3cfe2"]}
                     style={styles.buttonL}
                   >
-                    <Text style={styles.signin}>Sign Up</Text>
+                    <Text style={styles.signin}>회원 가입</Text>
                   </LinearGradient>
                 </TouchableOpacity>
               </View>
@@ -219,7 +225,7 @@ const styles = StyleSheet.create({
   input_text: {
     marginVertical: 5,
     marginRight: 5,
-    height: 50,
+    height: RFValue(50, 812),
     color: "black",
     borderRadius: 4,
 
@@ -244,7 +250,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
 
     marginRight: 10,
-    height: 50,
+    height: RFValue(50, 812),
     color: "black",
     borderRadius: 4,
 
@@ -258,7 +264,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   buttonS: {
-    height: 50,
+    height: RFValue(50, 812),
     borderWidth: 1,
     marginTop: 30,
     marginHorizontal: 20,
@@ -271,7 +277,7 @@ const styles = StyleSheet.create({
   buttonL: {
     borderWidth: 0.5,
     borderColor: "gray",
-    height: 50,
+    height: RFValue(50, 812),
     //borderColor: colors.c3,
     marginTop: 15,
     marginHorizontal: 40,

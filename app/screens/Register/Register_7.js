@@ -106,7 +106,7 @@ export default class Register_1 extends Component {
             </View>
             <View style={styles.top}>
               <Text style={styles.title}>
-                {this.state.name} 님,{"\n"}
+                <Text style={styles.nick}>{this.state.name}</Text> 님,{"\n"}
                 운동에 얼마나 시간을 내실 수 있나요?
               </Text>
             </View>
@@ -116,24 +116,30 @@ export default class Register_1 extends Component {
                 <Text style={styles.question}>
                   일주일에 며칠 정도 운동하실 수 있나요?{"\n"}
                 </Text>
-                <TextInput
-                  placeholder=""
-                  style={styles.inputbox}
-                  onChangeText={this.handleChange_dpw}
-                  keyboardType="numeric"
-                />
+                <View style={styles.info}>
+                  <TextInput
+                    placeholder=""
+                    style={styles.inputbox}
+                    onChangeText={this.handleChange_dpw}
+                    keyboardType="numeric"
+                  />
+                  <Text style={styles.question_a}>{"     "}일</Text>
+                </View>
               </View>
 
               <View style={styles.inputinfo}>
                 <Text style={styles.question}>
                   하루에 몇시간 정도 운동하세요?{"\n"}
                 </Text>
-                <TextInput
-                  placeholder=""
-                  style={styles.inputbox}
-                  onChangeText={this.handleChange_hpd}
-                  keyboardType="numeric"
-                />
+                <View style={styles.info}>
+                  <TextInput
+                    placeholder=""
+                    style={styles.inputbox}
+                    onChangeText={this.handleChange_hpd}
+                    keyboardType="numeric"
+                  />
+                  <Text style={styles.question_a}>{"  "}시간</Text>
+                </View>
               </View>
             </View>
 
@@ -144,6 +150,10 @@ export default class Register_1 extends Component {
                     alert("하루는 24시간인거 잊지 않으셨죠?");
                   } else if (Number(this.state.dayperweek) > 7) {
                     alert("일주일은 7일인거 잊지 않으셨죠?");
+                  } else if (Number(this.state.dayperweek) <= 0) {
+                    alert("0일 운동은 너무해요..");
+                  } else if (Number(this.state.hourperday) <= 0) {
+                    alert("0시간 운동은 너무해요..");
                   } else {
                     this.selecttime();
                   }
@@ -202,10 +212,16 @@ const styles = StyleSheet.create({
     fontSize: RFValue(25, 812),
     marginBottom: RFValue(30, 812),
   },
+  nick: {
+    color: "#76B4FF",
+    fontWeight: "bold",
+    fontSize: RFValue(27, 812),
+  },
 
   middle: {
     flex: 5.5,
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    paddingTop: RFValue(20, 812),
   },
   inputinfo: {
     marginVertical: RFValue(10, 812),
@@ -218,9 +234,13 @@ const styles = StyleSheet.create({
     fontSize: RFValue(23, 812),
     top: RFValue(10, 812),
   },
+  question_a: {
+    textAlign: "center",
+    fontSize: RFValue(23, 812),
+  },
   inputbox: {
     marginVertical: RFValue(20, 812),
-    width: RFValue(150, 812),
+    width: RFValue(120, 812),
     borderBottomWidth: 1,
     borderColor: "black",
     fontSize: RFValue(20, 812),
@@ -231,6 +251,11 @@ const styles = StyleSheet.create({
   inputtext: {
     fontSize: RFValue(20, 812),
     textAlign: "center",
+  },
+  info: {
+    alignItems: "center",
+    alignSelf: "center",
+    flexDirection: "row",
   },
 
   bottom: {
