@@ -27,7 +27,7 @@
       "package": "com.mypackage.fure",
       "googleServicesFile": "./google-services.json",
       "softwareKeyboardLayoutMode": "pan",
-      "versionCode": 13,
+      "versionCode": 14,
       "permissions": [
         "CAMERA",
         "ACCESS_FINE_LOCATION",
