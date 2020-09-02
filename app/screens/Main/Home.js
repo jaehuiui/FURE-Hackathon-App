@@ -74,6 +74,7 @@ export default class Today extends Component {
       count_ex: 0,
       weight_today: 0,
       first: true,
+      beta: 0.279,
     };
   }
 
@@ -154,11 +155,11 @@ export default class Today extends Component {
                       gender: doc.data().gender,
                     });
                   });
-                /*console.log("name : " + this.state.name);
+                console.log("name : " + this.state.name);
                 console.log("weight : " + this.state.weight);
                 console.log("height : " + this.state.height);
                 console.log("goal : " + this.state.goal);
-                console.log("default : " + this.state.default);*/
+                console.log("default : " + this.state.default);
                 firebase
                   .firestore()
                   .collection("users")
@@ -182,6 +183,7 @@ export default class Today extends Component {
                           Number(doc.data().methd_four) * 2.99 * 0.00001,
                         coefficient_six:
                           Number(doc.data().methd_six) * 2.99 * 0.00001,
+                        beta: 0.279,
                       });
                     } else {
                       this.setState({
@@ -197,6 +199,7 @@ export default class Today extends Component {
                           Number(doc.data().methd_four) * 1.6 * 0.0000001,
                         coefficient_six:
                           Number(doc.data().methd_six) * 1.6 * 0.0000001,
+                        beta: 0.52,
                       });
                     }
 
@@ -213,7 +216,7 @@ export default class Today extends Component {
                         1500
                       );
                     } else {
-                      /*console.log("const_two : " + this.state.const_two);
+                      console.log("const_two : " + this.state.const_two);
                       console.log("const_four : " + this.state.const_four);
                       console.log("const_six : " + this.state.const_six);
                       console.log("methd_two : " + this.state.methd_two);
@@ -228,7 +231,13 @@ export default class Today extends Component {
                       console.log(
                         "coefficient_six : " + this.state.coefficient_six
                       );
-                      console.log(this.state.today_date); */
+                      console.log(this.state.today_date);
+                      console.log(
+                        "women : " +
+                          (Math.log(1 / this.state.const_def) / 0.279) *
+                            (this.state.height / 100) *
+                            (this.state.height / 100)
+                      );
                       var timearr = this.state.start_date
                         .split("-")
                         .map(Number);
@@ -579,7 +588,7 @@ export default class Today extends Component {
                                 ((d.x / 24) * this.state.coefficient_def +
                                   this.state.const_def)
                             ) /
-                              0.279) *
+                              Number(this.state.beta)) *
                             (this.state.height / 100) *
                             (this.state.height / 100)
                           }

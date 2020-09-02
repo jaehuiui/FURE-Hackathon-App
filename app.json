@@ -2,7 +2,7 @@
   "expo": {
     "name": "FURE",
     "slug": "FURE",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "orientation": "portrait",
     "icon": "./assets/icon_fure.png",
     "splash": {
@@ -39,6 +39,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "FU:RE ver 1.1.1"
+    "description": "FU:RE ver 1.1.2"
   }
 }
