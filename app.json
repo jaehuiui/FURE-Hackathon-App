@@ -2,7 +2,7 @@
   "expo": {
     "name": "FURE",
     "slug": "FURE",
-    "version": "1.0.9",
+    "version": "1.1.1",
     "orientation": "portrait",
     "icon": "./assets/icon_fure.png",
     "splash": {
@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.mypackage.fure",
-      "buildNumber": "1.0.9",
+      "buildNumber": "1.1.1",
       "googleServicesFile": "./GoogleService-Info.plist",
       "config": {
         "usesNonExemptEncryption": false
@@ -27,7 +27,7 @@
       "package": "com.mypackage.fure",
       "googleServicesFile": "./google-services.json",
       "softwareKeyboardLayoutMode": "pan",
-      "versionCode": 11,
+      "versionCode": 13,
       "permissions": [
         "CAMERA",
         "ACCESS_FINE_LOCATION",
@@ -39,6 +39,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "FU:RE ver 1.0.9"
+    "description": "FU:RE ver 1.1.1"
   }
 }

@@ -42,7 +42,7 @@ export default class Intro extends Component {
           <View style={styles.top_layer_2}>
             <View style={styles.logo_box_2}>
               <Image
-                source={require("../../images/new_logo.png")}
+                source={require("../../images/logo.png")}
                 style={styles.logo_2}
               ></Image>
             </View>
@@ -97,7 +97,7 @@ export default class Intro extends Component {
             <View style={styles.bottom_layer}>
               <View style={styles.logo_box}>
                 <Image
-                  source={require("../../images/new_logo.png")}
+                  source={require("../../images/logo.png")}
                   style={styles.logo}
                 ></Image>
               </View>
@@ -176,8 +176,8 @@ const styles = StyleSheet.create({
   //Inner Layer 1
   logo_2: {
     alignSelf: "center",
-    transform: [{ scale: 0.6 }],
-    resizeMode: "center",
+    height: RFValue(270, 812),
+
     aspectRatio: 1,
   },
   skip_2: {
@@ -197,8 +197,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     alignSelf: "center",
-    transform: [{ scale: 0.35 }],
-    resizeMode: "center",
+    height: RFValue(200, 812),
+
     aspectRatio: 1,
   },
   //Page 1

@@ -10,7 +10,7 @@ export default class Loading extends Component {
       <View style={styles.container}>
         <View style={styles.upper}>
           <Image
-            source={require("../../images/new_logo.png")}
+            source={require("../../images/logo.png")}
             style={styles.logo_load}
           ></Image>
         </View>
@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
 
   logo_load: {
     alignSelf: "center",
-    transform: [{ scale: 0.6 }],
-    resizeMode: "center",
+    height: RFValue(270, 812),
+
     aspectRatio: 1,
   },
 });
